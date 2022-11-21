@@ -253,3 +253,46 @@ values (
 insert into
     "movieScheduleTimes" (time, "movieScheduleId")
 values ('10:30:00', '1');
+
+insert into
+    "paymentMethods" (picture, name)
+values (
+        'https://toppng.com/uploads/preview/visa-logo-11530966316amvzjrobsf.png',
+        'Visa'
+    );
+
+insert into
+    "resetPassword" (email, "userId", code)
+values (
+        'victoria@gmail.com',
+        '2',
+        'V1CT'
+    );
+
+insert into
+    "reserveSeats" ("seatNum", "transactionId")
+values ('C4', '1');
+
+insert into status (name) values ('Active'), ('Used'), ('Expired');
+
+insert into
+    transactions (
+        "bookingDate",
+        "movieId",
+        "cinemaId",
+        "movieScheduleId",
+        "fullName",
+        email,
+        "phoneNumber",
+        "statusId"
+    )
+values (
+        '2017-07-07 01:02:00 +08',
+        '1',
+        '1',
+        '1',
+        'Victoria Lo',
+        'victoria@gmail.com',
+        '85156233534',
+        '1'
+    );
