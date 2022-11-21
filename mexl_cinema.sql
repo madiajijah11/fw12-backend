@@ -8,9 +8,9 @@ create table
         "updatedAt" timestamptz
     );
 
-create table
+CREATE TABLE
     "users" (
-        "id" int primary key generated always as identity,
+        "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         "picture" varchar,
         "firstName" varchar,
         "lastName" varchar,
@@ -24,7 +24,7 @@ create table
 
 create table
     "resetPassword" (
-        "id" int primary key generated always as identity,
+        "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         "email" varchar,
         "userId" int,
         "code" varchar,
@@ -34,7 +34,7 @@ create table
 
 create table
     "movies" (
-        "id" int primary key generated always as identity,
+        "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         "title" varchar,
         "picture" varchar,
         "releaseDate" date,
@@ -47,7 +47,7 @@ create table
 
 create table
     "genres" (
-        "id" int primary key generated always as identity,
+        "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         "name" varchar,
         "createdAt" timestamptz default now(),
         "updatedAt" timestamptz
@@ -55,7 +55,7 @@ create table
 
 create table
     "movieGenre" (
-        "id" int primary key generated always as identity,
+        "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         "movieId" int,
         "genreId" int,
         "createdAt" timestamptz default now(),
@@ -64,7 +64,7 @@ create table
 
 create table
     "casts" (
-        "id" int primary key generated always as identity,
+        "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         "name" varchar,
         "createdAt" timestamptz default now(),
         "updatedAt" timestamptz
@@ -72,7 +72,7 @@ create table
 
 create table
     "movieCasts" (
-        "id" int primary key generated always as identity,
+        "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         "movieId" int,
         "castId" int,
         "createdAt" timestamptz default now(),
@@ -81,7 +81,7 @@ create table
 
 create table
     "cinemas" (
-        "id" int primary key generated always as identity,
+        "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         "picture" varchar,
         "name" varchar,
         "address" varchar,
@@ -92,7 +92,7 @@ create table
 
 create table
     "movieSchedules" (
-        "id" int primary key generated always as identity,
+        "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         "movieId" int,
         "cinemaId" int,
         "price" bigint,
@@ -104,7 +104,7 @@ create table
 
 create table
     "movieScheduleTimes" (
-        "id" int primary key generated always as identity,
+        "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         "time" time,
         "movieScheduleId" int,
         "createdAt" timestamptz default now(),
@@ -113,7 +113,7 @@ create table
 
 create table
     "status" (
-        "id" int primary key generated always as identity,
+        "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         "name" varchar,
         "createdAt" timestamptz default now(),
         "updatedAt" timestamptz
@@ -121,7 +121,7 @@ create table
 
 create table
     "transactions" (
-        "id" int primary key generated always as identity,
+        "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         "bookingDate" timestamptz,
         "movieId" int,
         "cinemaId" int,
@@ -136,7 +136,7 @@ create table
 
 create table
     "reserveSeats" (
-        "id" int primary key generated always as identity,
+        "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         "seatNum" varchar,
         "transactionId" int,
         "createdAt" timestamptz default now(),
@@ -145,7 +145,7 @@ create table
 
 create table
     "paymentMethods" (
-        "id" int primary key generated always as identity,
+        "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         "picture" varchar,
         "name" varchar,
         "createdAt" timestamptz default now(),
@@ -154,8 +154,38 @@ create table
 
 create table
     "subscribers" (
-        "id" int primary key generated always as identity,
+        "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         "email" varchar,
         "createdAt" timestamptz default now(),
         "updatedAt" timestamptz
+    );
+
+insert into roles (name) values ('Admin'), ('User');
+
+insert into
+    users (
+        picture,
+        "firstName",
+        "lastName",
+        "phoneNumber",
+        email,
+        password,
+        "roleId"
+    )
+values (
+        'https://avatars.githubusercontent.com/u/20562116?v=4',
+        'Dian',
+        'Rahmadani',
+        '82256964453',
+        'admin@gmail.com',
+        'admin123',
+        '1'
+    ), (
+        'https://avatars.githubusercontent.com/u/47699978?v=4',
+        'Victoria',
+        'Lo',
+        '85156233534',
+        'victoria@gmail.com',
+        'victoria123',
+        '2'
     );
