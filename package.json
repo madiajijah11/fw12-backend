@@ -1,0 +1,26 @@
+{
+  "name": "fw12-backend",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/madiajijah11/fw12-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/madiajijah11/fw12-backend/issues"
+  },
+  "homepage": "https://github.com/madiajijah11/fw12-backend#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
