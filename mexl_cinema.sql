@@ -189,3 +189,67 @@ values (
         'victoria123',
         '2'
     );
+
+insert into genres (name)
+values ('Action'), ('Adventure'), ('Animation'), ('Comedy'), ('Crime'), ('Documentary'), ('Drama'), ('Family'), ('Fantasy'), ('History'), ('Horror'), ('Music'), ('Mystery'), ('Romance'), ('Science Fiction'), ('TV Movie'), ('Thriller'), ('War'), ('Western');
+
+insert into
+    movies (
+        title,
+        picture,
+        "releaseDate",
+        director,
+        duration,
+        synopsis
+    )
+values (
+        'Spider-Man: Homecoming',
+        'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/c24sv2weTHPsmDa7jEMN0m2P3RT.jpg',
+        '2017-06-28',
+        'Jon Watss',
+        '02:13:00',
+        'Following the events of Captain America: Civil War, Peter Parker, with the help of his mentor Tony Stark, tries to balance his life as an ordinary high school student in Queens, New York City, with fighting crime as his superhero alter ego Spider-Man as a new threat, the Vulture, emerges.'
+    );
+
+insert into
+    "movieGenre" ("movieId", "genreId")
+values ('1', '1'), ('1', '2'), ('1', '7'), ('1', '15');
+
+insert into subscribers (email)
+values ('madiajijah7@gmail.com'), ('musmak@gmail.com');
+
+insert into casts (name)
+VALUES ('Tom Holland'), ('Michael Keaton'), ('Robert Downey Jr.'), ('Marisa Tomei'), ('Jon Favreau'), ('Gwyneth Paltrow'), ('Zendaya'), ('Donald Glover'), ('Jacob Batalon');
+
+insert into
+    cinemas (picture, name, address, city)
+values (
+        'https://21cineplex.com//theme/v5/assets/img/logo.png',
+        'CINEMA 21',
+        'Karang Rejo, Tarakan Barat',
+        'Tarakan'
+    );
+
+insert into
+    "movieCasts" ("movieId", "castId")
+VALUES ('1', '1'), ('1', '2'), ('1', '3'), ('1', '4'), ('1', '5'), ('1', '6'), ('1', '7'), ('1', '8'), ('1', '9');
+
+insert into
+    "movieSchedules" (
+        "movieId",
+        "cinemaId",
+        price,
+        "startDate",
+        "endDate"
+    )
+values (
+        '1',
+        '1',
+        '60000',
+        '2017-07-06',
+        '2017-07-08'
+    );
+
+insert into
+    "movieScheduleTimes" (time, "movieScheduleId")
+values ('10:30:00', '1');
