@@ -71,7 +71,7 @@ create table
     );
 
 create table
-    "movieCasts" (
+    "movieCast" (
         "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         "movieId" int,
         "castId" int,
@@ -231,7 +231,7 @@ values (
     );
 
 insert into
-    "movieCasts" ("movieId", "castId")
+    "movieCast" ("movieId", "castId")
 VALUES ('1', '1'), ('1', '2'), ('1', '3'), ('1', '4'), ('1', '5'), ('1', '6'), ('1', '7'), ('1', '8'), ('1', '9');
 
 insert into
