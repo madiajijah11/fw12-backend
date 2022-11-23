@@ -1,34 +1,27 @@
+const {
+  getUsers,
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
+} = require("../models/users");
+
 exports.getUsers = (req, res) => {
-  return res.status(200).json({
-    success: true,
-    message: "This route will show all users in the database.",
-  });
+  getUsers(req, res);
 };
 
 exports.getUser = (req, res) => {
-  return res.status(200).json({
-    success: true,
-    message: "This route will show a single user in the database.",
-  });
+  getUser(req, res);
 };
 
 exports.createUser = (req, res) => {
-  return res.status(200).json({
-    success: true,
-    message: "This route will add a user to the database.",
-  });
+  createUser(req, res);
 };
 
 exports.updateUser = (req, res) => {
-  return res.status(200).json({
-    success: true,
-    message: "This route will update a user in the database.",
-  });
+  updateUser(req, res);
 };
 
 exports.deleteUser = (req, res) => {
-  return res.status(200).json({
-    success: true,
-    message: "This route will delete a user from the database.",
-  });
+  deleteUser(req, res);
 };
