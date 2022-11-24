@@ -1,8 +1,14 @@
 const duplicateKey = (err, res) => {
-  if (err.message.includes('unique constraint "users_pk')) {
+  if (err.code === "23505") {
     return res.status(409).json({
       success: false,
-      message: "Email already exists",
+      message: "Email has already been taken",
+    });
+  }
+  if (err.code === "23503") {
+    return res.status(409).json({
+      success: false,
+      message: "No related data found",
     });
   }
   return res.status(500).json({

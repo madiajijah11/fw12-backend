@@ -353,3 +353,7 @@ add
 alter table "resetPassword"
 add
     constraint "resetPassword_users_null_fk" foreign key ("userId") references users (id);
+
+alter table subscribers
+add
+    constraint subscribers_pk unique (email);
