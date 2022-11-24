@@ -1,4 +1,4 @@
-const errorHandlers = (err, res) => {
+const duplicateKey = (err, res) => {
   if (err.message.includes("duplicate key value violates unique constraint")) {
     return res.status(409).json({
       success: false,
@@ -20,8 +20,8 @@ const emptyRows = (res, result) => {
   }
   return res.status(200).json({
     success: true,
-    data: result.rows,
+    data: result?.rows,
   });
 };
 
-module.exports = { errorHandlers, emptyRows };
+module.exports = { duplicateKey, emptyRows };

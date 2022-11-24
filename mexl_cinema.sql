@@ -296,3 +296,60 @@ values (
         '85156233534',
         '1'
     );
+
+alter table "movieGenre"
+add
+    constraint "movieGenre_genres_null_fk" foreign key ("genreId") references genres (id);
+
+alter table "movieGenre"
+add
+    constraint "movieGenre_movies_null_fk" foreign key ("movieId") references movies (id);
+
+alter table "movieCast"
+add
+    constraint "movieCast_casts_null_fk" foreign key ("castId") references casts (id);
+
+alter table "movieCast"
+add
+    constraint "movieCast_movies_null_fk" foreign key ("movieId") references movies (id);
+
+alter table "movieSchedules"
+add
+    constraint "movieSchedules_cinemas_null_fk" foreign key ("cinemaId") references cinemas (id);
+
+alter table "movieSchedules"
+add
+    constraint "movieSchedules_movies_null_fk" foreign key ("movieId") references movies (id);
+
+alter table
+    "movieScheduleTimes"
+add
+    constraint "movieScheduleTimes_movieSchedules_null_fk" foreign key ("movieScheduleId") references "movieSchedules" (id);
+
+alter table transactions
+add
+    constraint transactions_cinemas_null_fk foreign key ("cinemaId") references cinemas (id);
+
+alter table transactions
+add
+    constraint "transactions_movieSchedules_null_fk" foreign key ("movieScheduleId") references "movieSchedules" (id);
+
+alter table transactions
+add
+    constraint transactions_movies_null_fk foreign key ("movieId") references movies (id);
+
+alter table transactions
+add
+    constraint transactions_status_null_fk foreign key ("statusId") references status (id);
+
+alter table "reserveSeats"
+add
+    constraint "reserveSeats_transactions_null_fk" foreign key ("transactionId") references transactions (id);
+
+alter table users
+add
+    constraint users_roles_null_fk foreign key ("roleId") references roles (id);
+
+alter table "resetPassword"
+add
+    constraint "resetPassword_users_null_fk" foreign key ("userId") references users (id);

@@ -5,10 +5,10 @@ const {
   updateUser,
   deleteUser,
 } = require("../models/users");
-const { errorHandlers, emptyRows } = require("../helpers/errorHandler");
+const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
 
 exports.getUsers = (req, res) => {
-  getUsers(req.body, (err, result) => {
+  getUsers((err, result) => {
     if (err) {
       return res.status(500).json({
         success: false,
@@ -17,7 +17,7 @@ exports.getUsers = (req, res) => {
     }
     return res.status(200).json({
       success: true,
-      data: result.rows,
+      data: result?.rows,
     });
   });
 };
@@ -35,13 +35,13 @@ exports.getUser = (req, res) => {
 };
 
 exports.createUser = (req, res) => {
-  createUser(req.body, (err, result) => {
+  createUser(req, (err, result) => {
     if (err) {
-      return errorHandlers(err, res);
+      return duplicateKey(err, res);
     }
     return res.status(201).json({
       success: true,
-      data: result.rows[0],
+      data: result?.rows[0],
     });
   });
 };
@@ -49,7 +49,7 @@ exports.createUser = (req, res) => {
 exports.updateUser = (req, res) => {
   updateUser(req, (err, result) => {
     if (err) {
-      return errorHandlers(err, res);
+      return duplicateKey(err, res);
     }
     return emptyRows(res, result);
   });
@@ -58,7 +58,7 @@ exports.updateUser = (req, res) => {
 exports.deleteUser = (req, res) => {
   deleteUser(req.params, (err, result) => {
     if (err) {
-      return errorHandlers(err, res);
+      return duplicateKey(err, res);
     }
     return emptyRows(res, result);
   });
