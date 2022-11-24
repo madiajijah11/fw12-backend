@@ -1,34 +1,53 @@
+const {
+  getMovies,
+  getMovie,
+  createMovie,
+  updateMovie,
+  deleteMovie,
+} = require("../models/movies");
+const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
+
 exports.getMovies = (req, res) => {
-  return res.status(200).json({
-    success: true,
-    message: "This route will show all movies in the database.",
+  getMovies((err, result) => {
+    if (err) {
+      return duplicateKey(err, res);
+    }
+    return emptyRows(res, result);
   });
 };
 
 exports.getMovie = (req, res) => {
-  return res.status(200).json({
-    success: true,
-    message: "This route will show a single movie in the database.",
+  getMovie(req.params, (err, result) => {
+    if (err) {
+      return duplicateKey(err, res);
+    }
+    return emptyRows(res, result);
   });
 };
 
 exports.createMovie = (req, res) => {
-  return res.status(200).json({
-    success: true,
-    message: "This route will add a movie to the database.",
+  createMovie(req, (err, result) => {
+    if (err) {
+      return duplicateKey(err, res);
+    }
+    return emptyRows(res, result);
   });
 };
 
 exports.updateMovie = (req, res) => {
-  return res.status(200).json({
-    success: true,
-    message: "This route will update a movie in the database.",
+  updateMovie(req, (err, result) => {
+    if (err) {
+      return duplicateKey(err, res);
+    }
+    return emptyRows(res, result);
   });
 };
 
 exports.deleteMovie = (req, res) => {
-  return res.status(200).json({
-    success: true,
-    message: "This route will delete a movie from the database.",
+  deleteMovie(req.params, (err, result) => {
+    if (err) {
+      return duplicateKey(err, res);
+    }
+    return emptyRows(res, result);
   });
 };

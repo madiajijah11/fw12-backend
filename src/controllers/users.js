@@ -10,25 +10,16 @@ const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
 exports.getUsers = (req, res) => {
   getUsers((err, result) => {
     if (err) {
-      return res.status(500).json({
-        success: false,
-        message: err,
-      });
+      return duplicateKey(err, res);
     }
-    return res.status(200).json({
-      success: true,
-      data: result?.rows,
-    });
+    return emptyRows(res, result);
   });
 };
 
 exports.getUser = (req, res) => {
   getUser(req.params, (err, result) => {
     if (err) {
-      return res.status(500).json({
-        success: false,
-        message: err,
-      });
+      return duplicateKey(err, res);
     }
     return emptyRows(res, result);
   });
@@ -39,10 +30,7 @@ exports.createUser = (req, res) => {
     if (err) {
       return duplicateKey(err, res);
     }
-    return res.status(201).json({
-      success: true,
-      data: result?.rows[0],
-    });
+    return emptyRows(res, result);
   });
 };
 

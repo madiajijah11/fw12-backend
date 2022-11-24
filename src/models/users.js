@@ -30,7 +30,7 @@ exports.createUser = (data, cb) => {
 
 exports.updateUser = (data, cb) => {
   const sql =
-    'UPDATE users SET "picture" = $1, "firstName" = $2, "lastName" = $3, "phoneNumber" = $4, "email" = $5, "password" = $6, "roleId" = $7 WHERE id = $8 RETURNING *';
+    'UPDATE users SET "picture" = $1, "firstName" = $2, "lastName" = $3, "phoneNumber" = $4, "email" = $5, "password" = $6, "roleId" = $7, "updatedAt" = $8 WHERE id = $9 RETURNING *';
   const { id } = data.params;
   const { picture, firstName, lastName, phoneNumber, email, password, roleId } =
     data.body;
@@ -42,6 +42,7 @@ exports.updateUser = (data, cb) => {
     email,
     password,
     roleId,
+    new Date(),
     id,
   ];
   return poolString.query(sql, values, cb);
