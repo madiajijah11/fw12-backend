@@ -58,6 +58,7 @@ exports.createUser = (req, res) => {
 
 exports.updateUser = (req, res) => {
   const { id } = req.params;
+
   const { picture, firstName, lastName, phoneNumber, email, password, roleId } =
     req.body;
 
@@ -79,7 +80,9 @@ exports.updateUser = (req, res) => {
 
 exports.deleteUser = (req, res) => {
   const { id } = req.params;
+
   const deleteQuery = `DELETE FROM users WHERE id = ${id}`;
+
   pool.query(deleteQuery, (err, _result) => {
     if (err) {
       return res.status(400).json({
