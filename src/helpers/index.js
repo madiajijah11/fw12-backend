@@ -8,4 +8,8 @@ const pool = new Pool({
   port: 5432,
 });
 
-module.exports = pool;
+const poolString = new Pool({
+  connectionString: "postgres://postgres:1@localhost:5432/mexl_cinema",
+});
+
+module.exports = { pool, poolString };

@@ -1,98 +1,50 @@
-const pool = require("../helpers");
+const { poolString } = require("../helpers");
 
-exports.getUsers = (req, res) => {
-  const selectQueryAll = "SELECT * FROM users";
-
-  pool.query(selectQueryAll, (err, result) => {
-    if (err) {
-      return res.status(400).json({
-        success: false,
-        message: err,
-      });
-    }
-    return res.status(200).json({
-      success: true,
-      data: result.rows,
-    });
-  });
+exports.getUsers = (data, cb) => {
+  const sql = `SELECT * FROM users`;
+  return poolString.query(sql, cb);
 };
 
-exports.getUser = (req, res) => {
-  const { id } = req.params;
-
-  const selectQueryById = `SELECT * FROM users WHERE id = ${id}`;
-
-  pool.query(selectQueryById, (err, result) => {
-    if (err) {
-      return res.status(400).json({
-        success: false,
-        message: err,
-      });
-    }
-    return res.status(200).json({
-      success: true,
-      data: result.rows,
-    });
-  });
+exports.getUser = (data, cb) => {
+  const sql = `SELECT * FROM users WHERE id = $1`;
+  const values = [data.id];
+  return poolString.query(sql, values, cb);
 };
 
-exports.createUser = (req, res) => {
+exports.createUser = async (data, cb) => {
+  const sql = `INSERT INTO users ("picture", "firstName", "lastName", "phoneNumber", "email", "password", "roleId") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
+  const values = [
+    data.picture,
+    data.firstName,
+    data.lastName,
+    data.phoneNumber,
+    data.email,
+    data.password,
+    data.roleId,
+  ];
+  return poolString.query(sql, values, cb);
+};
+
+exports.updateUser = (data, cb) => {
+  const sql = `UPDATE users SET "picture" = $1, "firstName" = $2, "lastName" = $3, "phoneNumber" = $4, "email" = $5, "password" = $6, "roleId" = $7 WHERE id = $8 RETURNING *`;
+  const { id } = data.params;
   const { picture, firstName, lastName, phoneNumber, email, password, roleId } =
-    req.body;
-
-  const insertQuery = `INSERT INTO users ("picture", "firstName", "lastName", "phoneNumber", "email", "password", "roleId") VALUES ('${picture}', '${firstName}', '${lastName}', '${phoneNumber}',  '${email}', '${password}', '${roleId}')`;
-
-  pool.query(insertQuery, (err, _result) => {
-    if (err) {
-      return res.status(400).json({
-        success: false,
-        message: err,
-      });
-    }
-    return res.status(200).json({
-      success: true,
-      message: "User created successfully",
-    });
-  });
+    data.body;
+  const values = [
+    picture,
+    firstName,
+    lastName,
+    phoneNumber,
+    email,
+    password,
+    roleId,
+    id,
+  ];
+  return poolString.query(sql, values, cb);
 };
 
-exports.updateUser = (req, res) => {
-  const { id } = req.params;
-
-  const { picture, firstName, lastName, phoneNumber, email, password, roleId } =
-    req.body;
-
-  const updateQuery = `UPDATE users SET "picture" = '${picture}', "firstName" = '${firstName}', "lastName" = '${lastName}', "phoneNumber" = '${phoneNumber}', "email" = '${email}', "password" = '${password}', "roleId" = '${roleId}' WHERE "id" = ${id}`;
-
-  pool.query(updateQuery, (err, _result) => {
-    if (err) {
-      return res.status(400).json({
-        success: false,
-        message: err,
-      });
-    }
-    return res.status(200).json({
-      success: true,
-      message: "User updated successfully",
-    });
-  });
-};
-
-exports.deleteUser = (req, res) => {
-  const { id } = req.params;
-
-  const deleteQuery = `DELETE FROM users WHERE id = ${id}`;
-
-  pool.query(deleteQuery, (err, _result) => {
-    if (err) {
-      return res.status(400).json({
-        success: false,
-        message: err,
-      });
-    }
-    return res.status(200).json({
-      success: true,
-      message: "User deleted successfully",
-    });
-  });
+exports.deleteUser = (data, cb) => {
+  const sql = `DELETE FROM users WHERE id = $1 RETURNING *`;
+  const values = [data.id];
+  return poolString.query(sql, values, cb);
 };
