@@ -8,6 +8,10 @@ const statusRoutes = require("./status");
 const subscribersRoutes = require("./subscribers");
 const movieCastRoutes = require("./movieCast");
 const movieGenreRoutes = require("./movieGenre");
+const movieScheduleTimes = require("./movieScheduleTimes");
+const paymentMethods = require("./paymentMethods");
+const reserveSeats = require("./reserveSeats");
+const resetPassword = require("./resetPassword");
 
 routers.use("/movies", moviesRoutes);
 routers.use("/users", usersRoutes);
@@ -18,5 +22,9 @@ routers.use("/status", statusRoutes);
 routers.use("/subscribers", subscribersRoutes);
 routers.use("/movieCast", movieCastRoutes);
 routers.use("/movieGenre", movieGenreRoutes);
+routers.use("/movieScheduleTimes", movieScheduleTimes);
+routers.use("/paymentMethods", paymentMethods);
+routers.use("/reserveSeats", reserveSeats);
+routers.use("/resetPassword", resetPassword);
 
 module.exports = routers;
