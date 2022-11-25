@@ -1,22 +1,27 @@
 const {
   getCasts,
+  pageInfo,
   createCast,
   updateCast,
   deleteCast,
 } = require("../models/casts");
 const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
+const filter = require("../helpers/filter");
 
 exports.getCasts = (req, res) => {
-  getCasts((err, result) => {
-    if (err) {
-      return duplicateKey(err, res);
-    }
-    return emptyRows(res, result);
+  const sortables = ["name", "createdAt", "updatedAt"];
+  filter(req.query, sortables, pageInfo, res, (filter, pageInfo) => {
+    getCasts(filter, (err, result) => {
+      if (err) {
+        return duplicateKey(err, res);
+      }
+      return emptyRows(res, result, pageInfo);
+    });
   });
 };
 
 exports.createCast = (req, res) => {
-  createCast(req, (err, result) => {
+  createCast(req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -25,7 +30,7 @@ exports.createCast = (req, res) => {
 };
 
 exports.updateCast = (req, res) => {
-  updateCast(req, (err, result) => {
+  updateCast(req.params.id, req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -34,7 +39,7 @@ exports.updateCast = (req, res) => {
 };
 
 exports.deleteCast = (req, res) => {
-  deleteCast(req.params, (err, result) => {
+  deleteCast(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }

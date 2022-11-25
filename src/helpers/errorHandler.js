@@ -17,7 +17,7 @@ const duplicateKey = (err, res) => {
   });
 };
 
-const emptyRows = (res, result) => {
+const emptyRows = (res, result, pageInfo) => {
   if (result.rows.length === 0) {
     return res.status(404).json({
       success: false,
@@ -26,6 +26,8 @@ const emptyRows = (res, result) => {
   }
   return res.status(200).json({
     success: true,
+    message: "Success",
+    pageInfo,
     data: result?.rows,
   });
 };
