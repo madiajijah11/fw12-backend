@@ -16,7 +16,7 @@ exports.getReserveSeats = (req, res) => {
 };
 
 exports.createReserveSeats = (req, res) => {
-  createReserveSeats(req, (err, result) => {
+  createReserveSeats(req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -25,7 +25,7 @@ exports.createReserveSeats = (req, res) => {
 };
 
 exports.updateReserveSeats = (req, res) => {
-  updateReserveSeats(req, (err, result) => {
+  updateReserveSeats(req.params.id, req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -34,7 +34,7 @@ exports.updateReserveSeats = (req, res) => {
 };
 
 exports.deleteReserveSeats = (req, res) => {
-  deleteReserveSeats(req.params, (err, result) => {
+  deleteReserveSeats(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }

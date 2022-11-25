@@ -1,22 +1,27 @@
 const {
   getGenres,
+  pageInfo,
   createGenre,
   updateGenre,
   deleteGenre,
 } = require("../models/genres");
 const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
+const filter = require("../helpers/filter");
 
 exports.getGenres = (req, res) => {
-  getGenres((err, result) => {
-    if (err) {
-      return duplicateKey(err, res);
-    }
-    return emptyRows(res, result);
+  const sortables = ["name", "createdAt", "updatedAt"];
+  filter(req.query, sortables, pageInfo, res, (filter, pageInfo) => {
+    getGenres(filter, (err, result) => {
+      if (err) {
+        return duplicateKey(err, res);
+      }
+      return emptyRows(res, result, pageInfo);
+    });
   });
 };
 
 exports.createGenre = (req, res) => {
-  createGenre(req, (err, result) => {
+  createGenre(req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -25,7 +30,7 @@ exports.createGenre = (req, res) => {
 };
 
 exports.updateGenre = (req, res) => {
-  updateGenre(req, (err, result) => {
+  updateGenre(req.params.id, req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -34,7 +39,7 @@ exports.updateGenre = (req, res) => {
 };
 
 exports.deleteGenre = (req, res) => {
-  deleteGenre(req.params, (err, result) => {
+  deleteGenre(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }

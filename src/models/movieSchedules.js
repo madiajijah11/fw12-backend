@@ -5,8 +5,7 @@ exports.getMovieSchedules = (cb) => {
   return poolString.query(sql, cb);
 };
 
-exports.getMovieSchedule = (data, cb) => {
-  const { id } = data.params;
+exports.getMovieSchedule = (id, cb) => {
   const sql = 'SELECT * FROM "movieSchedules" WHERE id = $1';
   const values = [id];
   return poolString.query(sql, values, cb);
@@ -15,22 +14,31 @@ exports.getMovieSchedule = (data, cb) => {
 exports.createMovieSchedules = (data, cb) => {
   const sql =
     'INSERT INTO "movieSchedules" ("movieId", "cinemaId", "price", "startDate", "endDate") VALUES ($1,$2,$3,$4,$5) RETURNING *';
-  const { movieId, cinemaId, price, startDate, endDate } = data.body;
-  const values = [movieId, cinemaId, price, startDate, endDate];
+  const values = [
+    data.movieId,
+    data.cinemaId,
+    data.price,
+    data.startDate,
+    data.endDate,
+  ];
   return poolString.query(sql, values, cb);
 };
 
-exports.updateMovieSchedules = (data, cb) => {
-  const sql =
-    'UPDATE "movieSchedules" SET "movieId" = $1, "cinemaId" = $2, "price" = $3, "startDate" = $4, "endDate" = $5, "updatedAt" = $6 WHERE id = $7 RETURNING *';
-  const { id } = data.params;
-  const { movieId, cinemaId, price, startDate, endDate } = data.body;
-  const values = [movieId, cinemaId, price, startDate, endDate, new Date(), id];
+exports.updateMovieSchedules = (id, data, cb) => {
+  const sql = `UPDATE "movieSchedules" SET "movieId" = COALESCE($1, "movieId")::INTEGER, "cinemaId" = COALESCE($2, "cinemaId")::INTEGER, "price" = COALESCE($3, "price")::INTEGER, "startDate" = COALESCE($4, "startDate")::DATE, "endDate" = COALESCE($5, "endDate")::DATE WHERE id = $6 RETURNING *`;
+  const values = [
+    data.movieId,
+    data.cinemaId,
+    data.price,
+    data.startDate,
+    data.endDate,
+    id,
+  ];
   return poolString.query(sql, values, cb);
 };
 
-exports.deleteMovieSchedules = (data, cb) => {
+exports.deleteMovieSchedules = (id, cb) => {
   const sql = 'DELETE FROM "movieSchedules" WHERE id = $1 RETURNING *';
-  const values = [data.id];
+  const values = [id];
   return poolString.query(sql, values, cb);
 };

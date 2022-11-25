@@ -16,7 +16,7 @@ exports.getMovieCast = (req, res) => {
 };
 
 exports.createMovieCast = (req, res) => {
-  createMovieCast(req, (err, result) => {
+  createMovieCast(req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -25,7 +25,7 @@ exports.createMovieCast = (req, res) => {
 };
 
 exports.updateMovieCast = (req, res) => {
-  updateMovieCast(req, (err, result) => {
+  updateMovieCast(req.params.id, req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -34,7 +34,7 @@ exports.updateMovieCast = (req, res) => {
 };
 
 exports.deleteMovieCast = (req, res) => {
-  deleteMovieCast(req.params, (err, result) => {
+  deleteMovieCast(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }

@@ -16,7 +16,7 @@ exports.getMovieScheduleTimes = (req, res) => {
 };
 
 exports.createMovieScheduleTimes = (req, res) => {
-  createMovieScheduleTimes(req, (err, result) => {
+  createMovieScheduleTimes(req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -25,7 +25,7 @@ exports.createMovieScheduleTimes = (req, res) => {
 };
 
 exports.updateMovieScheduleTimes = (req, res) => {
-  updateMovieScheduleTimes(req, (err, result) => {
+  updateMovieScheduleTimes(req.params.id, req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -34,7 +34,7 @@ exports.updateMovieScheduleTimes = (req, res) => {
 };
 
 exports.deleteMovieScheduleTimes = (req, res) => {
-  deleteMovieScheduleTimes(req.params, (err, result) => {
+  deleteMovieScheduleTimes(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }

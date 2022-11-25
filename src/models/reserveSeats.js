@@ -8,22 +8,18 @@ exports.getReserveSeats = (cb) => {
 exports.createReserveSeats = (data, cb) => {
   const sql =
     'INSERT INTO "reserveSeats" ("seatNum", "transactionId") VALUES ($1,$2) RETURNING *';
-  const { seatNum, transactionId } = data.body;
-  const values = [seatNum, transactionId];
+  const values = [data.seatNum, data.transactionId];
   return poolString.query(sql, values, cb);
 };
 
 exports.updateReserveSeats = (data, cb) => {
-  const sql =
-    'UPDATE "reserveSeats" SET "seatNum" = $1, "transactionId" = $2, "updatedAt" = $3 WHERE id = $4 RETURNING *';
-  const { id } = data.params;
-  const { seatNum, transactionId } = data.body;
-  const values = [seatNum, transactionId, new Date(), id];
+  const sql = `UPDATE "reserveSeats" SET "seatNum" = COALESCE($1, "seatNum"), "transactionId" = COALESCE($2, "transactionId")::INTEGER WHERE id = $3 RETURNING *`;
+  const values = [data.seatNum, data.transactionId, id];
   return poolString.query(sql, values, cb);
 };
 
-exports.deleteReserveSeats = (data, cb) => {
+exports.deleteReserveSeats = (id, cb) => {
   const sql = 'DELETE FROM "reserveSeats" WHERE id = $1 RETURNING *';
-  const values = [data.id];
+  const values = [id];
   return poolString.query(sql, values, cb);
 };

@@ -16,7 +16,7 @@ exports.getPaymentMethods = (req, res) => {
 };
 
 exports.createPaymentMethods = (req, res) => {
-  createPaymentMethods(req, (err, result) => {
+  createPaymentMethods(req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -25,7 +25,7 @@ exports.createPaymentMethods = (req, res) => {
 };
 
 exports.updatePaymentMethods = (req, res) => {
-  updatePaymentMethods(req, (err, result) => {
+  updatePaymentMethods(req.params.id, req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -34,7 +34,7 @@ exports.updatePaymentMethods = (req, res) => {
 };
 
 exports.deletePaymentMethods = (req, res) => {
-  deletePaymentMethods(req.params, (err, result) => {
+  deletePaymentMethods(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }

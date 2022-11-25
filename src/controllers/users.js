@@ -17,7 +17,7 @@ exports.getUsers = (req, res) => {
 };
 
 exports.getUser = (req, res) => {
-  getUser(req.params, (err, result) => {
+  getUser(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -26,7 +26,7 @@ exports.getUser = (req, res) => {
 };
 
 exports.createUser = (req, res) => {
-  createUser(req, (err, result) => {
+  createUser(req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -35,7 +35,7 @@ exports.createUser = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
-  updateUser(req, (err, result) => {
+  updateUser(req.params.id, req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -44,7 +44,7 @@ exports.updateUser = (req, res) => {
 };
 
 exports.deleteUser = (req, res) => {
-  deleteUser(req.params, (err, result) => {
+  deleteUser(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }

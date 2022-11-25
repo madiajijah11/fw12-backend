@@ -8,22 +8,18 @@ exports.getMovieScheduleTimes = (cb) => {
 exports.createMovieScheduleTimes = (data, cb) => {
   const sql =
     'INSERT INTO "movieScheduleTimes" ("time", "movieScheduleId") VALUES ($1,$2) RETURNING *';
-  const { time, movieScheduleId } = data.body;
-  const values = [time, movieScheduleId];
+  const values = [data.time, data.movieScheduleId];
   return poolString.query(sql, values, cb);
 };
 
-exports.updateMovieScheduleTimes = (data, cb) => {
-  const sql =
-    'UPDATE "movieScheduleTimes" SET "time" = $1, "movieScheduleId" = $2, "updatedAt" = $3 WHERE id = $4 RETURNING *';
-  const { id } = data.params;
-  const { time, movieScheduleId } = data.body;
-  const values = [time, movieScheduleId, new Date(), id];
+exports.updateMovieScheduleTimes = (id, data, cb) => {
+  const sql = `UPDATE "movieScheduleTimes" SET "time" = COALESCE($1, "time")::TIME, "movieScheduleId" = COALESCE($2, "movieScheduleId")::INTEGER WHERE id = $3 RETURNING *`;
+  const values = [data.time, data.movieScheduleId, id];
   return poolString.query(sql, values, cb);
 };
 
-exports.deleteMovieScheduleTimes = (data, cb) => {
+exports.deleteMovieScheduleTimes = (id, cb) => {
   const sql = 'DELETE FROM "movieScheduleTimes" WHERE id = $1 RETURNING *';
-  const values = [data.id];
+  const values = [id];
   return poolString.query(sql, values, cb);
 };

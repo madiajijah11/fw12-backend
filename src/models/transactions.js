@@ -39,8 +39,7 @@ exports.createTransactions = (data, cb) => {
 };
 
 exports.updateTransactions = (data, cb) => {
-  const sql =
-    'UPDATE "transactions" SET "bookingDate" = $1, "movieId" = $2, "cinemaId" = $3, "movieScheduleId" = $4, "fullName" = $5, "email" = $6, "phoneNumber" = $7, "statusId" = $8, "updatedAt" = $9 WHERE id = $10 RETURNING *';
+  const sql = `UPDATE "transactions" SET "bookingDate" = COALESCE(NULLIF($1, ''), "bookingDate"), "movieId" = COALESCE(NULLIF($2, ''), "movieId"), "cinemaId" = COALESCE(NULLIF($3, ''), "cinemaId"), "movieScheduleId" = COALESCE(NULLIF($4, ''), "movieScheduleId"), "fullName" = COALESCE(NULLIF($5, ''), "fullName"), "email" = COALESCE(NULLIF($6, ''), "email"), "phoneNumber" = COALESCE(NULLIF($7, ''), "phoneNumber"), "statusId" = COALESCE(NULLIF($8, ''), "statusId") WHERE id = $9 RETURNING *`;
   const { id } = data.params;
   const {
     bookingDate,
@@ -61,7 +60,6 @@ exports.updateTransactions = (data, cb) => {
     email,
     phoneNumber,
     statusId,
-    new Date(),
     id,
   ];
   return poolString.query(sql, values, cb);

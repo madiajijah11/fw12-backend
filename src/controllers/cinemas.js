@@ -1,23 +1,28 @@
 const {
   getCinemas,
   getCinema,
+  pageInfo,
   createCinemas,
   updateCinemas,
   deleteCinemas,
 } = require("../models/cinemas");
 const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
+const filter = require("../helpers/filter");
 
 exports.getCinemas = (req, res) => {
-  getCinemas((err, result) => {
-    if (err) {
-      return duplicateKey(err, res);
-    }
-    return emptyRows(res, result);
+  const sortables = ["name", "createdAt", "updatedAt"];
+  filter(req.query, sortables, pageInfo, res, (filter, pageInfo) => {
+    getCinemas(filter, (err, result) => {
+      if (err) {
+        return duplicateKey(err, res);
+      }
+      return emptyRows(res, result, pageInfo);
+    });
   });
 };
 
 exports.getCinema = (req, res) => {
-  getCinemas(req, (err, result) => {
+  getCinema(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -26,7 +31,7 @@ exports.getCinema = (req, res) => {
 };
 
 exports.createCinemas = (req, res) => {
-  createCinemas(req, (err, result) => {
+  createCinemas(req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -35,7 +40,7 @@ exports.createCinemas = (req, res) => {
 };
 
 exports.updateCinemas = (req, res) => {
-  updateCinemas(req, (err, result) => {
+  updateCinemas(req.params.id, req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -44,7 +49,7 @@ exports.updateCinemas = (req, res) => {
 };
 
 exports.deleteCinemas = (req, res) => {
-  deleteCinemas(req.params, (err, result) => {
+  deleteCinemas(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }

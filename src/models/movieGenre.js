@@ -8,22 +8,18 @@ exports.getMovieGenre = (cb) => {
 exports.createMovieGenre = (data, cb) => {
   const sql =
     'INSERT INTO "movieGenre" ("movieId", "genreId") VALUES ($1,$2) RETURNING *';
-  const { movieId, genreId } = data.body;
-  const values = [movieId, genreId];
+  const values = [data.movieId, data.genreId];
   return poolString.query(sql, values, cb);
 };
 
-exports.updateMovieGenre = (data, cb) => {
-  const sql =
-    'UPDATE "movieGenre" SET "movieId" = $1, "genreId" = $2, "updatedAt" = $3 WHERE id = $4 RETURNING *';
-  const { id } = data.params;
-  const { movieId, genreId } = data.body;
-  const values = [movieId, genreId, new Date(), id];
+exports.updateMovieGenre = (id, data, cb) => {
+  const sql = `UPDATE "movieGenre" SET "movieId" = COALESCE(NULLIF($1, ''), "movieId"), "genreId" = COALESCE(NULLIF($2, ''), "genreId") WHERE id = $3 RETURNING *`;
+  const values = [data.movieId, data.genreId, id];
   return poolString.query(sql, values, cb);
 };
 
-exports.deleteMovieGenre = (data, cb) => {
+exports.deleteMovieGenre = (id, cb) => {
   const sql = 'DELETE FROM "movieGenre" WHERE id = $1 RETURNING *';
-  const values = [data.id];
+  const values = [id];
   return poolString.query(sql, values, cb);
 };

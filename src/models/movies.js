@@ -1,46 +1,53 @@
 const { poolString } = require("../helpers");
 
-exports.getMovies = (cb) => {
-  const sql = "SELECT * FROM movies";
-  return poolString.query(sql, cb);
+exports.pageInfo = (filter, cb) => {
+  const sql = `SELECT COUNT("title") AS "totalData" FROM "movies" WHERE title LIKE $1`;
+  const values = [`%${filter.search}%`];
+  return poolString.query(sql, values, cb);
 };
 
-exports.getMovie = (data, cb) => {
+exports.getMovies = (filter, cb) => {
+  const sql = `SELECT * FROM movies WHERE title LIKE $3 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $1 OFFSET $2`;
+  const values = [filter.limit, filter.offset, `%${filter.search}%`];
+  return poolString.query(sql, values, cb);
+};
+
+exports.getMovie = (id, cb) => {
   const sql = "SELECT * FROM movies WHERE id = $1";
-  const values = [data.id];
+  const values = [id];
   return poolString.query(sql, values, cb);
 };
 
 exports.createMovie = (data, cb) => {
   const sql =
     'INSERT INTO movies ("title", "picture", "releaseDate", "director", "duration", "synopsis") VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-  const { title, picture, releaseDate, director, duration, synopsis } =
-    data.body;
-  const values = [title, picture, releaseDate, director, duration, synopsis];
+  const values = [
+    data.title,
+    data.picture,
+    data.releaseDate,
+    data.director,
+    data.duration,
+    data.synopsis,
+  ];
   return poolString.query(sql, values, cb);
 };
 
-exports.updateMovie = (data, cb) => {
-  const sql =
-    'UPDATE movies SET "title" = $1, "picture" = $2, "releaseDate" = $3, "director" = $4, "duration" = $5, "synopsis" = $6, "updatedAt" = $7 WHERE id = $8 RETURNING *';
-  const { id } = data.params;
-  const { title, picture, releaseDate, director, duration, synopsis } =
-    data.body;
+exports.updateMovie = (id, data, cb) => {
+  const sql = `UPDATE movies SET "title" = COALESCE($1, "title"), "picture" = COALESCE($2, "picture"), "releaseDate" = COALESCE($3, "releaseDate")::date, "director" = COALESCE($4, "director"), "duration" = COALESCE($5, "duration")::time, "synopsis" = COALESCE($6, "synopsis") WHERE id = $7 RETURNING *`;
   const values = [
-    title,
-    picture,
-    releaseDate,
-    director,
-    duration,
-    synopsis,
-    new Date(),
+    data.title,
+    data.picture,
+    data.releaseDate,
+    data.director,
+    data.duration,
+    data.synopsis,
     id,
   ];
   return poolString.query(sql, values, cb);
 };
 
-exports.deleteMovie = (data, cb) => {
+exports.deleteMovie = (id, cb) => {
   const sql = "DELETE FROM movies WHERE id = $1 RETURNING *";
-  const values = [data.id];
+  const values = [id];
   return poolString.query(sql, values, cb);
 };

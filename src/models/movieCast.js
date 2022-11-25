@@ -8,22 +8,18 @@ exports.getMovieCast = (cb) => {
 exports.createMovieCast = (data, cb) => {
   const sql =
     'INSERT INTO "movieCast" ("movieId", "castId") VALUES ($1,$2) RETURNING *';
-  const { movieId, castId } = data.body;
-  const values = [movieId, castId];
+  const values = [data.movieId, data.castId];
   return poolString.query(sql, values, cb);
 };
 
-exports.updateMovieCast = (data, cb) => {
-  const sql =
-    'UPDATE "movieCast" SET "movieId" = $1, "castId" = $2, "updatedAt" = $3 WHERE id = $4 RETURNING *';
-  const { id } = data.params;
-  const { movieId, castId } = data.body;
-  const values = [movieId, castId, new Date(), id];
+exports.updateMovieCast = (id, data, cb) => {
+  const sql = `UPDATE "movieCast" SET "movieId" = COALESCE(NULLIF($1,''), "movieId")::INTEGER "castId" = COALESCE(NULLIF($2, ''), "castId")::INTEGER WHERE id = $3 RETURNING *`;
+  const values = [data.movieId, data.castId, id];
   return poolString.query(sql, values, cb);
 };
 
-exports.deleteMovieCast = (data, cb) => {
+exports.deleteMovieCast = (id, cb) => {
   const sql = 'DELETE FROM "movieCast" WHERE id = $1 RETURNING *';
-  const values = [data.id];
+  const values = [id];
   return poolString.query(sql, values, cb);
 };

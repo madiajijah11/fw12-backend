@@ -1,23 +1,28 @@
 const {
   getMovies,
   getMovie,
+  pageInfo,
   createMovie,
   updateMovie,
   deleteMovie,
 } = require("../models/movies");
 const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
+const filter = require("../helpers/filter");
 
 exports.getMovies = (req, res) => {
-  getMovies((err, result) => {
-    if (err) {
-      return duplicateKey(err, res);
-    }
-    return emptyRows(res, result);
+  const sortables = ["title", "createdAt", "updatedAt"];
+  filter(req.query, sortables, pageInfo, res, (filter, pageInfo) => {
+    getMovies(filter, (err, result) => {
+      if (err) {
+        return duplicateKey(err, res);
+      }
+      return emptyRows(res, result, pageInfo);
+    });
   });
 };
 
 exports.getMovie = (req, res) => {
-  getMovie(req.params, (err, result) => {
+  getMovie(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -26,7 +31,7 @@ exports.getMovie = (req, res) => {
 };
 
 exports.createMovie = (req, res) => {
-  createMovie(req, (err, result) => {
+  createMovie(req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -35,7 +40,7 @@ exports.createMovie = (req, res) => {
 };
 
 exports.updateMovie = (req, res) => {
-  updateMovie(req, (err, result) => {
+  updateMovie(req.params.id, req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -44,7 +49,7 @@ exports.updateMovie = (req, res) => {
 };
 
 exports.deleteMovie = (req, res) => {
-  deleteMovie(req.params, (err, result) => {
+  deleteMovie(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }

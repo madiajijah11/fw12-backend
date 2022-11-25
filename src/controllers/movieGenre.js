@@ -16,7 +16,7 @@ exports.getMovieGenre = (req, res) => {
 };
 
 exports.createMovieGenre = (req, res) => {
-  createMovieGenre(req, (err, result) => {
+  createMovieGenre(req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -25,7 +25,7 @@ exports.createMovieGenre = (req, res) => {
 };
 
 exports.updateMovieGenre = (req, res) => {
-  updateMovieGenre(req, (err, result) => {
+  updateMovieGenre(req.params.id, req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -34,7 +34,7 @@ exports.updateMovieGenre = (req, res) => {
 };
 
 exports.deleteMovieGenre = (req, res) => {
-  deleteMovieGenre(req.params, (err, result) => {
+  deleteMovieGenre(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
