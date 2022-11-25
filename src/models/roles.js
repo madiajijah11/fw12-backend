@@ -7,17 +7,13 @@ exports.getRoles = (cb) => {
 
 exports.createRole = (data, cb) => {
   const sql = 'INSERT INTO roles ("name") VALUES ($1) RETURNING *';
-  const { name } = data.body;
-  const values = [name];
+  const values = [data.name];
   return poolString.query(sql, values, cb);
 };
 
-exports.updateRole = (data, cb) => {
-  const sql =
-    'UPDATE roles SET "name" = $1, "updatedAt" = $2 WHERE id = $3 RETURNING *';
-  const { id } = data.params;
-  const { name } = data.body;
-  const values = [name, new Date(), id];
+exports.updateRole = (id, data, cb) => {
+  const sql = `UPDATE roles SET "name" = COALESCE($1, "name") WHERE id = $2 RETURNING *`;
+  const values = [data.name, id];
   return poolString.query(sql, values, cb);
 };
 

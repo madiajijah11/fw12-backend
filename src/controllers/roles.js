@@ -16,7 +16,7 @@ exports.getRoles = (req, res) => {
 };
 
 exports.createRole = (req, res) => {
-  createRole(req, (err, result) => {
+  createRole(req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -25,7 +25,7 @@ exports.createRole = (req, res) => {
 };
 
 exports.updateRole = (req, res) => {
-  updateRole(req, (err, result) => {
+  updateRole(req.params.id, req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -34,7 +34,7 @@ exports.updateRole = (req, res) => {
 };
 
 exports.deleteRole = (req, res) => {
-  deleteRole(req.params, (err, result) => {
+  deleteRole(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }

@@ -7,22 +7,18 @@ exports.getStatus = (cb) => {
 
 exports.createStatus = (data, cb) => {
   const sql = 'INSERT INTO status ("name") VALUES ($1) RETURNING *';
-  const { name } = data.body;
-  const values = [name];
+  const values = [data.name];
   return poolString.query(sql, values, cb);
 };
 
 exports.updateStatus = (data, cb) => {
-  const sql =
-    'UPDATE status SET "name" = $1, "updatedAt" = $2 WHERE id = $3 RETURNING *';
-  const { id } = data.params;
-  const { name } = data.body;
-  const values = [name, new Date(), id];
+  const sql = `UPDATE status SET "name" = COALESCE($1, "name") WHERE id = $2 RETURNING *`;
+  const values = [data.name, id];
   return poolString.query(sql, values, cb);
 };
 
-exports.deleteStatus = (data, cb) => {
+exports.deleteStatus = (id, cb) => {
   const sql = "DELETE FROM status WHERE id = $1 RETURNING *";
-  const values = [data.id];
+  const values = [id];
   return poolString.query(sql, values, cb);
 };

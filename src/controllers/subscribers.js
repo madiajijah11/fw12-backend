@@ -16,7 +16,7 @@ exports.getSubscribers = (req, res) => {
 };
 
 exports.createSubscribers = (req, res) => {
-  createSubscribers(req, (err, result) => {
+  createSubscribers(req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -25,7 +25,7 @@ exports.createSubscribers = (req, res) => {
 };
 
 exports.updateSubscribers = (req, res) => {
-  updateSubscribers(req, (err, result) => {
+  updateSubscribers(req.params.id, req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -34,7 +34,7 @@ exports.updateSubscribers = (req, res) => {
 };
 
 exports.deleteSubscribers = (req, res) => {
-  deleteSubscribers(req.params, (err, result) => {
+  deleteSubscribers(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }

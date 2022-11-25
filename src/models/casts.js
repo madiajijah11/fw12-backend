@@ -19,9 +19,8 @@ exports.createCast = (data, cb) => {
 };
 
 exports.updateCast = (id, data, cb) => {
-  const sql =
-    'UPDATE casts SET "name" = $1, "updatedAt" = $2 WHERE id = $3 RETURNING *';
-  const values = [data.name, new Date(), id];
+  const sql = 'UPDATE casts SET "name" = $1 WHERE id = $3 RETURNING *';
+  const values = [data.name, id];
   return poolString.query(sql, values, cb);
 };
 

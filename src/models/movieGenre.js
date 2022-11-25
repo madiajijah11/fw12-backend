@@ -13,7 +13,7 @@ exports.createMovieGenre = (data, cb) => {
 };
 
 exports.updateMovieGenre = (id, data, cb) => {
-  const sql = `UPDATE "movieGenre" SET "movieId" = COALESCE(NULLIF($1, ''), "movieId"), "genreId" = COALESCE(NULLIF($2, ''), "genreId") WHERE id = $3 RETURNING *`;
+  const sql = `UPDATE "movieGenre" SET "movieId" = COALESCE(NULLIF($1, '')::INTEGER, "movieId"), "genreId" = COALESCE(NULLIF($2, '')::INTEGER, "genreId") WHERE id = $3 RETURNING *`;
   const values = [data.movieId, data.genreId, id];
   return poolString.query(sql, values, cb);
 };

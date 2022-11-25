@@ -33,7 +33,7 @@ exports.createMovie = (data, cb) => {
 };
 
 exports.updateMovie = (id, data, cb) => {
-  const sql = `UPDATE movies SET "title" = COALESCE($1, "title"), "picture" = COALESCE($2, "picture"), "releaseDate" = COALESCE($3, "releaseDate")::date, "director" = COALESCE($4, "director"), "duration" = COALESCE($5, "duration")::time, "synopsis" = COALESCE($6, "synopsis") WHERE id = $7 RETURNING *`;
+  const sql = `UPDATE movies SET "title" = COALESCE(NULLIF($1,''), "title"), "picture" = COALESCE(NULLIF($2,''), "picture"), "releaseDate" = COALESCE(NULLIF($3,'')::DATE, "releaseDate"), "director" = COALESCE(NULLIF($4,''), "director"), "duration" = COALESCE(NULLIF($5,'')::TIME, "duration"), "synopsis" = COALESCE(NULLIF($6,''), "synopsis") WHERE id = $7 RETURNING *`;
   const values = [
     data.title,
     data.picture,

@@ -13,7 +13,7 @@ exports.createMovieScheduleTimes = (data, cb) => {
 };
 
 exports.updateMovieScheduleTimes = (id, data, cb) => {
-  const sql = `UPDATE "movieScheduleTimes" SET "time" = COALESCE($1, "time")::TIME, "movieScheduleId" = COALESCE($2, "movieScheduleId")::INTEGER WHERE id = $3 RETURNING *`;
+  const sql = `UPDATE "movieScheduleTimes" SET "time" = COALESCE(NULLIF($1,'')::TIME, "time"), "movieScheduleId" = COALESCE(NULLIF($2,'')::INTEGER, "movieScheduleId") WHERE id = $3 RETURNING *`;
   const values = [data.time, data.movieScheduleId, id];
   return poolString.query(sql, values, cb);
 };

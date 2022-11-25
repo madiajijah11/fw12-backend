@@ -16,7 +16,7 @@ exports.getStatus = (req, res) => {
 };
 
 exports.createStatus = (req, res) => {
-  createStatus(req, (err, result) => {
+  createStatus(req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -25,7 +25,7 @@ exports.createStatus = (req, res) => {
 };
 
 exports.updateStatus = (req, res) => {
-  updateStatus(req, (err, result) => {
+  updateStatus(req.params.id, req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -34,7 +34,7 @@ exports.updateStatus = (req, res) => {
 };
 
 exports.deleteStatus = (req, res) => {
-  deleteStatus(req.params, (err, result) => {
+  deleteStatus(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }

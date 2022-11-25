@@ -17,7 +17,7 @@ exports.getTransactions = (req, res) => {
 };
 
 exports.getTransaction = (req, res) => {
-  getTransaction(req, (err, result) => {
+  getTransaction(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -26,7 +26,7 @@ exports.getTransaction = (req, res) => {
 };
 
 exports.createTransactions = (req, res) => {
-  createTransactions(req, (err, result) => {
+  createTransactions(req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -35,7 +35,7 @@ exports.createTransactions = (req, res) => {
 };
 
 exports.updateTransactions = (req, res) => {
-  updateTransactions(req, (err, result) => {
+  updateTransactions(req.params.id, req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -44,7 +44,7 @@ exports.updateTransactions = (req, res) => {
 };
 
 exports.deleteTransactions = (req, res) => {
-  deleteTransactions(req.params, (err, result) => {
+  deleteTransactions(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }

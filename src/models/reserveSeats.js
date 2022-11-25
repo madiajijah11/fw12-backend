@@ -13,7 +13,7 @@ exports.createReserveSeats = (data, cb) => {
 };
 
 exports.updateReserveSeats = (data, cb) => {
-  const sql = `UPDATE "reserveSeats" SET "seatNum" = COALESCE($1, "seatNum"), "transactionId" = COALESCE($2, "transactionId")::INTEGER WHERE id = $3 RETURNING *`;
+  const sql = `UPDATE "reserveSeats" SET "seatNum" = COALESCE(NULLIF($1,''), "seatNum"), "transactionId" = COALESCE(NULLIF($2, '')::INTEGER, "transactionId") WHERE id = $3 RETURNING *`;
   const values = [data.seatNum, data.transactionId, id];
   return poolString.query(sql, values, cb);
 };

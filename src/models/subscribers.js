@@ -7,22 +7,18 @@ exports.getSubscribers = (cb) => {
 
 exports.createSubscribers = (data, cb) => {
   const sql = 'INSERT INTO subscribers ("email") VALUES ($1) RETURNING *';
-  const { email } = data.body;
-  const values = [email];
+  const values = [data.email];
   return poolString.query(sql, values, cb);
 };
 
-exports.updateSubscribers = (data, cb) => {
-  const sql =
-    'UPDATE subscribers SET "email" = $1, "updatedAt" = $2 WHERE id = $3 RETURNING *';
-  const { id } = data.params;
-  const { email } = data.body;
-  const values = [email, new Date(), id];
+exports.updateSubscribers = (id, data, cb) => {
+  const sql = `UPDATE subscribers SET "email" = COALESCE($1, "email") WHERE id = $2 RETURNING *`;
+  const values = [data.email, id];
   return poolString.query(sql, values, cb);
 };
 
-exports.deleteSubscribers = (data, cb) => {
+exports.deleteSubscribers = (id, cb) => {
   const sql = "DELETE FROM subscribers WHERE id = $1 RETURNING *";
-  const values = [data.id];
+  const values = [id];
   return poolString.query(sql, values, cb);
 };

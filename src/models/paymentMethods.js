@@ -13,7 +13,7 @@ exports.createPaymentMethods = (data, cb) => {
 };
 
 exports.updatePaymentMethods = (id, data, cb) => {
-  const sql = `UPDATE "paymentMethods" SET "picture" = COALESCE($1, "picture"), "name" = COALESCE($2, "name") WHERE id = $3 RETURNING *`;
+  const sql = `UPDATE "paymentMethods" SET "picture" = COALESCE(NULLIF($1,''), "picture"), "name" = COALESCE(NULLIF($2,''), "name") WHERE id = $3 RETURNING *`;
   const values = [data.picture, data.name, id];
   return poolString.query(sql, values, cb);
 };

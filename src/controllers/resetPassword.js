@@ -16,7 +16,7 @@ exports.getResetPassword = (req, res) => {
 };
 
 exports.createResetPassword = (req, res) => {
-  createResetPassword(req, (err, result) => {
+  createResetPassword(req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -25,7 +25,7 @@ exports.createResetPassword = (req, res) => {
 };
 
 exports.updateResetPassword = (req, res) => {
-  updateResetPassword(req, (err, result) => {
+  updateResetPassword(req.params.id, req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
@@ -34,7 +34,7 @@ exports.updateResetPassword = (req, res) => {
 };
 
 exports.deleteResetPassword = (req, res) => {
-  deleteResetPassword(req.params, (err, result) => {
+  deleteResetPassword(req.params.id, (err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }
