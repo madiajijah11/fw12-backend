@@ -1,8 +1,15 @@
 const { poolString } = require("../helpers");
 
-exports.getTransactions = (cb) => {
-  const sql = 'SELECT * FROM "transactions"';
-  return poolString.query(sql, cb);
+exports.pageInfo = (filter, cb) => {
+  const sql = `SELECT COUNT("fullName") AS "totalData" FROM "transactions" WHERE "fullName" LIKE $1`;
+  const values = [`%${filter.search}%`];
+  return poolString.query(sql, values, cb);
+};
+
+exports.getTransactions = (filter, cb) => {
+  const sql = `SELECT * FROM "transactions" WHERE "fullName" LIKE $3 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $1 OFFSET $2`;
+  const values = [filter.limit, filter.offset, `%${filter.search}%`];
+  return poolString.query(sql, values, cb);
 };
 
 exports.getTransaction = (id, cb) => {
@@ -28,7 +35,7 @@ exports.createTransactions = (data, cb) => {
 };
 
 exports.updateTransactions = (id, data, cb) => {
-  const sql = `UPDATE "transactions" SET "bookingDate" = COALESCE(NULLIF($1, '')::timestamp, "bookingDate"), "movieId" = COALESCE(NULLIF($2, '')::INTEGER, "movieId"), "cinemaId" = COALESCE(NULLIF($3, '')::INTEGER, "cinemaId"), "movieScheduleId" = COALESCE(NULLIF($4, '')::INTEGER, "movieScheduleId"), "fullName" = COALESCE(NULLIF($5, ''), "fullName"), "email" = COALESCE(NULLIF($6, ''), "email"), "phoneNumber" = COALESCE(NULLIF($7, ''), "phoneNumber"), "statusId" = COALESCE(NULLIF($8, '')::INTEGER, "statusId") WHERE id = $9 RETURNING *`;
+  const sql = `UPDATE "transactions" SET "bookingDate" = COALESCE(NULLIF($1, '')::TIMESTAMPTZ, "bookingDate"), "movieId" = COALESCE(NULLIF($2, '')::INTEGER, "movieId"), "cinemaId" = COALESCE(NULLIF($3, '')::INTEGER, "cinemaId"), "movieScheduleId" = COALESCE(NULLIF($4, '')::INTEGER, "movieScheduleId"), "fullName" = COALESCE(NULLIF($5, ''), "fullName"), "email" = COALESCE(NULLIF($6, ''), "email"), "phoneNumber" = COALESCE(NULLIF($7, ''), "phoneNumber"), "statusId" = COALESCE(NULLIF($8, '')::INTEGER, "statusId") WHERE id = $9 RETURNING *`;
   const values = [
     data.bookingDate,
     data.movieId,

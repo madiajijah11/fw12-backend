@@ -1,18 +1,23 @@
 const {
   getTransactions,
   getTransaction,
+  pageInfo,
   createTransactions,
   updateTransactions,
   deleteTransactions,
 } = require("../models/transactions");
 const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
+const filter = require("../helpers/filter");
 
 exports.getTransactions = (req, res) => {
-  getTransactions((err, result) => {
-    if (err) {
-      return duplicateKey(err, res);
-    }
-    return emptyRows(res, result);
+  const sortables = ["fullName", "createdAt", "updatedAt"];
+  filter(req.query, sortables, pageInfo, res, (filter, pageInfo) => {
+    getTransactions(filter, (err, result) => {
+      if (err) {
+        return duplicateKey(err, res);
+      }
+      return emptyRows(res, result, pageInfo);
+    });
   });
 };
 

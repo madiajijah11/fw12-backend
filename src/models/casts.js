@@ -19,7 +19,7 @@ exports.createCast = (data, cb) => {
 };
 
 exports.updateCast = (id, data, cb) => {
-  const sql = 'UPDATE casts SET "name" = $1 WHERE id = $3 RETURNING *';
+  const sql = `UPDATE casts SET "name" = COALESCE(NULLIF($1, ''), ""name") WHERE id = $3 RETURNING *`;
   const values = [data.name, id];
   return poolString.query(sql, values, cb);
 };

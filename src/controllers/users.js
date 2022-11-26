@@ -6,8 +6,10 @@ const {
   deleteUser,
 } = require("../models/users");
 const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
+const filter = require("../helpers/filter");
 
 exports.getUsers = (req, res) => {
+  const sortables = ["name", "createdAt", "updatedAt"];
   getUsers((err, result) => {
     if (err) {
       return duplicateKey(err, res);
