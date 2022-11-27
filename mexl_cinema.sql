@@ -299,19 +299,19 @@ values (
 
 alter table "movieGenre"
 add
-    constraint "movieGenre_genres_null_fk" foreign key ("genreId") references genres (id) ON UPDATE cascade ON DELETE cascade;
+    constraint "movieGenre_genres_id_fk" foreign key ("genreId") references genres on update cascade on delete cascade;
 
 alter table "movieGenre"
 add
-    constraint "movieGenre_movies_null_fk" foreign key ("movieId") references movies (id) ON UPDATE cascade ON DELETE cascade;
+    constraint "movieGenre_movies_id_fk" foreign key ("movieId") references movies on update cascade on delete cascade;
 
 alter table "movieCast"
 add
-    constraint "movieCast_casts_null_fk" foreign key ("castId") references casts (id) ON UPDATE cascade on DELETE cascade;
+    constraint "movieCast_casts_id_fk" foreign key ("castId") references casts on update cascade on delete cascade;
 
 alter table "movieCast"
 add
-    constraint "movieCast_movies_null_fk" foreign key ("movieId") references movies (id) ON UPDATE cascade on DELETE cascade;
+    constraint "movieCast_movies_id_fk" foreign key ("movieId") references movies on update cascade on delete cascade;
 
 alter table "movieSchedules"
 add
