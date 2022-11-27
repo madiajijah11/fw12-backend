@@ -1,4 +1,5 @@
 const duplicateKey = (err, res) => {
+  console.log(err);
   if (err.code === "23505") {
     return res.status(409).json({
       success: false,
