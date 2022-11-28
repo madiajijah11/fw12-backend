@@ -11,6 +11,12 @@ exports.getUser = (id, cb) => {
   return poolString.query(sql, values, cb);
 };
 
+exports.getUserByEmail = (email, cb) => {
+  const sql = "SELECT * FROM users WHERE email = $1";
+  const values = [email];
+  return poolString.query(sql, values, cb);
+};
+
 exports.createUser = (data, cb) => {
   const sql =
     'INSERT INTO users ("picture", "firstName", "lastName", "phoneNumber", "email", "password", "roleId") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
