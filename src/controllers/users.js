@@ -10,11 +10,13 @@ const filter = require("../helpers/filter");
 
 exports.getUsers = (req, res) => {
   const sortables = ["name", "createdAt", "updatedAt"];
-  getUsers((err, result) => {
-    if (err) {
-      return duplicateKey(err, res);
-    }
-    return emptyRows(res, result);
+  filter(req.query, sortables, pageInfo, res, (filter, pageInfo) => {
+    getUsers(filter, (err, result) => {
+      if (err) {
+        return duplicateKey(err, res);
+      }
+      return emptyRows(res, result, pageInfo);
+    });
   });
 };
 

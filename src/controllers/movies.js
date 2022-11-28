@@ -10,6 +10,7 @@ const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
 const filter = require("../helpers/filter");
 
 exports.getMovies = (req, res) => {
+  console.log(req.user);
   const sortables = ["title", "createdAt", "updatedAt"];
   filter(req.query, sortables, pageInfo, res, (filter, pageInfo) => {
     getMovies(filter, (err, result) => {
