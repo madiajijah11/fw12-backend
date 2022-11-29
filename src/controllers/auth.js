@@ -1,4 +1,4 @@
-const { getUserByEmail } = require("../models/users");
+const { getUserByEmail, createUser } = require("../models/users");
 const jwt = require("jsonwebtoken");
 const { duplicateKey } = require("../helpers/errorHandler");
 
@@ -25,5 +25,23 @@ exports.login = (req, res) => {
         });
       }
     }
+  });
+};
+
+exports.register = (req, res) => {
+  createUser(req.body, (err, data) => {
+    if (err) {
+      return duplicateKey(err, res);
+    }
+    const { rows: users } = data;
+    const [user] = users;
+    const token = jwt.sign({ id: user }, "secret");
+    return res.status(201).json({
+      success: true,
+      message: "Register success",
+      data: {
+        token,
+      },
+    });
   });
 };
