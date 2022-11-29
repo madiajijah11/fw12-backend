@@ -1,6 +1,11 @@
-const { getUserByEmail, createUser } = require("../models/users");
+const { getUserByEmail, createUser, updateUser } = require("../models/users");
 const jwt = require("jsonwebtoken");
 const { duplicateKey } = require("../helpers/errorHandler");
+const {
+  createResetPassword,
+  selectEmailAndCode,
+  deleteResetPassword,
+} = require("../models/resetPassword");
 
 exports.login = (req, res) => {
   getUserByEmail(req.body.email, (err, { rows }) => {
@@ -48,15 +53,68 @@ exports.register = (req, res) => {
 
 exports.forgotPassword = (req, res) => {
   const { email } = req.body;
-  const code = Math.floor(Math.random() * 90000) + 10000;
-  // const data = {
-  //   email,
-  //   code,
-  // };
   getUserByEmail(email, (err, data) => {
-    console.log(data);
     if (err) {
       return duplicateKey(err, res);
     }
+    if (data.rows.length) {
+      const dataReset = {
+        email,
+        userId: data.rows[0].id,
+        code: Math.floor(Math.random() * 90000) + 10000,
+      };
+      createResetPassword(dataReset, (err, data) => {
+        if (err) {
+          return duplicateKey(err, res);
+        }
+        if (data.rows.length) {
+          return res.status(200).json({
+            success: true,
+            message: "Reset request has been sent",
+          });
+        }
+      });
+    } else {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
   });
+};
+
+exports.resetPassword = (req, res) => {
+  const { password, confirmPassword } = req.body;
+  if (password === confirmPassword) {
+    selectEmailAndCode(req.body, (err, data) => {
+      if (err) {
+        return duplicateKey(err, res);
+      }
+      if (data.rows.length) {
+        updateUser({ password }, data.rows[0].Id, (err, data) => {
+          if (err) {
+            return duplicateKey(err, res);
+          }
+          if (data.rows.length) {
+            deleteResetPassword(data.rows[0].userId, (err, data) => {
+              if (err) {
+                return duplicateKey(err, res);
+              }
+              if (data.rows.length) {
+                return res.status(200).json({
+                  success: true,
+                  message: "Reset password success",
+                });
+              }
+            });
+          }
+        });
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+    });
+  }
 };
