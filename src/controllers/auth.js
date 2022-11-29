@@ -91,12 +91,12 @@ exports.resetPassword = (req, res) => {
         return duplicateKey(err, res);
       }
       if (data.rows.length) {
-        updateUser({ password }, data.rows[0].Id, (err, data) => {
+        updateUser(data.rows[0].userId, { password }, (err, data) => {
           if (err) {
             return duplicateKey(err, res);
           }
           if (data.rows.length) {
-            deleteResetPassword(data.rows[0].userId, (err, data) => {
+            deleteResetPassword(data.rows[0].id, (err, data) => {
               if (err) {
                 return duplicateKey(err, res);
               }
@@ -115,6 +115,11 @@ exports.resetPassword = (req, res) => {
           message: "User not found",
         });
       }
+    });
+  } else {
+    return res.status(400).json({
+      success: false,
+      message: "Password not match",
     });
   }
 };

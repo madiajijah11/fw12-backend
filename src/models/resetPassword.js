@@ -19,7 +19,7 @@ exports.updateResetPassword = (id, data, cb) => {
 };
 
 exports.deleteResetPassword = (id, cb) => {
-  const sql = 'DELETE FROM "resetPassword" WHERE id = $1 RETURNING *';
+  const sql = 'DELETE FROM "resetPassword" WHERE "userId" = $1 RETURNING *';
   const values = [id];
   return poolString.query(sql, values, cb);
 };
