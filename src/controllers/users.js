@@ -1,6 +1,7 @@
 const {
   getUsers,
   getUser,
+  pageInfo,
   createUser,
   updateUser,
   deleteUser,
