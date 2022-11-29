@@ -5,12 +5,14 @@ const {
   createMovie,
   updateMovie,
   deleteMovie,
+  pageInfoUpcoming,
+  upcomingMovies,
+  nowShowingMovies,
 } = require("../models/movies");
 const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
 const filter = require("../helpers/filter");
 
 exports.getMovies = (req, res) => {
-  console.log(req.user);
   const sortables = ["title", "createdAt", "updatedAt"];
   filter(req.query, sortables, pageInfo, res, (filter, pageInfo) => {
     getMovies(filter, (err, result) => {
@@ -51,6 +53,30 @@ exports.updateMovie = (req, res) => {
 
 exports.deleteMovie = (req, res) => {
   deleteMovie(req.params.id, (err, result) => {
+    if (err) {
+      return duplicateKey(err, res);
+    }
+    return emptyRows(res, result);
+  });
+};
+
+exports.upcomingMovies = (req, res) => {
+  const monthNow = new Date().toLocaleString("default", { month: "long" });
+  const yearNow = new Date().getFullYear().toString();
+  const dateYear = {
+    month: req.query.month ? req.query.month : monthNow,
+    year: req.query.year ? req.query.year : yearNow,
+  };
+  upcomingMovies(dateYear, (err, result) => {
+    if (err) {
+      return duplicateKey(err, res);
+    }
+    return emptyRows(res, result);
+  });
+};
+
+exports.nowShowingMovies = (req, res) => {
+  nowShowingMovies((err, result) => {
     if (err) {
       return duplicateKey(err, res);
     }

@@ -160,143 +160,6 @@ create table
         "updatedAt" timestamptz
     );
 
-insert into roles (name) values ('Admin'), ('User');
-
-insert into
-    users (
-        picture,
-        "firstName",
-        "lastName",
-        "phoneNumber",
-        email,
-        password,
-        "roleId"
-    )
-values (
-        'https://avatars.githubusercontent.com/u/20562116?v=4',
-        'Dian',
-        'Rahmadani',
-        '82256964453',
-        'admin@gmail.com',
-        'admin123',
-        '1'
-    ), (
-        'https://avatars.githubusercontent.com/u/47699978?v=4',
-        'Victoria',
-        'Lo',
-        '85156233534',
-        'victoria@gmail.com',
-        'victoria123',
-        '2'
-    );
-
-insert into genres (name)
-values ('Action'), ('Adventure'), ('Animation'), ('Comedy'), ('Crime'), ('Documentary'), ('Drama'), ('Family'), ('Fantasy'), ('History'), ('Horror'), ('Music'), ('Mystery'), ('Romance'), ('Science Fiction'), ('TV Movie'), ('Thriller'), ('War'), ('Western');
-
-insert into
-    movies (
-        title,
-        picture,
-        "releaseDate",
-        director,
-        duration,
-        synopsis
-    )
-values (
-        'Spider-Man: Homecoming',
-        'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/c24sv2weTHPsmDa7jEMN0m2P3RT.jpg',
-        '2017-06-28',
-        'Jon Watss',
-        '02:13:00',
-        'Following the events of Captain America: Civil War, Peter Parker, with the help of his mentor Tony Stark, tries to balance his life as an ordinary high school student in Queens, New York City, with fighting crime as his superhero alter ego Spider-Man as a new threat, the Vulture, emerges.'
-    );
-
-insert into
-    "movieGenre" ("movieId", "genreId")
-values ('1', '1'), ('1', '2'), ('1', '7'), ('1', '15');
-
-insert into subscribers (email)
-values ('madiajijah7@gmail.com'), ('musmak@gmail.com');
-
-insert into casts (name)
-VALUES ('Tom Holland'), ('Michael Keaton'), ('Robert Downey Jr.'), ('Marisa Tomei'), ('Jon Favreau'), ('Gwyneth Paltrow'), ('Zendaya'), ('Donald Glover'), ('Jacob Batalon');
-
-insert into
-    cinemas (picture, name, address, city)
-values (
-        'https://21cineplex.com//theme/v5/assets/img/logo.png',
-        'CINEMA 21',
-        'Karang Rejo, Tarakan Barat',
-        'Tarakan'
-    );
-
-insert into
-    "movieCast" ("movieId", "castId")
-VALUES ('1', '1'), ('1', '2'), ('1', '3'), ('1', '4'), ('1', '5'), ('1', '6'), ('1', '7'), ('1', '8'), ('1', '9');
-
-insert into
-    "movieSchedules" (
-        "movieId",
-        "cinemaId",
-        price,
-        "startDate",
-        "endDate"
-    )
-values (
-        '1',
-        '1',
-        '60000',
-        '2017-07-06',
-        '2017-07-08'
-    );
-
-insert into
-    "movieScheduleTimes" (time, "movieScheduleId")
-values ('10:30:00', '1');
-
-insert into
-    "paymentMethods" (picture, name)
-values (
-        'https://toppng.com/uploads/preview/visa-logo-11530966316amvzjrobsf.png',
-        'Visa'
-    );
-
-insert into
-    "resetPassword" (email, "userId", code)
-values (
-        'victoria@gmail.com',
-        '2',
-        'V1CT'
-    );
-
-insert into
-    "reserveSeats" ("seatNum", "transactionId")
-values ('C4', '1');
-
-insert into status (name) values ('Active'), ('Used'), ('Expired');
-
-insert into
-    transactions (
-        "bookingDate",
-        "movieId",
-        "cinemaId",
-        "movieScheduleId",
-        "fullName",
-        email,
-        "phoneNumber",
-        "statusId"
-    )
-values (
-        '2017-07-07 01:02:00',
-        '1',
-        '1',
-        '1',
-        'Victoria Lo',
-        'victoria@gmail.com',
-        '85156233534',
-        '1'
-    );
-
 alter table "movieGenre"
 add
     constraint "movieGenre_genres_id_fk" foreign key ("genreId") references genres on update cascade on delete cascade;
@@ -357,3 +220,105 @@ add
 alter table subscribers
 add
     constraint subscribers_pk unique (email);
+
+insert into roles (name) values ('Admin'), ('User');
+
+insert into
+    users (
+        picture,
+        "firstName",
+        "lastName",
+        "phoneNumber",
+        email,
+        password,
+        "roleId"
+    )
+values (
+        'https://avatars.githubusercontent.com/u/20562116?v=4',
+        'Dian',
+        'Rahmadani',
+        '82256964453',
+        'admin@gmail.com',
+        'admin123',
+        '1'
+    ), (
+        'https://avatars.githubusercontent.com/u/47699978?v=4',
+        'Victoria',
+        'Lo',
+        '85156233534',
+        'victoria@gmail.com',
+        'victoria123',
+        '2'
+    );
+
+insert into genres (name)
+values ('Action'), ('Adventure'), ('Animation'), ('Comedy'), ('Crime'), ('Documentary'), ('Drama'), ('Family'), ('Fantasy'), ('History'), ('Horror'), ('Music'), ('Mystery'), ('Romance'), ('Science Fiction'), ('TV Movie'), ('Thriller'), ('War'), ('Western');
+
+insert into
+    movies (
+        title,
+        picture,
+        "releaseDate",
+        director,
+        duration,
+        synopsis
+    )
+values (
+        'Spider-Man: Homecoming',
+        'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/c24sv2weTHPsmDa7jEMN0m2P3RT.jpg',
+        '2017-06-28',
+        'Jon Watss',
+        '02:13:00',
+        'Following the events of Captain America: Civil War, Peter Parker, with the help of his mentor Tony Stark, tries to balance his life as an ordinary high school student in Queens, New York City, with fighting crime as his superhero alter ego Spider-Man as a new threat, the Vulture, emerges.'
+    ), (
+        'Avengers: Infinity War',
+        'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg',
+        '2018-04-25',
+        'Anthony Russo',
+        '02:29:00',
+        'As the Avengers and their allies have continued to protect the world from threats too large for any one hero to handle, a new danger has emerged from the cosmic shadows: Thanos. A despot of intergalactic infamy, his goal is to collect all six Infinity Stones, artifacts of unimaginable power, and use them to inflict his twisted will on all of reality. Everything the Avengers have fought for has led up to this moment - the fate of Earth and existence itself has never been more uncertain.'
+    ), (
+        'Aquaman',
+        'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/5Kg76ldv7VxeX9YlcQXiowHgdX6.jpg',
+        '2018-12-07',
+        'James Wan',
+        '02:23:00',
+        'Arthur Curry learns that he is the heir to the underwater kingdom of Atlantis, and must step forward to lead his people and be a hero to the world.'
+    ), (
+        'Black Adam',
+        'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/bQXAqRx2Fgc46uCVWgoPz5L5Dtr.jpg',
+        '2022-10-19',
+        'Jaume Collet-Serra',
+        '02:05:00',
+        'Nearly 5,000 years after he was bestowed with the almighty powers of the Egyptian gods—and imprisoned just as quickly—Black Adam is freed from his earthly tomb, ready to unleash his unique form of justice on the modern world.'
+    );
+
+insert into subscribers (email)
+values ('madiajijah7@gmail.com'), ('musmak@gmail.com');
+
+insert into casts (name)
+VALUES ('Tom Holland'), ('Michael Keaton'), ('Robert Downey Jr.'), ('Marisa Tomei'), ('Jon Favreau'), ('Gwyneth Paltrow'), ('Zendaya'), ('Donald Glover'), ('Jacob Batalon'), ('Chris Evans'), ('Scarlett Johansson'), ('Jeremy Renner'), ('Don Cheadle'), ('Paul Rudd'), ('Brie Larson'), ('Samuel L. Jackson'), ('Ben Mendelsohn'), ('Josh Brolin'), ('Chris Pratt'), ('Vin Diesel'), ('Bradley Cooper'), ('Zoe Saldana'), ('Dave Bautista'), ('Karen Gillan'), ('Pom Klementieff'), ('Elizabeth Debicki'), ('Chris Hemsworth'), ('Tessa Thompson'), ('Karl Urban'), ('Anthony Hopkins'), ('Idris Elba'), ('Jeff Goldblum'), ('Tessa Thompson'), ('Benedict Cumberbatch'), ('Chadwick Boseman'), ('Michael B. Jordan');
+
+insert into
+    cinemas (picture, name, address, city)
+values (
+        'https://21cineplex.com//theme/v5/assets/img/logo.png',
+        'CINEMA 21',
+        'Karang Rejo',
+        'Tarakan'
+    ), (
+        'https://21cineplex.com//theme/v5/assets/img/logo.png',
+        'CINEMA 21',
+        'Jalan Akhmad Yani',
+        'Banjarmasin'
+    );
+
+insert into
+    "paymentMethods" (picture, name)
+values (
+        'https://toppng.com/uploads/preview/visa-logo-11530966316amvzjrobsf.png',
+        'Visa'
+    );
+
+insert into status (name)
+values (' Active '), (' Used '), (' Expired ');
