@@ -45,3 +45,18 @@ exports.register = (req, res) => {
     });
   });
 };
+
+exports.forgotPassword = (req, res) => {
+  const { email } = req.body;
+  const code = Math.floor(Math.random() * 90000) + 10000;
+  // const data = {
+  //   email,
+  //   code,
+  // };
+  getUserByEmail(email, (err, data) => {
+    console.log(data);
+    if (err) {
+      return duplicateKey(err, res);
+    }
+  });
+};
