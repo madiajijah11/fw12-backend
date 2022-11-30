@@ -5,7 +5,7 @@ const {
   createMovie,
   updateMovie,
   deleteMovie,
-  upcomingMovies,
+  upComingMovies,
   nowShowingMovies,
 } = require("../models/movies");
 const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
@@ -59,10 +59,10 @@ exports.deleteMovie = (req, res) => {
   });
 };
 
-exports.upcomingMovies = (req, res) => {
+exports.upComingMovies = (req, res) => {
   const sortables = ["title", "releaseDate", "createdAt", "updatedAt"];
   filter(req.query, sortables, pageInfo, res, (filter, pageInfo) => {
-    upcomingMovies(filter, (err, result) => {
+    upComingMovies(filter, (err, result) => {
       if (err) {
         return duplicateKey(err, res);
       }

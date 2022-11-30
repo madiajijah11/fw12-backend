@@ -21,30 +21,18 @@ const filter = (data, sortables, pageInfoModel, res, cb) => {
 
   const pageInfo = {
     page: data.page,
-    totalData: 0,
   };
 
   pageInfoModel(params, (err, result) => {
-    console.log(result);
-    console.log(err);
     if (err) {
       return duplicateKey(err, res);
     }
-    if (result.length) {
-      pageInfo.totalData = parseInt(result.rows[0].totalData);
-      pageInfo.totalPage = Math.ceil(result.rows[0].totalData / data.limit);
-      pageInfo.nextPage =
-        data.page < pageInfo.totalPage ? pageInfo.page + 1 : null;
-      pageInfo.prevPage = pageInfo.page > 1 ? data.page - 1 : null;
-      return cb(params, pageInfo);
-    } else {
-      return res.status(200).json({
-        success: true,
-        message: "Data not found",
-        pageInfo,
-        data: [],
-      });
-    }
+    pageInfo.totalData = parseInt(result.rows[0].totalData);
+    pageInfo.totalPage = Math.ceil(result.rows[0].totalData / data.limit);
+    pageInfo.nextPage =
+      data.page < pageInfo.totalPage ? pageInfo.page + 1 : null;
+    pageInfo.prevPage = pageInfo.page > 1 ? data.page - 1 : null;
+    return cb(params, pageInfo);
   });
 };
 

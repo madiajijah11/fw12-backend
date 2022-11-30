@@ -19,18 +19,6 @@ exports.getTransaction = (id, cb) => {
 };
 
 exports.createTransactions = (data, cb) => {
-  console.log(
-    data.userId,
-    data.bookingDate,
-    data.movieId,
-    data.cinemaId,
-    data.movieScheduleId,
-    data.fullName,
-    data.email,
-    data.phoneNumber,
-    data.statusId,
-    data.paymentMethodId
-  );
   const sql =
     'INSERT INTO "transactions" ("userId", "bookingDate", "movieId", "cinemaId", "movieScheduleId", "fullName", "email", "phoneNumber", "statusId", "paymentMethodId") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *';
   const values = [

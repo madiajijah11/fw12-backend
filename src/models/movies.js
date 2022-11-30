@@ -52,7 +52,7 @@ exports.deleteMovie = (id, cb) => {
   return poolString.query(sql, values, cb);
 };
 
-exports.upcomingMovies = (data, cb) => {
+exports.upComingMovies = (data, cb) => {
   const sql = `SELECT
 m.id,
 m."title",
