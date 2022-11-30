@@ -14,7 +14,7 @@ app.use("/assets/uploads", express.static("uploads/"));
 app.use(routers);
 
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.sendFile(`${process.cwd()}/index.html`);
 });
 
 app.listen(3000, () => {
