@@ -4,6 +4,7 @@ const transactionsController = require("../controllers/transactions");
 transactionsRoutes.get("/", transactionsController.getTransactions);
 transactionsRoutes.get("/:id", transactionsController.getTransaction);
 transactionsRoutes.post("/", transactionsController.createTransactions);
+transactionsRoutes.post("/checkout", transactionsController.checkout);
 transactionsRoutes.patch("/:id", transactionsController.updateTransactions);
 transactionsRoutes.delete("/:id", transactionsController.deleteTransactions);
 

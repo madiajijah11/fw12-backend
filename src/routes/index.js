@@ -16,7 +16,7 @@ routers.use("/reserveSeats", require("./reserveSeats"));
 routers.use("/resetPassword", require("./resetPassword"));
 routers.use("/cinemas", require("./cinemas"));
 routers.use("/movieSchedules", require("./movieSchedules"));
-routers.use("/transactions", require("./transactions"));
+routers.use("/transactions", auth, require("./transactions"));
 
 routers.use("/auth", require("./auth"));
 

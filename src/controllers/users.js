@@ -9,6 +9,7 @@ const {
 const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
 const filter = require("../helpers/filter");
 const fs = require("fs");
+const fx = require("fs-extra");
 
 exports.getUsers = (req, res) => {
   const sortables = ["firstName", "createdAt", "updatedAt"];
@@ -49,10 +50,15 @@ exports.updateUser = (req, res) => {
       }
       const [user] = result.rows;
       if (result.rows.length) {
-        fs.rm(`./uploads/${user.picture}`, (err) => {
+        fx.ensureFile(`./uploads/${user.picture}`, (err) => {
           if (err) {
             return duplicateKey(err, res);
           }
+          fs.rm(`./uploads/${user.picture}`, (err) => {
+            if (err) {
+              return duplicateKey(err, res);
+            }
+          });
         });
       } else {
         return duplicateKey(err, res);

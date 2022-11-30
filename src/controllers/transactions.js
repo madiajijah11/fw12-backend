@@ -5,9 +5,11 @@ const {
   createTransactions,
   updateTransactions,
   deleteTransactions,
+  checkout,
 } = require("../models/transactions");
 const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
 const filter = require("../helpers/filter");
+const { createReserveSeats } = require("../models/reserveSeats");
 
 exports.getTransactions = (req, res) => {
   const sortables = ["fullName", "createdAt", "updatedAt"];
@@ -54,5 +56,31 @@ exports.deleteTransactions = (req, res) => {
       return duplicateKey(err, res);
     }
     return emptyRows(res, result);
+  });
+};
+
+exports.checkout = (req, res) => {
+  const transaction = {
+    userId: req.body.userId,
+    bookingDate: req.body.bookingDate,
+    movieId: req.body.movieId,
+    cinemaId: req.body.cinemaId,
+    movieScheduleId: req.body.movieScheduleId,
+    fullName: req.body.fullName,
+    email: req.body.email,
+    phoneNumber: req.body.phoneNumber,
+    statusId: req.body.statusId,
+    paymentMethodId: req.body.paymentMethodId,
+    seatNum: req.body.seatNum,
+  };
+  checkout(transaction, (err, result) => {
+    if (err) {
+      return duplicateKey(err, res);
+    }
+    return res.status(200).json({
+      status: "success",
+      message: "Checkout success",
+      data: result,
+    });
   });
 };

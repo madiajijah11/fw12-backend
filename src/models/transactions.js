@@ -19,9 +19,8 @@ exports.getTransaction = (id, cb) => {
 };
 
 exports.createTransactions = (data, cb) => {
-  const sql =
-    'INSERT INTO "transactions" ("bookingDate", "movieId", "cinemaId", "movieScheduleId", "fullName", "email", "phoneNumber", "statusId") VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *';
-  const values = [
+  console.log(
+    data.userId,
     data.bookingDate,
     data.movieId,
     data.cinemaId,
@@ -30,6 +29,21 @@ exports.createTransactions = (data, cb) => {
     data.email,
     data.phoneNumber,
     data.statusId,
+    data.paymentMethodId
+  );
+  const sql =
+    'INSERT INTO "transactions" ("userId", "bookingDate", "movieId", "cinemaId", "movieScheduleId", "fullName", "email", "phoneNumber", "statusId", "paymentMethodId") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *';
+  const values = [
+    data.userId,
+    data.bookingDate,
+    data.movieId,
+    data.cinemaId,
+    data.movieScheduleId,
+    data.fullName,
+    data.email,
+    data.phoneNumber,
+    data.statusId,
+    data.paymentMethodId,
   ];
   return poolString.query(sql, values, cb);
 };
@@ -54,4 +68,41 @@ exports.deleteTransactions = (id, cb) => {
   const sql = 'DELETE FROM "transactions" WHERE id = $1 RETURNING *';
   const values = [id];
   return poolString.query(sql, values, cb);
+};
+
+exports.checkout = async (data, cb) => {
+  try {
+    await poolString.query("BEGIN");
+    
+    const insertTransaction =
+      'INSERT INTO "transactions" ("userId", "bookingDate", "movieId", "cinemaId", "movieScheduleId", "fullName", "email", "phoneNumber", "statusId", "paymentMethodId") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *';
+    const sqlTransaction = await poolString.query(insertTransaction, [
+      data.userId,
+      data.bookingDate,
+      data.movieId,
+      data.cinemaId,
+      data.movieScheduleId,
+      data.fullName,
+      data.email,
+      data.phoneNumber,
+      data.statusId,
+      data.paymentMethodId,
+    ]);
+
+    const insertSeatNum =
+      'INSERT INTO "reserveSeats" ("seatNum", "transactionId") VALUES ($1,$2) RETURNING *';
+    const insertSeatNumValues = [data.seatNum, sqlTransaction.rows[0].id];
+    const sqlSeat = await poolString.query(insertSeatNum, insertSeatNumValues);
+
+    await poolString.query("COMMIT");
+
+    const result = {
+      transaction: sqlTransaction.rows,
+      seat: sqlSeat.rows,
+    }
+    cb(null, result);
+  } catch (err) {
+    await poolString.query("ROLLBACK");
+    cb(err, null);
+  }
 };
