@@ -17,6 +17,9 @@ routers.use("/resetPassword", require("./resetPassword"));
 routers.use("/cinemas", require("./cinemas"));
 routers.use("/movieSchedules", require("./movieSchedules"));
 routers.use("/transactions", require("./transactions"));
+
 routers.use("/auth", require("./auth"));
+
+routers.use("/profile", auth, require("./profile"));
 
 module.exports = routers;

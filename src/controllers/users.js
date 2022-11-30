@@ -8,6 +8,7 @@ const {
 } = require("../models/users");
 const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
 const filter = require("../helpers/filter");
+const fs = require("fs");
 
 exports.getUsers = (req, res) => {
   const sortables = ["firstName", "createdAt", "updatedAt"];
@@ -40,6 +41,24 @@ exports.createUser = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
+  if (req.file) {
+    req.body.picture = req.file.filename;
+    getUser(req.params.id, (err, result) => {
+      if (err) {
+        return duplicateKey(err, res);
+      }
+      const [user] = result.rows;
+      if (result.rows.length) {
+        fs.rm(`./uploads/${user.picture}`, (err) => {
+          if (err) {
+            return duplicateKey(err, res);
+          }
+        });
+      } else {
+        return duplicateKey(err, res);
+      }
+    });
+  }
   updateUser(req.params.id, req.body, (err, result) => {
     if (err) {
       return duplicateKey(err, res);

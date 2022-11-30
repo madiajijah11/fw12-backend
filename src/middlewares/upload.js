@@ -6,13 +6,19 @@ const storage = multer.diskStorage({
     cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
-    const filename = `${new Date().getDate()}_${new Date().getTime()}`;
+    const extension = file.originalname.split(".");
+    const ext = extension[extension.length - 1];
+    const filename = `${new Date().getDate()}_${new Date().getTime()}.${ext}`;
     cb(null, filename);
   },
 });
 
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+  if (
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg"
+  ) {
     cb(null, true);
   } else {
     cb(null, false);
@@ -20,16 +26,15 @@ const fileFilter = (req, file, cb) => {
 };
 
 const limits = {
-  fileSize: 1024 * 1024 * 5,
+  // 1MB
+  fileSize: 1024 * 1024,
 };
 
-const upload = multer({
+const uploadImage = multer({
   storage,
-  fileFilter,
   limits,
-});
-
-const uploadImage = upload.single("picture");
+  fileFilter,
+}).single("picture");
 
 module.exports = (req, res, next) => {
   uploadImage(req, res, (err) => {
