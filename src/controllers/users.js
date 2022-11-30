@@ -10,7 +10,7 @@ const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
 const filter = require("../helpers/filter");
 
 exports.getUsers = (req, res) => {
-  const sortables = ["name", "createdAt", "updatedAt"];
+  const sortables = ["firstName", "createdAt", "updatedAt"];
   filter(req.query, sortables, pageInfo, res, (filter, pageInfo) => {
     getUsers(filter, (err, result) => {
       if (err) {

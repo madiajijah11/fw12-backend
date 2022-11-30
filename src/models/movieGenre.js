@@ -1,4 +1,4 @@
-const { poolString } = require("../helpers");
+const { poolString } = require("../helpers/db");
 
 exports.getMovieGenre = (cb) => {
   const sql = 'SELECT * FROM "movieGenre"';

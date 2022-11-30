@@ -1,13 +1,13 @@
-const { poolString } = require("../helpers");
+const { poolString } = require("../helpers/db");
 
 exports.pageInfo = (filter, cb) => {
-  const sql = `SELECT COUNT("name") AS "totalData" FROM "users" WHERE name LIKE $1`;
+  const sql = `SELECT COUNT("firstName") AS "totalData" FROM "users" WHERE "firstName" LIKE $1`;
   const values = [`%${filter.search}%`];
   return poolString.query(sql, values, cb);
 };
 
-exports.getUsers = (cb) => {
-  const sql = `SELECT * FROM users WHERE name LIKE $3 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $1 OFFSET $2`;
+exports.getUsers = (filter, cb) => {
+  const sql = `SELECT * FROM users WHERE "firstName" LIKE $3 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $1 OFFSET $2`;
   const values = [filter.limit, filter.offset, `%${filter.search}%`];
   return poolString.query(sql, values, cb);
 };

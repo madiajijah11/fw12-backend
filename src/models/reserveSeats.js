@@ -1,4 +1,4 @@
-const { poolString } = require("../helpers");
+const { poolString } = require("../helpers/db");
 
 exports.getReserveSeats = (cb) => {
   const sql = 'SELECT * FROM "reserveSeats"';

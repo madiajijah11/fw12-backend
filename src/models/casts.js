@@ -1,4 +1,4 @@
-const { poolString } = require("../helpers");
+const { poolString } = require("../helpers/db");
 
 exports.pageInfo = (filter, cb) => {
   const sql = `SELECT COUNT("name") AS "totalData" FROM "casts" WHERE name LIKE $1`;

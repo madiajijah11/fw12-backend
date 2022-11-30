@@ -6,6 +6,8 @@ const filter = (data, sortables, pageInfoModel, res, cb) => {
   data.search = data.search || "";
   data.sortBy = (sortables.includes(data.sortBy) && data.sortBy) || "createdAt";
   data.sort = data.sort || "ASC";
+  data.month = data.month || "";
+  data.year = data.year || "";
 
   const params = {
     limit: data.limit,
@@ -13,6 +15,8 @@ const filter = (data, sortables, pageInfoModel, res, cb) => {
     search: data.search,
     sortBy: data.sortBy,
     sort: data.sort,
+    month: data.month,
+    year: data.year,
   };
 
   const pageInfo = {

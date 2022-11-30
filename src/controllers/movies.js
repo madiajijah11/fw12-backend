@@ -5,7 +5,6 @@ const {
   createMovie,
   updateMovie,
   deleteMovie,
-  pageInfoUpcoming,
   upcomingMovies,
   nowShowingMovies,
 } = require("../models/movies");
@@ -61,25 +60,25 @@ exports.deleteMovie = (req, res) => {
 };
 
 exports.upcomingMovies = (req, res) => {
-  const monthNow = new Date().toLocaleString("default", { month: "long" });
-  const yearNow = new Date().getFullYear().toString();
-  const dateYear = {
-    month: req.query.month ? req.query.month : monthNow,
-    year: req.query.year ? req.query.year : yearNow,
-  };
-  upcomingMovies(dateYear, (err, result) => {
-    if (err) {
-      return duplicateKey(err, res);
-    }
-    return emptyRows(res, result);
+  const sortables = ["title", "releaseDate", "createdAt", "updatedAt"];
+  filter(req.query, sortables, pageInfo, res, (filter, pageInfo) => {
+    upcomingMovies(filter, (err, result) => {
+      if (err) {
+        return duplicateKey(err, res);
+      }
+      return emptyRows(res, result, pageInfo);
+    });
   });
 };
 
 exports.nowShowingMovies = (req, res) => {
-  nowShowingMovies((err, result) => {
-    if (err) {
-      return duplicateKey(err, res);
-    }
-    return emptyRows(res, result);
+  const sortables = ["title", "startDate", "endDate", "createdAt", "updatedAt"];
+  filter(req.query, sortables, pageInfo, res, (filter, pageInfo) => {
+    nowShowingMovies(filter, (err, result) => {
+      if (err) {
+        return duplicateKey(err, res);
+      }
+      return emptyRows(res, result, pageInfo);
+    });
   });
 };
