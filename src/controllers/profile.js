@@ -1,6 +1,6 @@
 const { getUser, updateUser } = require("../models/users");
 const jwt = require("jsonwebtoken");
-const { duplicateKey } = require("../helpers/errorHandler");
+const { errorHandling } = require("../helpers/errorHandler");
 const fx = require("fs-extra");
 const fs = require("fs");
 
@@ -11,7 +11,7 @@ exports.userProfile = (req, res) => {
   const { id } = decoded;
   getUser(id, (err, result) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
     return res.status(200).json({
       success: true,
@@ -28,7 +28,7 @@ exports.updateUserProfile = (req, res) => {
   const { id } = decoded;
   getUser(id, (err, result) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
     if (req.file) {
       req.body.picture = req.file.filename;
@@ -36,11 +36,11 @@ exports.updateUserProfile = (req, res) => {
       if (result.rows.length) {
         fx.ensureFile(`./uploads/${user.picture}`, (err) => {
           if (err) {
-            return duplicateKey(err, res);
+            return errorHandling(err, res);
           }
           fs.rm(`./uploads/${user.picture}`, (err) => {
             if (err) {
-              return duplicateKey(err, res);
+              return errorHandling(err, res);
             }
           });
         });
@@ -48,7 +48,7 @@ exports.updateUserProfile = (req, res) => {
     }
     updateUser(id, req.body, (err, result) => {
       if (err) {
-        return duplicateKey(err, res);
+        return errorHandling(err, res);
       }
       return res.status(200).json({
         success: true,

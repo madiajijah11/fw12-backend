@@ -6,7 +6,7 @@ const {
   updateUser,
   deleteUser,
 } = require("../models/users");
-const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
+const { errorHandling } = require("../helpers/errorHandler");
 const filter = require("../helpers/filter");
 const fs = require("fs");
 const fx = require("fs-extra");
@@ -16,9 +16,14 @@ exports.getUsers = (req, res) => {
   filter(req.query, sortables, pageInfo, res, (filter, pageInfo) => {
     getUsers(filter, (err, result) => {
       if (err) {
-        return duplicateKey(err, res);
+        return errorHandling(err, res);
       }
-      return emptyRows(res, result, pageInfo);
+      return res.status(200).json({
+        success: true,
+        message: "Users retrieved successfully",
+        pageInfo,
+        data: result.rows,
+      });
     });
   });
 };
@@ -26,18 +31,26 @@ exports.getUsers = (req, res) => {
 exports.getUser = (req, res) => {
   getUser(req.params.id, (err, result) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
-    return emptyRows(res, result);
+    return res.status(200).json({
+      success: true,
+      message: "User retrieved successfully",
+      data: result.rows[0],
+    });
   });
 };
 
 exports.createUser = (req, res) => {
   createUser(req.body, (err, result) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
-    return emptyRows(res, result);
+    return res.status(200).json({
+      success: true,
+      message: "User created successfully",
+      data: result.rows[0],
+    });
   });
 };
 
@@ -46,38 +59,46 @@ exports.updateUser = (req, res) => {
     req.body.picture = req.file.filename;
     getUser(req.params.id, (err, result) => {
       if (err) {
-        return duplicateKey(err, res);
+        return errorHandling(err, res);
       }
       const [user] = result.rows;
       if (result.rows.length) {
         fx.ensureFile(`./uploads/${user.picture}`, (err) => {
           if (err) {
-            return duplicateKey(err, res);
+            return errorHandling(err, res);
           }
           fs.rm(`./uploads/${user.picture}`, (err) => {
             if (err) {
-              return duplicateKey(err, res);
+              return errorHandling(err, res);
             }
           });
         });
       } else {
-        return duplicateKey(err, res);
+        return errorHandling(err, res);
       }
     });
   }
   updateUser(req.params.id, req.body, (err, result) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
-    return emptyRows(res, result);
+    return res.status(200).json({
+      success: true,
+      message: "User updated successfully",
+      data: result.rows[0],
+    });
   });
 };
 
 exports.deleteUser = (req, res) => {
   deleteUser(req.params.id, (err, result) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
-    return emptyRows(res, result);
+    return res.status(200).json({
+      success: true,
+      message: "User deleted successfully",
+      data: result.rows[0],
+    });
   });
 };

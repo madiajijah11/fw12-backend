@@ -7,7 +7,7 @@ const {
   deleteTransactions,
   checkout,
 } = require("../models/transactions");
-const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
+const { errorHandling } = require("../helpers/errorHandler");
 const filter = require("../helpers/filter");
 const jwt = require("jsonwebtoken");
 
@@ -16,9 +16,14 @@ exports.getTransactions = (req, res) => {
   filter(req.query, sortables, pageInfo, res, (filter, pageInfo) => {
     getTransactions(filter, (err, result) => {
       if (err) {
-        return duplicateKey(err, res);
+        return errorHandling(err, res);
       }
-      return emptyRows(res, result, pageInfo);
+      return res.status(200).json({
+        success: true,
+        message: "Transactions retrieved successfully",
+        pageInfo,
+        data: result.rows,
+      });
     });
   });
 };
@@ -26,36 +31,52 @@ exports.getTransactions = (req, res) => {
 exports.getTransaction = (req, res) => {
   getTransaction(req.params.id, (err, result) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
-    return emptyRows(res, result);
+    return res.status(200).json({
+      success: true,
+      message: "Transaction retrieved successfully",
+      data: result.rows[0],
+    });
   });
 };
 
 exports.createTransactions = (req, res) => {
   createTransactions(req.body, (err, result) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
-    return emptyRows(res, result);
+    return res.status(200).json({
+      success: true,
+      message: "Transaction created successfully",
+      data: result.rows[0],
+    });
   });
 };
 
 exports.updateTransactions = (req, res) => {
   updateTransactions(req.params.id, req.body, (err, result) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
-    return emptyRows(res, result);
+    return res.status(200).json({
+      success: true,
+      message: "Transaction updated successfully",
+      data: result.rows[0],
+    });
   });
 };
 
 exports.deleteTransactions = (req, res) => {
   deleteTransactions(req.params.id, (err, result) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
-    return emptyRows(res, result);
+    return res.status(200).json({
+      success: true,
+      message: "Transaction deleted successfully",
+      data: result.rows[0],
+    });
   });
 };
 
@@ -79,11 +100,11 @@ exports.checkout = (req, res) => {
   };
   checkout(transaction, (err, result) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
     return res.status(200).json({
-      status: "success",
-      message: "Checkout success",
+      success: true,
+      message: "Transaction checkout successfully",
       data: result,
     });
   });

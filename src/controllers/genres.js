@@ -5,7 +5,7 @@ const {
   updateGenre,
   deleteGenre,
 } = require("../models/genres");
-const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
+const { errorHandling } = require("../helpers/errorHandler");
 const filter = require("../helpers/filter");
 
 exports.getGenres = (req, res) => {
@@ -13,9 +13,14 @@ exports.getGenres = (req, res) => {
   filter(req.query, sortables, pageInfo, res, (filter, pageInfo) => {
     getGenres(filter, (err, result) => {
       if (err) {
-        return duplicateKey(err, res);
+        return errorHandling(err, res);
       }
-      return emptyRows(res, result, pageInfo);
+      return res.status(200).json({
+        success: true,
+        message: "Genres retrieved successfully",
+        pageInfo,
+        data: result.rows,
+      });
     });
   });
 };
@@ -23,26 +28,38 @@ exports.getGenres = (req, res) => {
 exports.createGenre = (req, res) => {
   createGenre(req.body, (err, result) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
-    return emptyRows(res, result);
+    return res.status(200).json({
+      success: true,
+      message: "Genre created successfully",
+      data: result.rows[0],
+    });
   });
 };
 
 exports.updateGenre = (req, res) => {
   updateGenre(req.params.id, req.body, (err, result) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
-    return emptyRows(res, result);
+    return res.status(200).json({
+      success: true,
+      message: "Genre updated successfully",
+      data: result.rows[0],
+    });
   });
 };
 
 exports.deleteGenre = (req, res) => {
   deleteGenre(req.params.id, (err, result) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
-    return emptyRows(res, result);
+    return res.status(200).json({
+      success: true,
+      message: "Genre deleted successfully",
+      data: result.rows[0],
+    });
   });
 };

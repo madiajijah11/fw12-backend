@@ -1,4 +1,4 @@
-const { duplicateKey } = require("./errorHandler");
+const { errorHandling } = require("./errorHandler");
 
 const filter = (data, sortables, pageInfoModel, res, cb) => {
   data.page = parseInt(data.page) || 1;
@@ -25,7 +25,7 @@ const filter = (data, sortables, pageInfoModel, res, cb) => {
 
   pageInfoModel(params, (err, result) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
     pageInfo.totalData = parseInt(result.rows[0].totalData);
     pageInfo.totalPage = Math.ceil(result.rows[0].totalData / data.limit);

@@ -1,6 +1,6 @@
 const { poolString } = require("../helpers/db");
 
-exports.pageInfo = (filter, cb) => {
+exports.countAllMovies = (filter, cb) => {
   const sql = `SELECT COUNT("title") AS "totalData" FROM "movies" WHERE title LIKE $1`;
   const values = [`%${filter.search}%`];
   return poolString.query(sql, values, cb);
@@ -54,23 +54,35 @@ exports.deleteMovie = (id, cb) => {
 
 exports.upComingMovies = (data, cb) => {
   const sql = `SELECT
-m.id,
-m."title",
-m."picture",
-m."releaseDate",
-string_agg(g.name, ', ') as "genre",
-m."createdAt"
-FROM movies m
-LEFT JOIN "movieGenre" mG ON m.id = mG."movieId"
-LEFT JOIN "genres" g ON m.id = g.id
-WHERE
-date_part('year', m."releaseDate")::VARCHAR = COALESCE(NULLIF($2,''), date_part('year', CURRENT_DATE)::VARCHAR)
-AND
-date_part('month', m."releaseDate")::VARCHAR = COALESCE(NULLIF($1,''), date_part('month', CURRENT_DATE)::VARCHAR)
-GROUP BY m.id, m."title", m."picture", m."releaseDate", m."createdAt"
-ORDER BY "${data.sortBy}" ${data.sort}
-LIMIT $3 OFFSET $4`;
-  const values = [data.month, data.year, data.limit, data.offset];
+    m.id,
+    m."title",
+    m."picture",
+    m."releaseDate",
+    string_agg(g.name, ', ') as "genre",
+    m."createdAt"
+    FROM movies m
+    LEFT JOIN "movieGenre" mG ON m.id = mG."movieId"
+    LEFT JOIN "genres" g ON m.id = g.id
+    WHERE m."title" LIKE $5 AND
+    date_part('year', m."releaseDate")::VARCHAR = COALESCE(NULLIF($2,''), date_part('year', CURRENT_DATE)::VARCHAR)
+    AND
+    date_part('month', m."releaseDate")::VARCHAR = COALESCE(NULLIF($1,''), date_part('month', CURRENT_DATE)::VARCHAR)
+    GROUP BY m.id, m."title", m."picture", m."releaseDate", m."createdAt"
+    ORDER BY "${data.sortBy}" ${data.sort}
+    LIMIT $3 OFFSET $4`;
+  const values = [
+    data.month,
+    data.year,
+    data.limit,
+    data.offset,
+    `%${data.search}%`,
+  ];
+  return poolString.query(sql, values, cb);
+};
+
+exports.countAllUpcomingMovies = (filter, cb) => {
+  const sql = `SELECT COUNT("title") AS "totalData" FROM "movies" WHERE title LIKE $1 AND date_part('year', "releaseDate")::VARCHAR = COALESCE(NULLIF($3,''), date_part('year', CURRENT_DATE)::VARCHAR) AND date_part('month', "releaseDate")::VARCHAR = COALESCE(NULLIF($2,''), date_part('month', CURRENT_DATE)::VARCHAR)`;
+  const values = [`%${filter.search}%`, filter.month, filter.year];
   return poolString.query(sql, values, cb);
 };
 
@@ -84,21 +96,30 @@ exports.nowShowingMovies = (data, cb) => {
     ms."endDate",
     ms."createdAt",
     ms."updatedAt"
-from "movies" m
+    from "movies" m
     LEFT JOIN "movieGenre" mG on m.id = mG."movieId"
     LEFT JOIN "genres" g on mG."genreId" = g.id
     LEFT JOIN "movieSchedules" mS on m.id = mS."movieId"
-WHERE CURRENT_DATE BETWEEN
-mS."startDate" AND mS."endDate"
-GROUP BY
+    WHERE CURRENT_DATE BETWEEN
+    mS."startDate"
+    AND
+    mS."endDate"
+    GROUP BY
     m.id,
     m."title",
     mS."startDate",
     ms."endDate",
     ms."createdAt",
     ms."updatedAt"
-ORDER BY "${data.sortBy}" ${data.sort}
-LIMIT $1 OFFSET $2`;
+    ORDER BY "${data.sortBy}" ${data.sort}
+    LIMIT $1 OFFSET $2`;
   const values = [data.limit, data.offset];
   return poolString.query(sql, values, cb);
+};
+
+exports.countAllNowShowingMovies = (filter, cb) => {
+  const sql = `SELECT COUNT("title") AS "totalData" FROM "movies" m
+  INNER JOIN "movieSchedules" mS on m.id = mS."movieId"
+  WHERE CURRENT_DATE BETWEEN mS."startDate" AND mS."endDate"`;
+  return poolString.query(sql, cb);
 };

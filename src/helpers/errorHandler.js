@@ -1,4 +1,4 @@
-const duplicateKey = (err, res) => {
+const errorHandling = (err, res) => {
   if (err.code === "23505") {
     return res.status(409).json({
       success: false,
@@ -17,21 +17,4 @@ const duplicateKey = (err, res) => {
   });
 };
 
-const emptyRows = (res, result, pageInfo) => {
-  if (result.rows.length === 0) {
-    return res.status(200).json({
-      success: true,
-      message: "No data found",
-      pageInfo,
-      data: result?.rows,
-    });
-  }
-  return res.status(200).json({
-    success: true,
-    message: "Success",
-    pageInfo,
-    data: result?.rows,
-  });
-};
-
-module.exports = { duplicateKey, emptyRows };
+module.exports = { errorHandling };

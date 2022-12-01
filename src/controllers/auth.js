@@ -1,6 +1,6 @@
 const { getUserByEmail, createUser, updateUser } = require("../models/users");
 const jwt = require("jsonwebtoken");
-const { duplicateKey } = require("../helpers/errorHandler");
+const { errorHandling } = require("../helpers/errorHandler");
 const {
   createResetPassword,
   selectEmailAndCode,
@@ -10,7 +10,7 @@ const {
 exports.login = (req, res) => {
   getUserByEmail(req.body.email, (err, { rows }) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
     if (rows.length) {
       const [user] = rows;
@@ -36,7 +36,7 @@ exports.login = (req, res) => {
 exports.register = (req, res) => {
   createUser(req.body, (err, data) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
     const { rows: users } = data;
     const [user] = users;
@@ -55,7 +55,7 @@ exports.forgotPassword = (req, res) => {
   const { email } = req.body;
   getUserByEmail(email, (err, data) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
     if (data.rows.length) {
       const dataReset = {
@@ -65,7 +65,7 @@ exports.forgotPassword = (req, res) => {
       };
       createResetPassword(dataReset, (err, data) => {
         if (err) {
-          return duplicateKey(err, res);
+          return errorHandling(err, res);
         }
         if (data.rows.length) {
           return res.status(200).json({
@@ -88,17 +88,17 @@ exports.resetPassword = (req, res) => {
   if (password === confirmPassword) {
     selectEmailAndCode(req.body, (err, data) => {
       if (err) {
-        return duplicateKey(err, res);
+        return errorHandling(err, res);
       }
       if (data.rows.length) {
         updateUser(data.rows[0].userId, { password }, (err, data) => {
           if (err) {
-            return duplicateKey(err, res);
+            return errorHandling(err, res);
           }
           if (data.rows.length) {
             deleteResetPassword(data.rows[0].id, (err, data) => {
               if (err) {
-                return duplicateKey(err, res);
+                return errorHandling(err, res);
               }
               if (data.rows.length) {
                 return res.status(200).json({

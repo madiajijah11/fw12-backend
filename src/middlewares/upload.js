@@ -1,5 +1,5 @@
 const multer = require("multer");
-const { duplicateKey } = require("../helpers/errorHandler");
+const { errorHandling } = require("../helpers/errorHandler");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -39,7 +39,7 @@ const uploadImage = multer({
 module.exports = (req, res, next) => {
   uploadImage(req, res, (err) => {
     if (err) {
-      return duplicateKey(err, res);
+      return errorHandling(err, res);
     }
     next();
   });
