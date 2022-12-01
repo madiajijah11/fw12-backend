@@ -63,7 +63,7 @@ exports.checkout = async (data, cb) => {
     await poolString.query("BEGIN");
 
     const insertTransaction =
-      'INSERT INTO "transactions" ("userId", "bookingDate", "movieId", "cinemaId", "movieScheduleId", "fullName", "email", "phoneNumber", "statusId", "paymentMethodId") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *';
+      'INSERT INTO "transactions" ("userId", "bookingDate", "movieId", "cinemaId", "movieScheduleId", "fullName", "email", "phoneNumber", "statusId", "paymentMethodId") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING "bookingDate", "fullName", "email", "phoneNumber"';
     const sqlTransaction = await poolString.query(insertTransaction, [
       data.userId,
       data.bookingDate,
@@ -78,16 +78,16 @@ exports.checkout = async (data, cb) => {
     ]);
 
     const insertSeatNum =
-      'INSERT INTO "reserveSeats" ("seatNum", "transactionId") VALUES ($1,$2) RETURNING *';
+      'INSERT INTO "reserveSeats" ("seatNum", "transactionId") VALUES ($1,$2) RETURNING "seatNum"';
     const insertSeatNumValues = [data.seatNum, sqlTransaction.rows[0].id];
     const sqlSeat = await poolString.query(insertSeatNum, insertSeatNumValues);
 
     await poolString.query("COMMIT");
 
     const result = {
-      transaction: sqlTransaction.rows,
-      seat: sqlSeat.rows,
-    }
+      transaction: sqlTransaction.rows[0],
+      seat: sqlSeat.rows[0],
+    };
     cb(null, result);
   } catch (err) {
     await poolString.query("ROLLBACK");

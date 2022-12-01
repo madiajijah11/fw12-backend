@@ -1,7 +1,7 @@
 const routers = require("express").Router();
 const { auth } = require("../middlewares/auth");
 
-routers.use("/movies", auth, require("./movies"));
+routers.use("/movies", require("./movies"));
 routers.use("/users", require("./users"));
 routers.use("/genres", require("./genres"));
 routers.use("/roles", require("./roles"));

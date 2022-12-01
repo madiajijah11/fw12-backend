@@ -31,9 +31,9 @@ const limits = {
 };
 
 const uploadImage = multer({
-  storage,
-  limits,
-  fileFilter,
+  storage: storage,
+  limits: limits,
+  fileFilter: fileFilter,
 }).single("picture");
 
 module.exports = (req, res, next) => {

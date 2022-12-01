@@ -15,7 +15,7 @@ exports.login = (req, res) => {
     if (rows.length) {
       const [user] = rows;
       if (req.body.password === user.password) {
-        const token = jwt.sign({ id: user.id }, "secret");
+        const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY);
         return res.status(200).json({
           success: true,
           message: "Login success",
@@ -40,7 +40,7 @@ exports.register = (req, res) => {
     }
     const { rows: users } = data;
     const [user] = users;
-    const token = jwt.sign({ id: user }, "secret");
+    const token = jwt.sign({ id: user }, process.env.SECRET_KEY);
     return res.status(201).json({
       success: true,
       message: "Register success",

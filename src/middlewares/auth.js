@@ -5,7 +5,7 @@ exports.auth = (req, res, next) => {
   if (authorization && authorization.startsWith("Bearer ")) {
     const token = authorization.slice(7);
     try {
-      const payload = jwt.verify(token, "secret");
+      const payload = jwt.verify(token, process.env.SECRET_KEY);
       req.user = payload;
       next();
     } catch (error) {

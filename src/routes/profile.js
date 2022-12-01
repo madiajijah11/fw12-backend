@@ -1,8 +1,8 @@
 const profileRoutes = require("express").Router();
-const usersControllers = require("../controllers/users");
+const profileControllers = require("../controllers/profile");
 const uploadImages = require("../middlewares/upload");
 
-profileRoutes.get("/:id", usersControllers.getUser);
-profileRoutes.patch("/:id", uploadImages, usersControllers.updateUser);
+profileRoutes.get("/", profileControllers.userProfile);
+profileRoutes.patch("/", uploadImages, profileControllers.updateUserProfile);
 
 module.exports = profileRoutes;

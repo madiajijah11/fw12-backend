@@ -9,7 +9,7 @@ const {
 } = require("../models/transactions");
 const { duplicateKey, emptyRows } = require("../helpers/errorHandler");
 const filter = require("../helpers/filter");
-const { createReserveSeats } = require("../models/reserveSeats");
+const jwt = require("jsonwebtoken");
 
 exports.getTransactions = (req, res) => {
   const sortables = ["fullName", "createdAt", "updatedAt"];
@@ -60,8 +60,12 @@ exports.deleteTransactions = (req, res) => {
 };
 
 exports.checkout = (req, res) => {
+  const authorization = req.headers.authorization;
+  const token = authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.SECRET_KEY);
+  const { id } = decoded;
   const transaction = {
-    userId: req.body.userId,
+    userId: id,
     bookingDate: req.body.bookingDate,
     movieId: req.body.movieId,
     cinemaId: req.body.cinemaId,
