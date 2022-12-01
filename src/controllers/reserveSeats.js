@@ -14,7 +14,6 @@ exports.getReserveSeats = (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Reserve Seats retrieved successfully",
-      pageInfo,
       data: result.rows,
     });
   });
