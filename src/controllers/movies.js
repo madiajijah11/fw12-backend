@@ -12,6 +12,8 @@ const {
 } = require("../models/movies");
 const { errorHandling } = require("../helpers/errorHandler");
 const filter = require("../helpers/filter");
+const response = require("../helpers/response");
+const { validationResult, body } = require("express-validator");
 
 exports.getMovies = (req, res) => {
   const sortables = ["title", "createdAt", "updatedAt"];
@@ -20,12 +22,14 @@ exports.getMovies = (req, res) => {
       if (err) {
         return errorHandling(err, res);
       }
-      return res.status(200).json({
-        success: true,
-        message: "Movies retrieved successfully",
+      return response(
+        200,
+        true,
+        "Movies retrieved successfully",
+        result.rows,
         pageInfo,
-        data: result.rows,
-      });
+        res
+      );
     });
   });
 };
@@ -35,11 +39,14 @@ exports.getMovie = (req, res) => {
     if (err) {
       return errorHandling(err, res);
     }
-    return res.status(200).json({
-      success: true,
-      message: "Movie retrieved successfully",
-      data: result.rows[0],
-    });
+    return response(
+      200,
+      true,
+      "Movie retrieved successfully",
+      result.rows[0],
+      null,
+      res
+    );
   });
 };
 
@@ -48,11 +55,14 @@ exports.createMovie = (req, res) => {
     if (err) {
       return errorHandling(err, res);
     }
-    return res.status(200).json({
-      success: true,
-      message: "Movie created successfully",
-      data: result.rows[0],
-    });
+    return response(
+      200,
+      true,
+      "Movie created successfully",
+      result.rows[0],
+      null,
+      res
+    );
   });
 };
 
@@ -61,11 +71,17 @@ exports.updateMovie = (req, res) => {
     if (err) {
       return errorHandling(err, res);
     }
-    return res.status(200).json({
-      success: true,
-      message: "Movie updated successfully",
-      data: result.rows[0],
-    });
+    if (result) {
+      return response(404, false, "Data not found", [], null, res);
+    }
+    return response(
+      200,
+      true,
+      "Movie updated successfully",
+      result.rows[0],
+      null,
+      res
+    );
   });
 };
 
@@ -74,11 +90,17 @@ exports.deleteMovie = (req, res) => {
     if (err) {
       return errorHandling(err, res);
     }
-    return res.status(200).json({
-      success: true,
-      message: "Movie deleted successfully",
-      data: result.rows[0],
-    });
+    if (result) {
+      return response(404, false, "Data not found", [], null, res);
+    }
+    return response(
+      200,
+      true,
+      "Movie deleted successfully",
+      result.rows[0],
+      null,
+      res
+    );
   });
 };
 
@@ -94,12 +116,14 @@ exports.upComingMovies = (req, res) => {
         if (err) {
           return errorHandling(err, res);
         }
-        return res.status(200).json({
-          success: true,
-          message: "Upcoming movies retrieved successfully",
+        return response(
+          200,
+          true,
+          "Upcoming movies retrieved successfully",
+          result.rows,
           pageInfo,
-          data: result.rows,
-        });
+          res
+        );
       });
     }
   );
@@ -117,12 +141,14 @@ exports.nowShowingMovies = (req, res) => {
         if (err) {
           return errorHandling(err, res);
         }
-        return res.status(200).json({
-          success: true,
-          message: "Now showing movies retrieved successfully",
+        return response(
+          200,
+          true,
+          "Now showing movies retrieved successfully",
+          result.rows,
           pageInfo,
-          data: result.rows,
-        });
+          res
+        );
       });
     }
   );

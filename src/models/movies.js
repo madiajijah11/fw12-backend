@@ -6,10 +6,15 @@ exports.countAllMovies = (filter, cb) => {
   return poolString.query(sql, values, cb);
 };
 
-exports.getMovies = (filter, cb) => {
-  const sql = `SELECT * FROM movies WHERE title LIKE $3 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $1 OFFSET $2`;
-  const values = [filter.limit, filter.offset, `%${filter.search}%`];
-  return poolString.query(sql, values, cb);
+exports.getMovies = async (filter, cb) => {
+  try {
+    const sql = `SELECT * FROM movies WHERE title LIKE $3 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $1 OFFSET $2`;
+    const values = [filter.limit, filter.offset, `%${filter.search}%`];
+    const result = await poolString.query(sql, values);
+    cb(null, result);
+  } catch (error) {
+    cb(error, null);
+  }
 };
 
 exports.getMovie = (id, cb) => {
@@ -18,18 +23,23 @@ exports.getMovie = (id, cb) => {
   return poolString.query(sql, values, cb);
 };
 
-exports.createMovie = (data, cb) => {
-  const sql =
-    'INSERT INTO movies ("title", "picture", "releaseDate", "director", "duration", "synopsis") VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-  const values = [
-    data.title,
-    data.picture,
-    data.releaseDate,
-    data.director,
-    data.duration,
-    data.synopsis,
-  ];
-  return poolString.query(sql, values, cb);
+exports.createMovie = async (data, cb) => {
+  try {
+    const sql =
+      'INSERT INTO movies ("title", "picture", "releaseDate", "director", "duration", "synopsis") VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
+    const values = [
+      data.title,
+      data.picture,
+      data.releaseDate,
+      data.director,
+      data.duration,
+      data.synopsis,
+    ];
+    const result = await poolString.query(sql, values);
+    cb(null, result);
+  } catch (error) {
+    cb(error, null);
+  }
 };
 
 exports.updateMovie = (id, data, cb) => {
