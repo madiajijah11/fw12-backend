@@ -13,7 +13,7 @@ const {
 const { errorHandling } = require("../helpers/errorHandler");
 const filter = require("../helpers/filter");
 const response = require("../helpers/response");
-const { validationResult, body } = require("express-validator");
+const { body, validationResult } = require("express-validator");
 
 exports.getMovies = (req, res) => {
   const sortables = ["title", "createdAt", "updatedAt"];
@@ -26,8 +26,8 @@ exports.getMovies = (req, res) => {
         200,
         true,
         "Movies retrieved successfully",
-        result.rows,
         pageInfo,
+        result.rows,
         res
       );
     });
@@ -39,28 +39,43 @@ exports.getMovie = (req, res) => {
     if (err) {
       return errorHandling(err, res);
     }
-    return response(
-      200,
-      true,
-      "Movie retrieved successfully",
-      result.rows[0],
-      null,
-      res
-    );
+    if (result.rows < 1) {
+      return response(404, false, "Data not found", null, null, res);
+    } else {
+      return response(
+        200,
+        true,
+        "Movie retrieved successfully",
+        null,
+        result.rows[0],
+        res
+      );
+    }
   });
 };
 
 exports.createMovie = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return response(
+      400,
+      false,
+      "All fields must be filled",
+      null,
+      errors.array(),
+      res
+    );
+  }
   createMovie(req.body, (err, result) => {
     if (err) {
       return errorHandling(err, res);
     }
     return response(
-      200,
+      201,
       true,
       "Movie created successfully",
-      result.rows[0],
       null,
+      result.rows[0],
       res
     );
   });
@@ -71,15 +86,15 @@ exports.updateMovie = (req, res) => {
     if (err) {
       return errorHandling(err, res);
     }
-    if (result) {
-      return response(404, false, "Data not found", [], null, res);
+    if (result.rows < 1) {
+      return response(404, false, "Data not found", null, null, res);
     }
     return response(
-      200,
+      201,
       true,
       "Movie updated successfully",
-      result.rows[0],
       null,
+      result.rows[0],
       res
     );
   });
@@ -90,15 +105,15 @@ exports.deleteMovie = (req, res) => {
     if (err) {
       return errorHandling(err, res);
     }
-    if (result) {
-      return response(404, false, "Data not found", [], null, res);
+    if (result.rows < 1) {
+      return response(404, false, "Data not found", null, null, res);
     }
     return response(
       200,
       true,
       "Movie deleted successfully",
-      result.rows[0],
       null,
+      result.rows[0],
       res
     );
   });
@@ -120,8 +135,8 @@ exports.upComingMovies = (req, res) => {
           200,
           true,
           "Upcoming movies retrieved successfully",
-          result.rows,
           pageInfo,
+          result.rows,
           res
         );
       });
@@ -145,8 +160,8 @@ exports.nowShowingMovies = (req, res) => {
           200,
           true,
           "Now showing movies retrieved successfully",
-          result.rows,
           pageInfo,
+          result.rows,
           res
         );
       });

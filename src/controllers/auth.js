@@ -6,52 +6,96 @@ const {
   selectEmailAndCode,
   deleteResetPassword,
 } = require("../models/resetPassword");
+const bcrypt = require("bcrypt");
+const { validationResult } = require("express-validator");
+const response = require("../helpers/response");
+
+exports.register = (req, res) => {
+  const validationError = validationResult(req);
+  if (!validationError.isEmpty()) {
+    return response(
+      400,
+      false,
+      "All fields must be filled",
+      null,
+      validationError.array(),
+      res
+    );
+  }
+  const data = {
+    ...req.body,
+    password: bcrypt.hashSync(req.body.password, 10),
+    roleId: req.body.roleId || 2,
+  };
+  getUserByEmail(data.email, (err, { rows }) => {
+    if (err) {
+      return errorHandling(err, res);
+    }
+    if (rows.length) {
+      return response(409, false, "Email already registered", null, null, res);
+    } else {
+      createUser(data, (err, data) => {
+        if (err) {
+          return errorHandling(err, res);
+        }
+        const { rows: users } = data;
+        const [user] = users;
+        const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY);
+        return response(201, true, "Register success", null, { token }, res);
+      });
+    }
+  });
+};
 
 exports.login = (req, res) => {
+  const validationError = validationResult(req);
+  if (!validationError.isEmpty()) {
+    return response(
+      400,
+      false,
+      "All fields must be filled",
+      null,
+      validationError.array(),
+      res
+    );
+  }
   getUserByEmail(req.body.email, (err, { rows }) => {
     if (err) {
       return errorHandling(err, res);
     }
     if (rows.length) {
       const [user] = rows;
-      if (req.body.password === user.password) {
+      if (bcrypt.compareSync(req.body.password, user.password)) {
         const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY);
-        return res.status(200).json({
-          success: true,
-          message: "Login success",
-          data: {
-            token,
-          },
-        });
+        return response(200, true, "Login success", null, { token }, res);
       } else {
-        return res.status(401).json({
-          success: false,
-          message: "Wrong email or password",
-        });
+        return response(
+          400,
+          false,
+          "Invalid email or password",
+          null,
+          null,
+          res
+        );
       }
+    } else {
+      return response(400, false, "Invalid email or password", null, null, res);
     }
-  });
-};
-
-exports.register = (req, res) => {
-  createUser(req.body, (err, data) => {
-    if (err) {
-      return errorHandling(err, res);
-    }
-    const { rows: users } = data;
-    const [user] = users;
-    const token = jwt.sign({ id: user }, process.env.SECRET_KEY);
-    return res.status(201).json({
-      success: true,
-      message: "Register success",
-      data: {
-        token,
-      },
-    });
   });
 };
 
 exports.forgotPassword = (req, res) => {
+  const validationError = validationResult(req);
+  if (!validationError.isEmpty()) {
+    return response(
+      400,
+      false,
+      "All fields must be filled",
+      null,
+      validationError.array(),
+      res
+    );
+  }
   const { email } = req.body;
   getUserByEmail(email, (err, data) => {
     if (err) {
@@ -68,58 +112,69 @@ exports.forgotPassword = (req, res) => {
           return errorHandling(err, res);
         }
         if (data.rows.length) {
-          return res.status(200).json({
-            success: true,
-            message: "Reset request has been sent",
-          });
+          return response(200, true, "Request has been sent", null, null, res);
         }
       });
     } else {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
+      return response(404, false, "User not found", null, null, res);
     }
   });
 };
 
 exports.resetPassword = (req, res) => {
+  const validationError = validationResult(req);
+  if (!validationError.isEmpty()) {
+    return response(
+      400,
+      false,
+      "All fields must be filled",
+      null,
+      validationError.array(),
+      res
+    );
+  }
   const { password, confirmPassword } = req.body;
   if (password === confirmPassword) {
+    const encryptedPassword = bcrypt.hashSync(password, 10);
     selectEmailAndCode(req.body, (err, data) => {
       if (err) {
         return errorHandling(err, res);
       }
-      if (data.rows.length) {
-        updateUser(data.rows[0].userId, { password }, (err, data) => {
+      if (data) {
+        updateUser(data.userId, encryptedPassword, (err, data) => {
           if (err) {
             return errorHandling(err, res);
           }
-          if (data.rows.length) {
-            deleteResetPassword(data.rows[0].id, (err, data) => {
+          if (data) {
+            deleteResetPassword(data.id, (err, data) => {
               if (err) {
                 return errorHandling(err, res);
               }
               if (data.rows.length) {
-                return res.status(200).json({
-                  success: true,
-                  message: "Reset password success",
-                });
+                return response(
+                  200,
+                  true,
+                  "Password has been changed",
+                  null,
+                  null,
+                  res
+                );
               }
             });
           }
         });
       } else {
-        return res.status(404).json({
-          success: false,
-          message: "User not found",
-        });
+        return response(
+          404,
+          false,
+          "Wrong email or invalid code",
+          null,
+          null,
+          res
+        );
       }
     });
   } else {
-    return res.status(400).json({
-      success: false,
-      message: "Password not match",
-    });
+    return response(406, false, "Password not match", null, null, res);
   }
 };

@@ -1,9 +1,14 @@
 const { poolString } = require("../helpers/db");
 
-exports.countAllMovies = (filter, cb) => {
-  const sql = `SELECT COUNT("title") AS "totalData" FROM "movies" WHERE title LIKE $1`;
-  const values = [`%${filter.search}%`];
-  return poolString.query(sql, values, cb);
+exports.countAllMovies = async (filter, cb) => {
+  try {
+    const sql = `SELECT COUNT("title") AS "totalData" FROM "movies" WHERE title LIKE $1`;
+    const values = [`%${filter.search}%`];
+    const result = await poolString.query(sql, values);
+    cb(null, result);
+  } catch (error) {
+    cb(error, null);
+  }
 };
 
 exports.getMovies = async (filter, cb) => {
@@ -17,10 +22,15 @@ exports.getMovies = async (filter, cb) => {
   }
 };
 
-exports.getMovie = (id, cb) => {
-  const sql = "SELECT * FROM movies WHERE id = $1";
-  const values = [id];
-  return poolString.query(sql, values, cb);
+exports.getMovie = async (id, cb) => {
+  try {
+    const sql = "SELECT * FROM movies WHERE id = $1";
+    const values = [id];
+    const result = await poolString.query(sql, values);
+    cb(null, result);
+  } catch (error) {
+    cb(error, null);
+  }
 };
 
 exports.createMovie = async (data, cb) => {
@@ -42,28 +52,39 @@ exports.createMovie = async (data, cb) => {
   }
 };
 
-exports.updateMovie = (id, data, cb) => {
-  const sql = `UPDATE movies SET "title" = COALESCE(NULLIF($1,''), "title"), "picture" = COALESCE(NULLIF($2,''), "picture"), "releaseDate" = COALESCE(NULLIF($3,'')::DATE, "releaseDate"), "director" = COALESCE(NULLIF($4,''), "director"), "duration" = COALESCE(NULLIF($5,'')::TIME, "duration"), "synopsis" = COALESCE(NULLIF($6,''), "synopsis") WHERE id = $7 RETURNING *`;
-  const values = [
-    data.title,
-    data.picture,
-    data.releaseDate,
-    data.director,
-    data.duration,
-    data.synopsis,
-    id,
-  ];
-  return poolString.query(sql, values, cb);
+exports.updateMovie = async (id, data, cb) => {
+  try {
+    const sql = `UPDATE movies SET "title" = COALESCE(NULLIF($1,''), "title"), "picture" = COALESCE(NULLIF($2,''), "picture"), "releaseDate" = COALESCE(NULLIF($3,'')::DATE, "releaseDate"), "director" = COALESCE(NULLIF($4,''), "director"), "duration" = COALESCE(NULLIF($5,'')::TIME, "duration"), "synopsis" = COALESCE(NULLIF($6,''), "synopsis") WHERE id = $7 RETURNING *`;
+    const values = [
+      data.title,
+      data.picture,
+      data.releaseDate,
+      data.director,
+      data.duration,
+      data.synopsis,
+      id,
+    ];
+    const result = await poolString.query(sql, values);
+    cb(null, result);
+  } catch (error) {
+    cb(error, null);
+  }
 };
 
-exports.deleteMovie = (id, cb) => {
-  const sql = "DELETE FROM movies WHERE id = $1 RETURNING *";
-  const values = [id];
-  return poolString.query(sql, values, cb);
+exports.deleteMovie = async (id, cb) => {
+  try {
+    const sql = "DELETE FROM movies WHERE id = $1 RETURNING *";
+    const values = [id];
+    const result = await poolString.query(sql, values);
+    cb(null, result);
+  } catch (error) {
+    cb(error, null);
+  }
 };
 
-exports.upComingMovies = (data, cb) => {
-  const sql = `SELECT
+exports.upComingMovies = async (data, cb) => {
+  try {
+    const sql = `SELECT
     m.id,
     m."title",
     m."picture",
@@ -80,24 +101,34 @@ exports.upComingMovies = (data, cb) => {
     GROUP BY m.id, m."title", m."picture", m."releaseDate", m."createdAt"
     ORDER BY "${data.sortBy}" ${data.sort}
     LIMIT $3 OFFSET $4`;
-  const values = [
-    data.month,
-    data.year,
-    data.limit,
-    data.offset,
-    `%${data.search}%`,
-  ];
-  return poolString.query(sql, values, cb);
+    const values = [
+      data.month,
+      data.year,
+      data.limit,
+      data.offset,
+      `%${data.search}%`,
+    ];
+    const result = await poolString.query(sql, values);
+    cb(null, result);
+  } catch (error) {
+    cb(error, null);
+  }
 };
 
-exports.countAllUpcomingMovies = (filter, cb) => {
-  const sql = `SELECT COUNT("title") AS "totalData" FROM "movies" WHERE title LIKE $1 AND date_part('year', "releaseDate")::VARCHAR = COALESCE(NULLIF($3,''), date_part('year', CURRENT_DATE)::VARCHAR) AND date_part('month', "releaseDate")::VARCHAR = COALESCE(NULLIF($2,''), date_part('month', CURRENT_DATE)::VARCHAR)`;
-  const values = [`%${filter.search}%`, filter.month, filter.year];
-  return poolString.query(sql, values, cb);
+exports.countAllUpcomingMovies = async (filter, cb) => {
+  try {
+    const sql = `SELECT COUNT("title") AS "totalData" FROM "movies" WHERE title LIKE $1 AND date_part('year', "releaseDate")::VARCHAR = COALESCE(NULLIF($3,''), date_part('year', CURRENT_DATE)::VARCHAR) AND date_part('month', "releaseDate")::VARCHAR = COALESCE(NULLIF($2,''), date_part('month', CURRENT_DATE)::VARCHAR)`;
+    const values = [`%${filter.search}%`, filter.month, filter.year];
+    const result = await poolString.query(sql, values);
+    cb(null, result);
+  } catch (error) {
+    cb(error, null);
+  }
 };
 
-exports.nowShowingMovies = (data, cb) => {
-  const sql = `SELECT
+exports.nowShowingMovies = async (data, cb) => {
+  try {
+    const sql = `SELECT
     m.id,
     m."picture",
     m."title",
@@ -123,13 +154,22 @@ exports.nowShowingMovies = (data, cb) => {
     ms."updatedAt"
     ORDER BY "${data.sortBy}" ${data.sort}
     LIMIT $1 OFFSET $2`;
-  const values = [data.limit, data.offset];
-  return poolString.query(sql, values, cb);
+    const values = [data.limit, data.offset];
+    const result = await poolString.query(sql, values);
+    cb(null, result);
+  } catch (error) {
+    cb(error, null);
+  }
 };
 
-exports.countAllNowShowingMovies = (filter, cb) => {
-  const sql = `SELECT COUNT("title") AS "totalData" FROM "movies" m
+exports.countAllNowShowingMovies = async (filter, cb) => {
+  try {
+    const sql = `SELECT COUNT("title") AS "totalData" FROM "movies" m
   INNER JOIN "movieSchedules" mS on m.id = mS."movieId"
   WHERE CURRENT_DATE BETWEEN mS."startDate" AND mS."endDate"`;
-  return poolString.query(sql, cb);
+    const result = await poolString.query(sql);
+    cb(null, result);
+  } catch (error) {
+    cb(error, null);
+  }
 };

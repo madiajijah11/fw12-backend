@@ -24,8 +24,13 @@ exports.deleteResetPassword = (id, cb) => {
   return poolString.query(sql, values, cb);
 };
 
-exports.selectEmailAndCode = (data, cb) => {
-  const sql = `SELECT * FROM "resetPassword" WHERE "email" = $1 AND "code" = $2`;
-  const values = [data.email, data.code];
-  return poolString.query(sql, values, cb);
+exports.selectEmailAndCode = async (data, cb) => {
+  try {
+    const sql = `SELECT * FROM "resetPassword" WHERE "email" = $1 AND "code" = $2`;
+    const values = [data.email, data.code];
+    const result = await poolString.query(sql, values);
+    cb(null, result.rows[0]);
+  } catch (error) {
+    cb(error, null);
+  }
 };
