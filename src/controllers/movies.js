@@ -12,7 +12,7 @@ const {
 } = require("../models/movies");
 const { errorHandling } = require("../helpers/errorHandler");
 const filter = require("../helpers/filter");
-const response = require("../helpers/response");
+const responseHandler = require("../helpers/responseHandler");
 const { body, validationResult } = require("express-validator");
 
 exports.getMovies = (req, res) => {
@@ -22,7 +22,7 @@ exports.getMovies = (req, res) => {
       if (err) {
         return errorHandling(err, res);
       }
-      return response(
+      return responseHandler(
         200,
         true,
         "Movies retrieved successfully",
@@ -40,9 +40,9 @@ exports.getMovie = (req, res) => {
       return errorHandling(err, res);
     }
     if (result.rows < 1) {
-      return response(404, false, "Data not found", null, null, res);
+      return responseHandler(404, false, "Data not found", null, null, res);
     } else {
-      return response(
+      return responseHandler(
         200,
         true,
         "Movie retrieved successfully",
@@ -57,7 +57,7 @@ exports.getMovie = (req, res) => {
 exports.createMovie = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return response(
+    return responseHandler(
       400,
       false,
       "All fields must be filled",
@@ -66,11 +66,12 @@ exports.createMovie = (req, res) => {
       res
     );
   }
+  req.body.picture = req.file.filename;
   createMovie(req.body, (err, result) => {
     if (err) {
       return errorHandling(err, res);
     }
-    return response(
+    return responseHandler(
       201,
       true,
       "Movie created successfully",
@@ -82,14 +83,26 @@ exports.createMovie = (req, res) => {
 };
 
 exports.updateMovie = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return responseHandler(
+      400,
+      false,
+      "All fields must be filled",
+      null,
+      errors.array(),
+      res
+    );
+  }
+  req.body.picture = req.file.filename;
   updateMovie(req.params.id, req.body, (err, result) => {
     if (err) {
       return errorHandling(err, res);
     }
     if (result.rows < 1) {
-      return response(404, false, "Data not found", null, null, res);
+      return responseHandler(404, false, "Data not found", null, null, res);
     }
-    return response(
+    return responseHandler(
       201,
       true,
       "Movie updated successfully",
@@ -106,9 +119,9 @@ exports.deleteMovie = (req, res) => {
       return errorHandling(err, res);
     }
     if (result.rows < 1) {
-      return response(404, false, "Data not found", null, null, res);
+      return responseHandler(404, false, "Data not found", null, null, res);
     }
-    return response(
+    return responseHandler(
       200,
       true,
       "Movie deleted successfully",
@@ -131,7 +144,7 @@ exports.upComingMovies = (req, res) => {
         if (err) {
           return errorHandling(err, res);
         }
-        return response(
+        return responseHandler(
           200,
           true,
           "Upcoming movies retrieved successfully",
@@ -156,7 +169,7 @@ exports.nowShowingMovies = (req, res) => {
         if (err) {
           return errorHandling(err, res);
         }
-        return response(
+        return responseHandler(
           200,
           true,
           "Now showing movies retrieved successfully",

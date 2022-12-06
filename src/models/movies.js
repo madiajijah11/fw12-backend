@@ -93,7 +93,7 @@ exports.upComingMovies = async (data, cb) => {
     m."createdAt"
     FROM movies m
     LEFT JOIN "movieGenre" mG ON m.id = mG."movieId"
-    LEFT JOIN "genres" g ON m.id = g.id
+    LEFT JOIN "genres" g ON mG."genreId" = g.id
     WHERE m."title" LIKE $5 AND
     date_part('year', m."releaseDate")::VARCHAR = COALESCE(NULLIF($2,''), date_part('year', CURRENT_DATE)::VARCHAR)
     AND

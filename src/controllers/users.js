@@ -42,6 +42,7 @@ exports.getUser = (req, res) => {
 };
 
 exports.createUser = (req, res) => {
+  console.log(req.body);
   createUser(req.body, (err, result) => {
     if (err) {
       return errorHandling(err, res);

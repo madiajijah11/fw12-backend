@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const { errorHandling } = require("../helpers/errorHandler");
 const fx = require("fs-extra");
 const fs = require("fs");
+const responseHandler = require("../helpers/responseHandler");
 
 exports.userProfile = (req, res) => {
   const authorization = req.headers.authorization;
@@ -33,28 +34,27 @@ exports.updateUserProfile = (req, res) => {
     if (req.file) {
       req.body.picture = req.file.filename;
       const [user] = result.rows;
-      if (result.rows.length) {
-        fx.ensureFile(`./uploads/${user.picture}`, (err) => {
-          if (err) {
-            return errorHandling(err, res);
-          }
-          fs.rm(`./uploads/${user.picture}`, (err) => {
-            if (err) {
-              return errorHandling(err, res);
-            }
-          });
-        });
+      // check if data not null
+      if (user.picture) {
+        // check if file exist
+        if (fs.existsSync(`uploads/${user.picture}`)) {
+          // delete file
+          fs.unlinkSync(`uploads/${user.picture}`);
+        }
       }
-    }
-    updateUser(id, req.body, (err, result) => {
-      if (err) {
-        return errorHandling(err, res);
-      }
-      return res.status(200).json({
-        success: true,
-        message: "User profile updated",
-        data: result.rows[0],
+      updateUser(id, req.body, (err, result) => {
+        if (err) {
+          return errorHandling(err, res);
+        }
+        return responseHandler(
+          200,
+          true,
+          "User updated successfully",
+          null,
+          result,
+          res
+        );
       });
-    });
+    }
   });
 };

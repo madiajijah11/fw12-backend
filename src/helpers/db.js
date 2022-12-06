@@ -9,7 +9,7 @@ const pool = new Pool({
 });
 
 const poolString = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: "postgres://postgres:1@localhost:5432/mexl_cinema",
 });
 
 module.exports = { pool, poolString };

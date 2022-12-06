@@ -8,12 +8,12 @@ const {
 } = require("../models/resetPassword");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
-const response = require("../helpers/response");
+const responseHandler = require("../helpers/responseHandler");
 
 exports.register = (req, res) => {
   const validationError = validationResult(req);
   if (!validationError.isEmpty()) {
-    return response(
+    return responseHandler(
       400,
       false,
       "All fields must be filled",
@@ -32,7 +32,14 @@ exports.register = (req, res) => {
       return errorHandling(err, res);
     }
     if (rows.length) {
-      return response(409, false, "Email already registered", null, null, res);
+      return responseHandler(
+        409,
+        false,
+        "Email already registered",
+        null,
+        null,
+        res
+      );
     } else {
       createUser(data, (err, data) => {
         if (err) {
@@ -41,7 +48,14 @@ exports.register = (req, res) => {
         const { rows: users } = data;
         const [user] = users;
         const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY);
-        return response(201, true, "Register success", null, { token }, res);
+        return responseHandler(
+          201,
+          true,
+          "Register success",
+          null,
+          { token },
+          res
+        );
       });
     }
   });
@@ -50,7 +64,7 @@ exports.register = (req, res) => {
 exports.login = (req, res) => {
   const validationError = validationResult(req);
   if (!validationError.isEmpty()) {
-    return response(
+    return responseHandler(
       400,
       false,
       "All fields must be filled",
@@ -67,9 +81,16 @@ exports.login = (req, res) => {
       const [user] = rows;
       if (bcrypt.compareSync(req.body.password, user.password)) {
         const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY);
-        return response(200, true, "Login success", null, { token }, res);
+        return responseHandler(
+          200,
+          true,
+          "Login success",
+          null,
+          { token },
+          res
+        );
       } else {
-        return response(
+        return responseHandler(
           400,
           false,
           "Invalid email or password",
@@ -79,7 +100,14 @@ exports.login = (req, res) => {
         );
       }
     } else {
-      return response(400, false, "Invalid email or password", null, null, res);
+      return responseHandler(
+        400,
+        false,
+        "Invalid email or password",
+        null,
+        null,
+        res
+      );
     }
   });
 };
@@ -87,7 +115,7 @@ exports.login = (req, res) => {
 exports.forgotPassword = (req, res) => {
   const validationError = validationResult(req);
   if (!validationError.isEmpty()) {
-    return response(
+    return responseHandler(
       400,
       false,
       "All fields must be filled",
@@ -112,11 +140,18 @@ exports.forgotPassword = (req, res) => {
           return errorHandling(err, res);
         }
         if (data.rows.length) {
-          return response(200, true, "Request has been sent", null, null, res);
+          return responseHandler(
+            200,
+            true,
+            "Request has been sent",
+            null,
+            null,
+            res
+          );
         }
       });
     } else {
-      return response(404, false, "User not found", null, null, res);
+      return responseHandler(404, false, "User not found", null, null, res);
     }
   });
 };
@@ -124,7 +159,7 @@ exports.forgotPassword = (req, res) => {
 exports.resetPassword = (req, res) => {
   const validationError = validationResult(req);
   if (!validationError.isEmpty()) {
-    return response(
+    return responseHandler(
       400,
       false,
       "All fields must be filled",
@@ -151,7 +186,7 @@ exports.resetPassword = (req, res) => {
                 return errorHandling(err, res);
               }
               if (data.rows.length) {
-                return response(
+                return responseHandler(
                   200,
                   true,
                   "Password has been changed",
@@ -164,7 +199,7 @@ exports.resetPassword = (req, res) => {
           }
         });
       } else {
-        return response(
+        return responseHandler(
           404,
           false,
           "Wrong email or invalid code",
@@ -175,6 +210,6 @@ exports.resetPassword = (req, res) => {
       }
     });
   } else {
-    return response(406, false, "Password not match", null, null, res);
+    return responseHandler(406, false, "Password not match", null, null, res);
   }
 };
