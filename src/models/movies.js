@@ -18,6 +18,9 @@ exports.getMovies = async (filter, cb) => {
     m."title",
     m."picture",
     string_agg(g.name, ', ') as "genre",
+    m."duration",
+    m."director",
+    m."synopsis",
     m."releaseDate",
     m."createdAt",
     m."updatedAt"
@@ -25,7 +28,7 @@ exports.getMovies = async (filter, cb) => {
     LEFT JOIN "movieGenre" mG ON m.id = mG."movieId"
     LEFT JOIN "genres" g ON mG."genreId" = g.id
     WHERE m."title" LIKE $3
-    GROUP BY m.id, m."title", m."picture", m."releaseDate", m."createdAt", m."updatedAt"
+    GROUP BY m.id, m."title", m."picture", m."duration", m."director", m."synopsis", m."releaseDate", m."createdAt", m."updatedAt"
     ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $1 OFFSET $2`;
     const values = [filter.limit, filter.offset, `%${filter.search}%`];
     const result = await poolString.query(sql, values);
@@ -102,8 +105,12 @@ exports.upComingMovies = async (data, cb) => {
     m."title",
     m."picture",
     m."releaseDate",
+    m."duration",
+    m."director",
+    m."synopsis",
     string_agg(g.name, ', ') as "genre",
-    m."createdAt"
+    m."createdAt",
+    m."updatedAt"
     FROM movies m
     LEFT JOIN "movieGenre" mG ON m.id = mG."movieId"
     LEFT JOIN "genres" g ON mG."genreId" = g.id
@@ -111,7 +118,7 @@ exports.upComingMovies = async (data, cb) => {
     date_part('year', m."releaseDate")::VARCHAR = COALESCE(NULLIF($2,''), date_part('year', CURRENT_DATE)::VARCHAR)
     AND
     date_part('month', m."releaseDate")::VARCHAR = COALESCE(NULLIF($1,''), date_part('month', CURRENT_DATE)::VARCHAR)
-    GROUP BY m.id, m."title", m."picture", m."releaseDate", m."createdAt"
+    GROUP BY m.id, m."title", m."picture", m."releaseDate", m."duration", m."director", m."synopsis", m."createdAt", m."updatedAt"
     ORDER BY "${data.sortBy}" ${data.sort}
     LIMIT $3 OFFSET $4`;
     const values = [
@@ -146,6 +153,10 @@ exports.nowShowingMovies = async (data, cb) => {
     m."picture",
     m."title",
     string_agg(g."name", ', ') as "genre",
+    m."releaseDate",
+    m."duration",
+    m."director",
+    m."synopsis",
     mS."startDate",
     ms."endDate",
     ms."createdAt",
@@ -161,6 +172,11 @@ exports.nowShowingMovies = async (data, cb) => {
     GROUP BY
     m.id,
     m."title",
+    m."picture",
+    m."releaseDate",
+    m."duration",
+    m."director",
+    m."synopsis",
     mS."startDate",
     ms."endDate",
     ms."createdAt",
