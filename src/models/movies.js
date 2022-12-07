@@ -13,7 +13,20 @@ exports.countAllMovies = async (filter, cb) => {
 
 exports.getMovies = async (filter, cb) => {
   try {
-    const sql = `SELECT * FROM movies WHERE title LIKE $3 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $1 OFFSET $2`;
+    const sql = `SELECT
+    m.id,
+    m."title",
+    m."picture",
+    string_agg(g.name, ', ') as "genre",
+    m."releaseDate",
+    m."createdAt",
+    m."updatedAt"
+    FROM movies m
+    LEFT JOIN "movieGenre" mG ON m.id = mG."movieId"
+    LEFT JOIN "genres" g ON mG."genreId" = g.id
+    WHERE m."title" LIKE $3
+    GROUP BY m.id, m."title", m."picture", m."releaseDate", m."createdAt", m."updatedAt"
+    ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $1 OFFSET $2`;
     const values = [filter.limit, filter.offset, `%${filter.search}%`];
     const result = await poolString.query(sql, values);
     cb(null, result);

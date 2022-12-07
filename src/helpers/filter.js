@@ -5,7 +5,7 @@ const filter = (data, sortables, pageInfoModel, res, cb) => {
   data.limit = parseInt(data.limit) || 5;
   data.search = data.search || "";
   data.sortBy = (sortables.includes(data.sortBy) && data.sortBy) || "createdAt";
-  data.sort = data.sort || "DESC";
+  data.sort = data.sort || "ASC";
   data.month = data.month || "";
   data.year = data.year || "";
 
