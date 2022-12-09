@@ -1,5 +1,6 @@
 const cinemasRoutes = require("express").Router();
 const cinemasController = require("../controllers/cinemas");
+const uploadImages = require("../middlewares/upload");
 
 cinemasRoutes.get("/", cinemasController.getCinemas);
 cinemasRoutes.get("/:id", cinemasController.getCinema);
