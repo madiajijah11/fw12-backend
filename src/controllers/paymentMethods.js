@@ -20,6 +20,7 @@ exports.getPaymentMethods = (req, res) => {
 };
 
 exports.createPaymentMethods = (req, res) => {
+  req.body.picture = req.file.filename;
   createPaymentMethods(req.body, (err, result) => {
     if (err) {
       return errorHandling(err, res);
