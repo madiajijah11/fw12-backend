@@ -13,7 +13,7 @@ const {
 const { errorHandling } = require("../helpers/errorHandler");
 const filter = require("../helpers/filter");
 const responseHandler = require("../helpers/responseHandler");
-const { body, validationResult } = require("express-validator");
+const { validationResult } = require("express-validator");
 
 exports.getMovies = (req, res) => {
   const sortables = ["title", "createdAt", "updatedAt"];

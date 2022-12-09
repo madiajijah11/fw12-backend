@@ -20,6 +20,7 @@ exports.getMovies = async (filter, cb) => {
     string_agg(g.name, ', ') as "genre",
     m."duration",
     m."director",
+    string_agg(c.name, ', ') as "cast",
     m."synopsis",
     m."releaseDate",
     m."createdAt",
@@ -27,6 +28,8 @@ exports.getMovies = async (filter, cb) => {
     FROM movies m
     LEFT JOIN "movieGenre" mG ON m.id = mG."movieId"
     LEFT JOIN "genres" g ON mG."genreId" = g.id
+    LEFT JOIN "movieCast" mC ON m.id = mC."movieId"
+    LEFT JOIN "casts" c ON mC."castId" = c.id
     WHERE m."title" LIKE $3
     GROUP BY m.id, m."title", m."picture", m."duration", m."director", m."synopsis", m."releaseDate", m."createdAt", m."updatedAt"
     ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $1 OFFSET $2`;
@@ -40,7 +43,25 @@ exports.getMovies = async (filter, cb) => {
 
 exports.getMovie = async (id, cb) => {
   try {
-    const sql = "SELECT * FROM movies WHERE id = $1";
+    const sql = `SELECT
+    m.id,
+    m."title",
+    m."picture",
+    string_agg(g.name, ', ') as "genre",
+    m."duration",
+    m."director",
+    string_agg(c.name, ', ') as "cast",
+    m."synopsis",
+    m."releaseDate",
+    m."createdAt",
+    m."updatedAt"
+    FROM movies m
+    LEFT JOIN "movieGenre" mG ON m.id = mG."movieId"
+    LEFT JOIN "genres" g ON mG."genreId" = g.id
+    LEFT JOIN "movieCast" mC ON m.id = mC."movieId"
+    LEFT JOIN "casts" c ON mC."castId" = c.id
+    WHERE m.id = $1
+    GROUP BY m.id, m."title", m."picture", m."duration", m."director", m."synopsis", m."releaseDate", m."createdAt", m."updatedAt"`;
     const values = [id];
     const result = await poolString.query(sql, values);
     cb(null, result);
