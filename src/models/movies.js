@@ -191,6 +191,7 @@ exports.nowShowingMovies = async (data, cb) => {
     JOIN "genres" g ON mG."genreId" = g."id"
     JOIN "movieCast" mC ON m."id" = mC."movieId"
     JOIN "casts" c ON mC."castId" = c."id"
+    JOIN "movieSchedules" mS on m."id" = mS."movieId"
     WHERE CURRENT_DATE BETWEEN
     mS."startDate"
     AND
