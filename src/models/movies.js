@@ -56,10 +56,10 @@ exports.getMovie = async (id, cb) => {
     m."createdAt",
     m."updatedAt"
     FROM "movies" m
-    INNER JOIN "movieGenre" mG ON m."id" = mG."movieId"
-    INNER JOIN "genres" g ON mG."genreId" = g."id"
-    INNER JOIN "movieCast" mC ON m."id" = mC."movieId"
-    INNER JOIN "casts" c ON mC."castId" = c."id"
+    JOIN "movieGenre" mG ON m."id" = mG."movieId"
+    JOIN "genres" g ON mG."genreId" = g."id"
+    JOIN "movieCast" mC ON m."id" = mC."movieId"
+    JOIN "casts" c ON mC."castId" = c."id"
     WHERE m."id" = $1
     GROUP BY m."id", m."title", m."picture", m."duration", m."director", m."synopsis", m."releaseDate", m."createdAt", m."updatedAt"`;
     const values = [id];
@@ -122,19 +122,22 @@ exports.deleteMovie = async (id, cb) => {
 exports.upComingMovies = async (data, cb) => {
   try {
     const sql = `SELECT
-    m.id,
+    m."id",
     m."title",
     m."picture",
-    m."releaseDate",
+    string_agg(DISTINCT g."name", ', ') as "genre",
     m."duration",
     m."director",
+    string_agg(DISTINCT c."name", ', ') as "cast",
     m."synopsis",
-    string_agg(g.name, ', ') as "genre",
+    m."releaseDate",
     m."createdAt",
     m."updatedAt"
     FROM movies m
-    LEFT JOIN "movieGenre" mG ON m.id = mG."movieId"
-    LEFT JOIN "genres" g ON mG."genreId" = g.id
+    JOIN "movieGenre" mG ON m."id" = mG."movieId"
+    JOIN "genres" g ON mG."genreId" = g."id"
+    JOIN "movieCast" mC ON m."id" = mC."movieId"
+    JOIN "casts" c ON mC."castId" = c."id"
     WHERE m."title" LIKE $5 AND
     date_part('year', m."releaseDate")::VARCHAR = COALESCE(NULLIF($2,''), date_part('year', CURRENT_DATE)::VARCHAR)
     AND
@@ -170,22 +173,24 @@ exports.countAllUpcomingMovies = async (filter, cb) => {
 exports.nowShowingMovies = async (data, cb) => {
   try {
     const sql = `SELECT
-    m.id,
-    m."picture",
+    m."id",
     m."title",
-    string_agg(g."name", ', ') as "genre",
-    m."releaseDate",
+    m."picture",
+    string_agg(DISTINCT g."name", ', ') as "genre",
     m."duration",
     m."director",
+    string_agg(DISTINCT c."name", ', ') as "cast",
     m."synopsis",
+    m."releaseDate",
     mS."startDate",
     ms."endDate",
     ms."createdAt",
     ms."updatedAt"
     from "movies" m
-    LEFT JOIN "movieGenre" mG on m.id = mG."movieId"
-    LEFT JOIN "genres" g on mG."genreId" = g.id
-    LEFT JOIN "movieSchedules" mS on m.id = mS."movieId"
+    JOIN "movieGenre" mG ON m."id" = mG."movieId"
+    JOIN "genres" g ON mG."genreId" = g."id"
+    JOIN "movieCast" mC ON m."id" = mC."movieId"
+    JOIN "casts" c ON mC."castId" = c."id"
     WHERE CURRENT_DATE BETWEEN
     mS."startDate"
     AND
@@ -215,7 +220,7 @@ exports.nowShowingMovies = async (data, cb) => {
 exports.countAllNowShowingMovies = async (filter, cb) => {
   try {
     const sql = `SELECT COUNT("title") AS "totalData" FROM "movies" m
-  INNER JOIN "movieSchedules" mS on m.id = mS."movieId"
+  JOIN "movieSchedules" mS on m.id = mS."movieId"
   WHERE CURRENT_DATE BETWEEN mS."startDate" AND mS."endDate"`;
     const result = await poolString.query(sql);
     cb(null, result);
