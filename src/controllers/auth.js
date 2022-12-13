@@ -55,7 +55,15 @@ exports.register = (req, res) => {
           true,
           "Register success",
           null,
-          { token },
+          {
+            id: user.id,
+            picture: user.picture,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            phoneNumber: user.phoneNumber,
+            email: user.email,
+            token,
+          },
           res
         );
       });
@@ -90,7 +98,15 @@ exports.login = (req, res) => {
           true,
           "Login success",
           null,
-          { token },
+          {
+            id: user.id,
+            picture: user.picture,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            phoneNumber: user.phoneNumber,
+            email: user.email,
+            token,
+          },
           res
         );
       } else {
