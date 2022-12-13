@@ -47,21 +47,9 @@ exports.register = (req, res) => {
         }
         const { rows: users } = data;
         const [user] = users;
-        const token = jwt.sign(
-          {
-            id: user.id,
-            picture: user.picture,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            phoneNumber: user.phoneNumber,
-            roleId: user.roleId,
-          },
-          process.env.SECRET_KEY,
-          {
-            expiresIn: "1d",
-          }
-        );
+        const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
+          expiresIn: "1d",
+        });
         return responseHandler(
           201,
           true,
@@ -94,21 +82,9 @@ exports.login = (req, res) => {
     if (rows.length) {
       const [user] = rows;
       if (bcrypt.compareSync(req.body.password, user.password)) {
-        const token = jwt.sign(
-          {
-            id: user.id,
-            picture: user.picture,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            phoneNumber: user.phoneNumber,
-            email: user.email,
-            roleId: user.roleId,
-          },
-          process.env.SECRET_KEY,
-          {
-            expiresIn: "1d",
-          }
-        );
+        const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
+          expiresIn: "1d",
+        });
         return responseHandler(
           200,
           true,
