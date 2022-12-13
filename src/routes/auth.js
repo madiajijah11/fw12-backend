@@ -13,7 +13,6 @@ authRoutes.post(
   body("lastName").notEmpty().withMessage("Last name is required"),
   body("phoneNumber")
     .notEmpty()
-    .isMobilePhone()
     .withMessage("Phone number is required, and must be a valid phone number"),
   body("email").isEmail().normalizeEmail().withMessage("Email must be valid"),
   body("password")
