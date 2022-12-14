@@ -198,30 +198,6 @@ exports.getScheduleByMovieId = (req, res) => {
       if (err) {
         return errorHandling(err, res);
       }
-      if (result.rows < 1) {
-        return responseHandler(404, false, "Data not found", null, null, res);
-      } else {
-        return responseHandler(
-          200,
-          true,
-          "Schedule retrieved successfully",
-          null,
-          result.rows,
-          res
-        );
-      }
-    }
-  );
-};
-
-exports.getScheduleByCity = (req, res) => {
-  getScheduleByCity(req.params.id, req.query.date, (err, result) => {
-    if (err) {
-      return errorHandling(err, res);
-    }
-    if (result.rows < 1) {
-      return responseHandler(404, false, "Data not found", null, null, res);
-    } else {
       return responseHandler(
         200,
         true,
@@ -231,6 +207,22 @@ exports.getScheduleByCity = (req, res) => {
         res
       );
     }
+  );
+};
+
+exports.getScheduleByCity = (req, res) => {
+  getScheduleByCity(req.params.id, req.query.date, (err, result) => {
+    if (err) {
+      return errorHandling(err, res);
+    }
+    return responseHandler(
+      200,
+      true,
+      "Schedule retrieved successfully",
+      null,
+      result.rows,
+      res
+    );
   });
 };
 
@@ -239,17 +231,13 @@ exports.bookedSeats = (req, res) => {
     if (err) {
       return errorHandling(err, res);
     }
-    if (result.rows < 1) {
-      return responseHandler(404, false, "Data not found", null, null, res);
-    } else {
-      return responseHandler(
-        200,
-        true,
-        "Booked seats retrieved successfully",
-        null,
-        result.rows,
-        res
-      );
-    }
+    return responseHandler(
+      200,
+      true,
+      "Booked seats retrieved successfully",
+      null,
+      result.rows,
+      res
+    );
   });
 };
