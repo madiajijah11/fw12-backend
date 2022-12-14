@@ -59,38 +59,119 @@ exports.deleteTransactions = (id, cb) => {
 };
 
 exports.checkout = async (data, cb) => {
+  console.log(data);
+  const client = poolString.trClient();
   try {
-    await poolString.query("BEGIN");
+    await client.connect();
+    await client.query("BEGIN");
 
-    const insertTransaction =
-      'INSERT INTO "transactions" ("userId", "bookingDate", "movieId", "cinemaId", "movieScheduleId", "fullName", "email", "phoneNumber", "statusId", "paymentMethodId") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING "bookingDate", "fullName", "email", "phoneNumber"';
-    const sqlTransaction = await poolString.query(insertTransaction, [
+    console.log("ok");
+    console.log(data.bookingDate, data.bookingTime, data.seatNum);
+    const selectCheckSeat = `
+    SELECT 1 FROM "reserveSeats" WHERE "bookingDate" = $1
+    AND "bookingTime" = $2 AND "seatNum" = ANY (string_to_array($3, ','));`;
+    const selectSeatValues = [data.bookingDate, data.bookingTime, data.seatNum];
+    const sqlCheckSeat = await client.query(selectCheckSeat, selectSeatValues);
+
+    console.log(sqlCheckSeat);
+
+    if (sqlCheckSeat.rows.length) {
+      await client.query("ROLLBACK");
+      return cb(null, {
+        message: "Seat is already reserved",
+      });
+    }
+
+    console.log("ok1");
+
+    const insertTransaction = `INSERT INTO "transactions"
+      ("userId", "fullName", "email", "phoneNumber", "paymentMethodId")
+      VALUES ($1,$2,$3,$4,$5) RETURNING *`;
+    const transactionValues = [
       data.userId,
-      data.bookingDate,
-      data.movieId,
-      data.cinemaId,
-      data.movieScheduleId,
       data.fullName,
       data.email,
       data.phoneNumber,
-      data.statusId,
       data.paymentMethodId,
-    ]);
+    ];
+    const sqlTransaction = await client.query(
+      insertTransaction,
+      transactionValues
+    );
+    console.log(sqlTransaction);
 
-    const insertSeatNum =
-      'INSERT INTO "reserveSeats" ("seatNum", "transactionId") VALUES ($1,$2) RETURNING "seatNum"';
-    const insertSeatNumValues = [data.seatNum, sqlTransaction.rows[0].id];
-    const sqlSeat = await poolString.query(insertSeatNum, insertSeatNumValues);
+    if (!sqlTransaction.rows.length) {
+      await client.query("ROLLBACK");
+      return cb(null, {
+        message: "Failed to create transaction",
+      });
+    }
 
-    await poolString.query("COMMIT");
+    const insertSeat =
+      'INSERT INTO "reserveSeats" ("seatNum", "bookingDate", "bookingTime", "movieId", "cinemaId", "transactionId") VALUES ($1,$2,$3,$4,$5,$6)';
+    const seats = data.seatNum.split(", ").map((seat) => {
+      client.query(insertSeat, [
+        seat,
+        data.bookingDate,
+        data.bookingTime,
+        data.movieId,
+        data.cinemaId,
+        sqlTransaction.rows[0].id,
+      ]);
+    });
 
-    const result = {
-      transaction: sqlTransaction.rows[0],
-      seat: sqlSeat.rows[0],
-    };
-    cb(null, result);
+    await Promise.all(seats);
+    await client.query("COMMIT");
+    await client.end();
+    cb(null, sqlTransaction.rows[0]);
   } catch (err) {
-    await poolString.query("ROLLBACK");
+    await client.query("ROLLBACK");
+    await client.end();
     cb(err, null);
   }
 };
+
+exports.transactionHistory = async (id, cb) => {
+  try {
+    const sql = `
+    SELECT t.id, m.title, rs."bookingDate", rs."bookingTime",
+    c.name as "cinemaName", c.picture as "cinemaPicture"
+    FROM transactions t
+    JOIN "reserveSeats" rs ON rs."transactionId" = t.id
+    JOIN movies m on rs."movieId" = m.id
+    JOIN cinemas c on rs."cinemaId" = c.id
+    WHERE t."userId" = $1
+    GROUP BY t.id, m.title, rs."bookingDate", rs."bookingTime", c.name, c.picture`;
+    const values = [id];
+    const result = await poolString.query(sql, values);
+    console.log(result.rows);
+    cb(null, result.rows);
+  } catch (err) {
+    cb(err, null);
+  }
+};
+
+exports.ticketDetails = async (id, cb) => {
+  try {
+    const sql = `
+    SELECT m.title, string_agg(g.name, ',') as genres,
+    array_length(string_to_array(string_agg(DISTINCT rS."seatNum", ','), ','), 1) * (mS.price) as "totalPayment",
+    string_to_array(string_agg(DISTINCT rS."seatNum", ','), ', ') as seats,
+    rS."bookingTime", rS."bookingDate",
+    c.name as "cinemaName", c.picture as "cinemaPicture"
+    FROM transactions t
+    JOIN "reserveSeats" rS on t.id = rS."transactionId"
+    JOIN movies m on m.id = rS."movieId"
+    JOIN "movieGenre" mG ON m.id = mG."movieId"
+    JOIN genres g on mG."genreId" = g.id
+    JOIN "movieSchedules" mS ON m.id = mS."movieId"
+    JOIN cinemas c ON rS."cinemaId" = c.id
+    WHERE t.id = $1
+    GROUP BY m.title, rS."bookingTime", rS."bookingDate", c.name, c.picture, mS.price`;
+    const values = [id];
+    const result = await poolString.query(sql, values);
+    cb(null, result.rows);
+  } catch (err) {
+    cb(err, null);
+  }
+}

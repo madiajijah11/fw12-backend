@@ -7,7 +7,10 @@ const uploadImage = require("../middlewares/upload");
 moviesRoutes.get("/", movieController.getMovies);
 moviesRoutes.get("/upcoming", movieController.upComingMovies);
 moviesRoutes.get("/nowShowing", movieController.nowShowingMovies);
+moviesRoutes.get("/bookedSeats", movieController.bookedSeats);
 moviesRoutes.get("/:id", movieController.getMovie);
+moviesRoutes.get("/:id/schedules/city", movieController.getScheduleByCity);
+moviesRoutes.get("/:id/schedules", movieController.getScheduleByMovieId);
 moviesRoutes.post(
   "/",
   auth,

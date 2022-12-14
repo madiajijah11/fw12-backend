@@ -25,10 +25,16 @@ exports.createCinemas = (data, cb) => {
   return poolString.query(sql, values, cb);
 };
 
-exports.updateCinemas = (id, data, cb) => {
-  const sql = `UPDATE "cinemas" SET "picture" = COALESCE(NULLIF($1, ''), "picture"), "name" = COALESCE(NULLIF($2, ''), "name"), "address" = COALESCE(NULLIF($3, ''), "address"), "city" = COALESCE(NULLIF($4, ''), "city) WHERE id = $5 RETURNING *`;
-  const values = [data.picture, data.name, data.address, data.city, id];
-  return poolString.query(sql, values, cb);
+exports.updateCinemas = async (id, data, cb) => {
+  try {
+    const sql = `UPDATE "cinemas" SET "picture" = COALESCE(NULLIF($1, ''), "picture"), "name" = COALESCE(NULLIF($2, ''), "name"), "address" = COALESCE(NULLIF($3, ''), "address"), "city" = COALESCE(NULLIF($4, ''), "city") WHERE id = $5 RETURNING *`;
+    const values = [data.picture, data.name, data.address, data.city, id];
+    const result = await poolString.query(sql, values);
+    console.log(result);
+    cb(null, result);
+  } catch (err) {
+    cb(err, null)
+  }
 };
 
 exports.deleteCinemas = (id, cb) => {

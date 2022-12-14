@@ -8,6 +8,7 @@ const {
 } = require("../models/cinemas");
 const { errorHandling } = require("../helpers/errorHandler");
 const filter = require("../helpers/filter");
+const responseHandler = require("../helpers/responseHandler");
 
 exports.getCinemas = (req, res) => {
   const sortables = ["name", "createdAt", "updatedAt"];
@@ -40,7 +41,9 @@ exports.getCinema = (req, res) => {
 };
 
 exports.createCinemas = (req, res) => {
-  req.body.picture = req.file.filename;
+  if (req.file) {
+    req.body.picture = req.file.filename;
+  }
   createCinemas(req.body, (err, result) => {
     if (err) {
       return errorHandling(err, res);
@@ -54,15 +57,21 @@ exports.createCinemas = (req, res) => {
 };
 
 exports.updateCinemas = (req, res) => {
+  if (req.file) {
+    req.body.picture = req.file.filename;
+  }
   updateCinemas(req.params.id, req.body, (err, result) => {
     if (err) {
       return errorHandling(err, res);
     }
-    return res.status(200).json({
-      success: true,
-      message: "Cinema updated successfully",
-      data: result.rows[0],
-    });
+    return responseHandler(
+      200,
+      true,
+      "Cinema updated successfully",
+      null,
+      result.rows[0],
+      res
+    );
   });
 };
 

@@ -6,10 +6,13 @@ const {
   updateTransactions,
   deleteTransactions,
   checkout,
+  transactionHistory,
+  ticketDetails,
 } = require("../models/transactions");
 const { errorHandling } = require("../helpers/errorHandler");
 const filter = require("../helpers/filter");
 const jwt = require("jsonwebtoken");
+const responseHandler = require("../helpers/responseHandler");
 
 exports.getTransactions = (req, res) => {
   const sortables = ["fullName", "createdAt", "updatedAt"];
@@ -88,17 +91,17 @@ exports.checkout = (req, res) => {
   const transaction = {
     userId: id,
     bookingDate: req.body.bookingDate,
+    bookingTime: req.body.bookingTime,
     movieId: req.body.movieId,
     cinemaId: req.body.cinemaId,
-    movieScheduleId: req.body.movieScheduleId,
     fullName: req.body.fullName,
     email: req.body.email,
     phoneNumber: req.body.phoneNumber,
-    statusId: req.body.statusId,
     paymentMethodId: req.body.paymentMethodId,
     seatNum: req.body.seatNum,
   };
   checkout(transaction, (err, result) => {
+    console.log(err);
     if (err) {
       return errorHandling(err, res);
     }
@@ -107,5 +110,41 @@ exports.checkout = (req, res) => {
       message: "Transaction checkout successfully",
       data: result,
     });
+  });
+};
+
+exports.transactionHistory = (req, res) => {
+  const authorization = req.headers.authorization;
+  const token = authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.SECRET_KEY);
+  const { id } = decoded;
+  transactionHistory(id, (err, result) => {
+    if (err) {
+      return errorHandling(err, res);
+    }
+    return responseHandler(
+      200,
+      true,
+      "Transaction history retrieved successfully",
+      null,
+      result,
+      res
+    );
+  });
+};
+
+exports.ticketDetails = (req, res) => {
+  ticketDetails(req.params.id, (err, result) => {
+    if (err) {
+      return errorHandling(err, res);
+    }
+    return responseHandler(
+      200,
+      true,
+      "Ticket details retrieved successfully",
+      null,
+      result,
+      res
+    );
   });
 };
