@@ -1,0 +1,188 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model casts {
+  id        Int         @id @default(autoincrement())
+  name      String?     @db.VarChar
+  createdAt DateTime?   @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime?   @default(now()) @db.Timestamptz(6)
+  movieCast movieCast[]
+}
+
+model cinemas {
+  id             Int              @id @default(autoincrement())
+  picture        String?          @db.VarChar
+  name           String?          @db.VarChar
+  address        String?          @db.VarChar
+  city           String?          @db.VarChar
+  createdAt      DateTime?        @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime?        @default(now()) @db.Timestamptz(6)
+  movieSchedules movieSchedules[]
+  reserveSeats   reserveSeats[]
+}
+
+model genres {
+  id         Int          @id @default(autoincrement())
+  name       String?      @db.VarChar
+  createdAt  DateTime?    @default(now()) @db.Timestamptz(6)
+  updatedAt  DateTime?    @default(now()) @db.Timestamptz(6)
+  movieGenre movieGenre[]
+}
+
+model movieCast {
+  id        Int       @id(map: "movieCasts_pkey") @default(autoincrement())
+  movieId   Int?
+  castId    Int?
+  createdAt DateTime? @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime? @default(now()) @db.Timestamptz(6)
+  casts     casts?    @relation(fields: [castId], references: [id], onDelete: Cascade, map: "movieCast_casts_id_fk")
+  movies    movies?   @relation(fields: [movieId], references: [id], onDelete: Cascade, map: "movieCast_movies_id_fk")
+}
+
+model movieGenre {
+  id        Int       @id @default(autoincrement())
+  movieId   Int?
+  genreId   Int?
+  createdAt DateTime? @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime? @default(now()) @db.Timestamptz(6)
+  genres    genres?   @relation(fields: [genreId], references: [id], onDelete: Cascade, map: "movieGenre_genres_id_fk")
+  movies    movies?   @relation(fields: [movieId], references: [id], onDelete: Cascade, map: "movieGenre_movies_id_fk")
+}
+
+model movieScheduleTimes {
+  id              Int             @id @default(autoincrement())
+  time            DateTime?       @db.Time(6)
+  movieScheduleId Int?
+  createdAt       DateTime?       @default(now()) @db.Timestamptz(6)
+  updatedAt       DateTime?       @default(now()) @db.Timestamptz(6)
+  movieSchedules  movieSchedules? @relation(fields: [movieScheduleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "movieScheduleTimes_movieSchedules_null_fk")
+}
+
+model movieSchedules {
+  id                 Int                  @id @default(autoincrement())
+  movieId            Int?
+  cinemaId           Int?
+  price              Int?
+  startDate          DateTime?            @db.Date
+  endDate            DateTime?            @db.Date
+  createdAt          DateTime?            @default(now()) @db.Timestamptz(6)
+  updatedAt          DateTime?            @default(now()) @db.Timestamptz(6)
+  movieScheduleTimes movieScheduleTimes[]
+  cinemas            cinemas?             @relation(fields: [cinemaId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "movieSchedules_cinemas_null_fk")
+  movies             movies?              @relation(fields: [movieId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "movieSchedules_movies_null_fk")
+}
+
+model movies {
+  id             Int              @id @default(autoincrement())
+  title          String?          @db.VarChar
+  picture        String?          @db.VarChar
+  releaseDate    DateTime?        @db.Date
+  director       String?          @db.VarChar
+  duration       DateTime?        @db.Time(6)
+  synopsis       String?
+  createdAt      DateTime?        @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime?        @default(now()) @db.Timestamptz(6)
+  movieCast      movieCast[]
+  movieGenre     movieGenre[]
+  movieSchedules movieSchedules[]
+  reserveSeats   reserveSeats[]
+}
+
+model paymentMethods {
+  id           Int            @id @default(autoincrement())
+  picture      String?        @db.VarChar
+  name         String?        @db.VarChar
+  createdAt    DateTime?      @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime?      @default(now()) @db.Timestamptz(6)
+  transactions transactions[]
+}
+
+model reserveSeats {
+  id            Int           @id @default(autoincrement())
+  seatNum       String?       @db.VarChar
+  transactionId Int?
+  createdAt     DateTime?     @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime?     @db.Timestamptz(6)
+  bookingDate   DateTime?     @db.Date
+  bookingTime   DateTime?     @db.Time(6)
+  movieId       Int?
+  cinemaId      Int?
+  cinemas       cinemas?      @relation(fields: [cinemaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  movies        movies?       @relation(fields: [movieId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  transactions  transactions? @relation(fields: [transactionId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "reserveSeats_transactions_null_fk")
+}
+
+model resetPassword {
+  id        Int       @id @default(autoincrement())
+  email     String?   @db.VarChar
+  userId    Int?
+  code      String?   @db.VarChar
+  createdAt DateTime? @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime? @default(now()) @db.Timestamptz(6)
+  users     users?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "resetPassword_users_null_fk")
+}
+
+model roles {
+  id        Int       @id @default(autoincrement())
+  name      String?   @db.VarChar
+  createdAt DateTime? @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime? @default(now()) @db.Timestamptz(6)
+  users     users[]
+}
+
+model status {
+  id        Int       @id @default(autoincrement())
+  name      String?   @db.VarChar
+  createdAt DateTime? @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+model subscribers {
+  id        Int       @id @default(autoincrement())
+  email     String?   @unique(map: "subscribers_pk") @db.VarChar
+  createdAt DateTime? @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+model transactions {
+  id              Int             @id @default(autoincrement())
+  fullName        String?         @db.VarChar
+  email           String?         @db.VarChar
+  phoneNumber     String?         @db.VarChar
+  createdAt       DateTime?       @default(now()) @db.Timestamptz(6)
+  updatedAt       DateTime?       @default(now()) @db.Timestamptz(6)
+  paymentMethodId Int?
+  userId          Int?
+  reserveSeats    reserveSeats[]
+  paymentMethods  paymentMethods? @relation(fields: [paymentMethodId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "transactions_paymentMethods_null_fk")
+  users           users?          @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "transactions_users_null_fk")
+}
+
+model users {
+  id            Int             @id @default(autoincrement())
+  picture       String?         @db.VarChar
+  firstName     String?         @db.VarChar
+  lastName      String?         @db.VarChar
+  phoneNumber   String?         @db.VarChar
+  email         String?         @unique(map: "users_pk") @db.VarChar
+  password      String?         @db.VarChar
+  roleId        Int?            @default(2)
+  createdAt     DateTime?       @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime?       @default(now()) @db.Timestamptz(6)
+  resetPassword resetPassword[]
+  transactions  transactions[]
+  roles         roles?          @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_roles_null_fk")
+}
+
+model months {
+  id        Int       @id @default(autoincrement())
+  name      String?   @db.VarChar
+  createdAt DateTime? @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime? @default(now()) @db.Timestamptz(6)
+}

@@ -4,6 +4,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const compression = require("compression");
+const routersV1 = require("./src/prismaRoutes");
 
 require("dotenv").config();
 
@@ -22,11 +23,14 @@ if (process.env.APP_DEBUG === "development") {
 app.use("/assets/uploads", express.static("uploads/"));
 
 app.use(routers);
+app.use("/api/v1", routersV1);
 
 app.get("/", (req, res) => {
   res.sendFile(`${process.cwd()}/index.html`);
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+const port = process.env.PORT || 8888;
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
