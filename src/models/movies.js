@@ -228,7 +228,7 @@ exports.getScheduleByMovieId = async (id, city, date, cb) => {
   console.log(id, city, date);
   try {
     const sql = `
-    SELECT c.id, c.picture, c.name, c.address, c.city,
+    SELECT c.id, c.picture, c.name, c.address, c.city, mS.price,
     string_to_array(string_agg(DISTINCT mST.time::VARCHAR, ', ' ), ', ') as time
     FROM "movieSchedules" mS
     JOIN cinemas c ON mS."cinemaId" = c.id
@@ -236,7 +236,7 @@ exports.getScheduleByMovieId = async (id, city, date, cb) => {
     JOIN "movieScheduleTimes" mST on mS.id = mST."movieScheduleId"
     WHERE m.id = $1 AND c.city = $2
     AND (COALESCE(NULLIF($3, '')::DATE, CURRENT_DATE) BETWEEN mS."startDate" AND mS."endDate")
-    GROUP BY c.id`;
+    GROUP BY c.id, mS.price`;
     const values = [id, city, date];
     const result = await poolString.query(sql, values);
     cb(null, result);
