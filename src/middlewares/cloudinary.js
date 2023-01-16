@@ -12,7 +12,8 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    format: async (req, file) => path.extname(file.originalname).slice(1), // supports promises as well
+    folder: "mexlcinema",
+    format: async (req, file) => path.extname(file.originalname).slice(1),
     public_id: (req, file) => {
       const randomNumber = Math.floor(Math.random() * 90000);
       return `${randomNumber}-${Date.now()}`;

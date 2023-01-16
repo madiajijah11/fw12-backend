@@ -1,4 +1,5 @@
 const profileRouter = require("express").Router();
+const cloudinary = require("../middlewares/cloudinary");
 const {
   getProfile,
   editProfile,
@@ -7,6 +8,6 @@ const {
 
 profileRouter.get("/", getProfile);
 profileRouter.patch("/edit", editProfile);
-profileRouter.patch("/upload", uploadProfileImage);
+profileRouter.patch("/upload", cloudinary, uploadProfileImage);
 
 module.exports = profileRouter;
