@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const cloudinary = require("cloudinary").v2;
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const prisma = new PrismaClient();
 
@@ -91,5 +92,31 @@ exports.uploadProfileImage = async (req, res) => {
         message: "Internal server error",
       });
     }
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  const authorization = req.headers.authorization;
+  const token = authorization.split(" ")[1];
+  const user = jwt.verify(token, process.env.SECRET_KEY);
+  try {
+    const changePassword = await prisma.users.update({
+      where: {
+        id: parseInt(user.id),
+      },
+      data: {
+        password: await bcrypt.hash(req.body.newPassword, 10),
+      },
+    });
+    res.status(200).json({
+      status: true,
+      message: "Password changed successfully",
+      results: changePassword,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
   }
 };
