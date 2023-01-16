@@ -85,8 +85,10 @@ exports.getMovieById = async (req, res) => {
 };
 
 exports.nowShowing = async (req, res) => {
+  req.query.limit = req.query.limit || 5;
   try {
     const nowShowing = await prisma.movies.findMany({
+      take: parseInt(req.query.limit),
       where: {
         movieSchedules: {
           some: {
@@ -125,9 +127,11 @@ exports.nowShowing = async (req, res) => {
 };
 
 exports.upComing = async (req, res) => {
+  req.query.limit = req.query.limit || 5;
   req.query.month = req.query.month || new Date().getMonth() + 1;
   try {
     const upComing = await prisma.movies.findMany({
+      take: parseInt(req.query.limit),
       where: {
         releaseDate: {
           gte: new Date(new Date().getFullYear(), req.query.month - 1, 1),
