@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const cloudinary = require("cloudinary").v2;
+const jwt = require("jsonwebtoken");
 
 const prisma = new PrismaClient();
 
