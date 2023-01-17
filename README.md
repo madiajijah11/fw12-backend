@@ -7,7 +7,7 @@ A brief description of what this project does and who it's for
 #### Get all movies
 
 ```http
-  GET /api/v1/movies
+GET /api/v1/movies
 ```
 
 | Parameter | Type     | Description                    |
@@ -21,7 +21,7 @@ A brief description of what this project does and who it's for
 #### Get item
 
 ```http
-  GET /api/v1/movies/${id}
+GET /api/v1/movies/${id}
 ```
 
 | Parameter | Type     | Description                        |
