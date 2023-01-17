@@ -142,7 +142,12 @@ exports.forgotPassword = async (req, res) => {
       }
     });
   } catch (error) {
-    console.log(error);
+    if (error.code === "P2002") {
+      return res.status(409).json({
+        status: false,
+        message: "Request reset password already sent",
+      });
+    }
     return res.status(500).json({
       status: false,
       message: "Internal server error",
