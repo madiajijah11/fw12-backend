@@ -66,6 +66,47 @@ exports.rules = (method) => {
         },
       });
     }
+    case "forgotPassword": {
+      return checkSchema({
+        email: {
+          in: ["body"],
+          isEmail: {
+            errorMessage: "Email is invalid",
+          },
+        },
+      });
+    }
+    case "resetPassword": {
+      return checkSchema({
+        email: {
+          in: ["body"],
+          isEmail: {
+            errorMessage: "Email is invalid",
+          },
+        },
+        code: {
+          in: ["body"],
+          isString: true,
+          isLength: {
+            errorMessage: "Code must be 5 characters long",
+          },
+        },
+        password: {
+          in: ["body"],
+          isStrongPassword: {
+            errorMessage:
+              "Password must be at least 6 characters long, contain at least one lowercase letter, one uppercase letter, one number, and one symbol",
+            options: {
+              minLength: 6,
+              minLowercase: 1,
+              minUppercase: 1,
+              minNumbers: 1,
+              minSymbols: 1,
+            },
+          },
+        },
+      });
+    }
     default: {
       return (req, res, next) => {
         next();

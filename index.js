@@ -14,10 +14,7 @@ app.use(cors());
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-if (process.env.APP_DEBUG === "development") {
-  app.use(morgan("dev"));
-}
+app.use(morgan("dev"));
 
 app.use("/assets/uploads", express.static("uploads/"));
 

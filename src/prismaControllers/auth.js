@@ -1,8 +1,17 @@
 const { PrismaClient } = require("@prisma/client");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
 
 const prisma = new PrismaClient();
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.AUTH_EMAIL,
+    pass: process.env.AUTH_PASSWORD,
+  },
+});
 
 exports.register = async (req, res) => {
   try {
@@ -83,6 +92,116 @@ exports.login = async (req, res) => {
       token,
     });
   } catch (error) {
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+exports.forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await prisma.users.findFirst({
+      where: {
+        email: email,
+      },
+    });
+    if (!user) {
+      return res.status(404).json({
+        status: false,
+        message: "Email not found",
+      });
+    }
+    const randomNum = Math.floor(Math.random() * 90000) + 10000;
+    await prisma.resetPassword.create({
+      data: {
+        email: email,
+        code: randomNum.toString(),
+      },
+    });
+    const mailOptions = {
+      from: process.env.AUTH_EMAIL,
+      to: email,
+      subject: "Reset Password",
+      html: `<h1>Reset Password</h1>
+      <p>Use this code to reset your password</p>
+      <h2>${randomNum}</h2>`,
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res.status(500).json({
+          status: false,
+          message: "Internal server error",
+        });
+      } else {
+        return res.status(200).json({
+          status: true,
+          message: "Code has been sent to your email",
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  try {
+    const { email, code, password } = req.body;
+    const user = await prisma.users.findFirst({
+      where: {
+        email: email,
+      },
+    });
+    if (!user) {
+      return res.status(404).json({
+        status: false,
+        message: "Email not found",
+      });
+    }
+    const isCodeMatch = await prisma.resetPassword.findFirst({
+      where: {
+        email: email,
+        code: code,
+      },
+    });
+    if (!isCodeMatch) {
+      return res.status(401).json({
+        status: false,
+        message: "Invalid code",
+      });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await prisma.users.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        password: hashedPassword,
+      },
+    });
+    const findEmailAndCode = await prisma.resetPassword.findFirst({
+      where: {
+        email: email,
+        code: code,
+      },
+    });
+    await prisma.resetPassword.delete({
+      where: {
+        id: findEmailAndCode.id,
+      },
+    });
+    return res.status(200).json({
+      status: true,
+      message: "Reset password success",
+    });
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({
       status: false,
       message: "Internal server error",

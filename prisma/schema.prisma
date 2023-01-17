@@ -120,8 +120,8 @@ model reserveSeats {
 
 model resetPassword {
   id        Int       @id @default(autoincrement())
-  email     String?   @db.VarChar
-  userId    Int?
+  email     String?   @unique @db.VarChar
+  userId    Int?      @unique
   code      String?   @db.VarChar
   createdAt DateTime? @default(now()) @db.Timestamptz(6)
   updatedAt DateTime? @default(now()) @db.Timestamptz(6)
@@ -165,19 +165,19 @@ model transactions {
 }
 
 model users {
-  id            Int             @id @default(autoincrement())
-  picture       String?         @db.VarChar
-  firstName     String?         @db.VarChar
-  lastName      String?         @db.VarChar
-  phoneNumber   String?         @db.VarChar
-  email         String?         @unique(map: "users_pk") @db.VarChar
-  password      String?         @db.VarChar
-  roleId        Int?            @default(2)
-  createdAt     DateTime?       @default(now()) @db.Timestamptz(6)
-  updatedAt     DateTime?       @default(now()) @db.Timestamptz(6)
-  resetPassword resetPassword[]
+  id            Int            @id @default(autoincrement())
+  picture       String?        @db.VarChar
+  firstName     String?        @db.VarChar
+  lastName      String?        @db.VarChar
+  phoneNumber   String?        @unique @db.VarChar
+  email         String?        @unique(map: "users_pk") @db.VarChar
+  password      String?        @db.VarChar
+  roleId        Int?           @default(2)
+  createdAt     DateTime?      @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime?      @default(now()) @db.Timestamptz(6)
+  resetPassword resetPassword?
   transactions  transactions[]
-  roles         roles?          @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_roles_null_fk")
+  roles         roles?         @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_roles_null_fk")
 }
 
 model months {
