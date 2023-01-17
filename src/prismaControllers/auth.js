@@ -145,7 +145,7 @@ exports.forgotPassword = async (req, res) => {
     if (error.code === "P2002") {
       return res.status(409).json({
         status: false,
-        message: "Request reset password already sent",
+        message: "Email already asked for reset password",
       });
     }
     return res.status(500).json({
