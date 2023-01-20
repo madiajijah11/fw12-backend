@@ -1,20 +1,20 @@
 const errorHandling = (err, res) => {
-  if (err.code === "23505") {
+  if (err.code === '23505') {
     return res.status(409).json({
       success: false,
-      message: "Email has already been taken",
-    });
+      message: 'Email has already been taken'
+    })
   }
-  if (err.code === "23503") {
+  if (err.code === '23503') {
     return res.status(409).json({
       success: false,
-      message: "No related data found",
-    });
+      message: 'No related data found'
+    })
   }
   return res.status(500).json({
     success: false,
-    message: err,
-  });
-};
+    message: err
+  })
+}
 
-module.exports = { errorHandling };
+module.exports = { errorHandling }

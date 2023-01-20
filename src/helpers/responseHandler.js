@@ -3,8 +3,8 @@ const responseHandler = (statusCode, success, message, pageInfo, data, res) => {
     success,
     message,
     pageInfo,
-    data,
-  });
-};
+    data
+  })
+}
 
-module.exports = responseHandler;
+module.exports = responseHandler

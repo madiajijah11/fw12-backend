@@ -1,6 +1,6 @@
-const monthsRouter = require("express").Router();
-const { getMonths } = require("../prismaControllers/months");
+const monthsRouter = require('express').Router()
+const { getMonths } = require('../prismaControllers/months')
 
-monthsRouter.get("/", getMonths);
+monthsRouter.get('/', getMonths)
 
-module.exports = monthsRouter;
+module.exports = monthsRouter

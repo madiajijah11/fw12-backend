@@ -1,1 +1,8 @@
-{"name":"backend","id":"c94fc0d6-aed8-4f7f-8eb2-69a4994c21de","_postman_variable_scope":"environment","_postman_exported_at":"2022-11-30T15:22:46.367Z","_postman_exported_using":"Thunder Client","values":[{"key":"baseURL","value":"http://localhost:3000","enabled":true}]}
+{
+  "name": "backend",
+  "id": "c94fc0d6-aed8-4f7f-8eb2-69a4994c21de",
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2022-11-30T15:22:46.367Z",
+  "_postman_exported_using": "Thunder Client",
+  "values": [{ "key": "baseURL", "value": "http://localhost:3000", "enabled": true }]
+}

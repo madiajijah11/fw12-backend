@@ -1,132 +1,130 @@
-const { checkSchema, validationResult } = require("express-validator");
+const { checkSchema, validationResult } = require('express-validator')
 
 exports.rules = (method) => {
   switch (method) {
-    case "register": {
+    case 'register': {
       return checkSchema({
         firstName: {
-          in: ["body"],
-          errorMessage: "First name is required",
-          isString: true,
+          in: ['body'],
+          errorMessage: 'First name is required',
+          isString: true
         },
         lastName: {
-          in: ["body"],
-          errorMessage: "Last name is required",
-          isString: true,
+          in: ['body'],
+          errorMessage: 'Last name is required',
+          isString: true
         },
         phoneNumber: {
-          in: ["body"],
+          in: ['body'],
           isMobilePhone: {
-            errorMessage: "Phone number is invalid",
-          },
+            errorMessage: 'Phone number is invalid'
+          }
         },
         email: {
-          in: ["body"],
+          in: ['body'],
           isEmail: {
-            errorMessage: "Email is invalid",
-          },
+            errorMessage: 'Email is invalid'
+          }
         },
         password: {
-          in: ["body"],
+          in: ['body'],
           isStrongPassword: {
             errorMessage:
-              "Password must be at least 6 characters long, contain at least one lowercase letter, one uppercase letter, one number, and one symbol",
+              'Password must be at least 6 characters long, contain at least one lowercase letter, one uppercase letter, one number, and one symbol',
             options: {
               minLength: 6,
               minLowercase: 1,
               minUppercase: 1,
               minNumbers: 1,
-              minSymbols: 1,
-            },
-          },
-        },
-      });
+              minSymbols: 1
+            }
+          }
+        }
+      })
     }
-    case "login": {
+    case 'login': {
       return checkSchema({
         email: {
-          in: ["body"],
+          in: ['body'],
           isEmail: {
-            errorMessage: "Email is invalid",
-          },
+            errorMessage: 'Email is invalid'
+          }
         },
         password: {
-          in: ["body"],
+          in: ['body'],
           isStrongPassword: {
             errorMessage:
-              "Password must be at least 6 characters long, contain at least one lowercase letter, one uppercase letter, one number, and one symbol",
+              'Password must be at least 6 characters long, contain at least one lowercase letter, one uppercase letter, one number, and one symbol',
             options: {
               minLength: 6,
               minLowercase: 1,
               minUppercase: 1,
               minNumbers: 1,
-              minSymbols: 1,
-            },
-          },
-        },
-      });
+              minSymbols: 1
+            }
+          }
+        }
+      })
     }
-    case "forgotPassword": {
+    case 'forgotPassword': {
       return checkSchema({
         email: {
-          in: ["body"],
+          in: ['body'],
           isEmail: {
-            errorMessage: "Email is invalid",
-          },
-        },
-      });
+            errorMessage: 'Email is invalid'
+          }
+        }
+      })
     }
-    case "resetPassword": {
+    case 'resetPassword': {
       return checkSchema({
         email: {
-          in: ["body"],
+          in: ['body'],
           isEmail: {
-            errorMessage: "Email is invalid",
-          },
+            errorMessage: 'Email is invalid'
+          }
         },
         code: {
-          in: ["body"],
+          in: ['body'],
           isString: true,
           isLength: {
-            errorMessage: "Code must be 5 characters long",
-          },
+            errorMessage: 'Code must be 5 characters long'
+          }
         },
         password: {
-          in: ["body"],
+          in: ['body'],
           isStrongPassword: {
             errorMessage:
-              "Password must be at least 6 characters long, contain at least one lowercase letter, one uppercase letter, one number, and one symbol",
+              'Password must be at least 6 characters long, contain at least one lowercase letter, one uppercase letter, one number, and one symbol',
             options: {
               minLength: 6,
               minLowercase: 1,
               minUppercase: 1,
               minNumbers: 1,
-              minSymbols: 1,
-            },
-          },
-        },
-      });
+              minSymbols: 1
+            }
+          }
+        }
+      })
     }
     default: {
       return (req, res, next) => {
-        next();
-      };
+        next()
+      }
     }
   }
-};
+}
 
 exports.validate = (req, res, next) => {
-  const errors = validationResult(req);
+  const errors = validationResult(req)
   if (errors.isEmpty()) {
-    return next();
+    return next()
   }
-  const extractedErrors = [];
-  errors
-    .array()
-    .forEach((err) => extractedErrors.push({ [err.param]: err.msg }));
+  const extractedErrors = []
+  errors.array().forEach((err) => extractedErrors.push({ [err.param]: err.msg }))
   return res.status(400).json({
     status: false,
-    message: "Validation failed",
-    errors: extractedErrors,
-  });
-};
+    message: 'Validation failed',
+    errors: extractedErrors
+  })
+}

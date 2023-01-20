@@ -1,1 +1,959 @@
-{"info":{"name":"mexl_cinema","schema":"https://schema.getpostman.com/json/collection/v2.1.0/collection.json","description":""},"item":[{"name":"USERS","item":[{"name":"GET USERS","request":{"method":"GET","url":{"raw":"{{baseURL}}/users","host":["{{baseurl}}"],"path":["users"]}}},{"name":"GET SINGLE USER","request":{"method":"GET","url":{"raw":"{{baseURL}}/users/6","host":["{{baseurl}}"],"path":["users","6"]}}},{"name":"POST USER","request":{"method":"POST","url":{"raw":"{{baseURL}}/users","host":["{{baseurl}}"],"path":["users"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n      \"picture\": \"https://avatars.githubusercontent.com/u/19306782?v=4\",\n      \"firstName\": \"asdsad\",\n      \"lastName\": \"asdsad\",\n      \"phoneNumber\": \"82256964453\",\n      \"email\": \"hghgd@gmail.com\",\n      \"password\": \"asdsad\",\n      \"roleId\": \"2\"\n}"}}},{"name":"PATCH SINGLE USER","request":{"method":"PATCH","url":{"raw":"{{baseURL}}/users/15","host":["{{baseurl}}"],"path":["users","15"]},"body":{"mode":"urlencoded","urlencoded":[{"key":"firstName","value":"kadas"}]}}},{"name":"DELETE SINGLE USER","request":{"method":"DELETE","url":{"raw":"{{baseURL}}/users/14","host":["{{baseurl}}"],"path":["users","14"]}}}]},{"name":"MOVIES","item":[{"name":"GET MOVIES","request":{"method":"GET","url":{"raw":"{{baseURL}}/movies/nowshowing","host":["{{baseurl}}"],"path":["movies","nowshowing"]}}},{"name":"PATCH SINGLE MOVIE","request":{"method":"PATCH","url":{"raw":"{{baseURL}}/movies/3","host":["{{baseurl}}"],"path":["movies","3"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"title\": \"The Jack in the Box: Awakening\",\n  \"picture\": \"https://www.themoviedb.org/t/p/w300_and_h450_bestv2/3Ib8vlWTrAKRrTWUrTrZPOMW4jp.jpg\",\n  \"releaseDate\": \"2022-02-24\",\n  \"director\": \"Lawrence Fowler\",\n  \"duration\": \"01:29:00\",\n  \"synopsis\": \"When a vintage Jack-in-the-box is opened by a dying woman, she enters into a deal with the demon within that would see her illness cured in return for helping it claim six innocent victims.\"\n}"}}},{"name":"GET SINGLE MOVIE","request":{"method":"GET","url":{"raw":"{{baseURL}}/movies/2","host":["{{baseurl}}"],"path":["movies","2"]}}},{"name":"DELETE SINGLE MOVIE","request":{"method":"DELETE","url":{"raw":"{{baseURL}}/movies/5","host":["{{baseurl}}"],"path":["movies","5"]}}},{"name":"POST MOVIE","request":{"method":"POST","url":{"raw":"{{baseURL}}/movies","host":["{{baseurl}}"],"path":["movies"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"title\": \"Game or Thrones\",\n  \"picture\": \"https://www.themoviedb.org/t/p/w300_and_h450_bestv2/jRXYjXNq0Cs2TcJjLkki24MLp7u.jpg\",\n  \"releaseDate\": \"2022-02-24\",\n  \"director\": \"Lawrence Fowler\",\n  \"duration\": \"01:29:00\",\n  \"synopsis\": \"When a vintage Jack-in-the-box is opened by a dying woman, she enters into a deal with the demon within that would see her illness cured in return for helping it claim six innocent victims.\"\n}"}}}]},{"name":"GENRES","item":[{"name":"GET GENRES","request":{"method":"GET","url":{"raw":"{{baseURL}}/genres","host":["{{baseurl}}"],"path":["genres"]}}},{"name":"POST GENRE","request":{"method":"POST","url":{"raw":"{{baseURL}}/genres","host":["{{baseurl}}"],"path":["genres"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"name\": \"Harem\"\n}"}}},{"name":"PATCH SINGLE GENRE","request":{"method":"PATCH","url":{"raw":"{{baseURL}}/genres/20","host":["{{baseurl}}"],"path":["genres","20"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"name\": \"Ecchi\"\n}"}}},{"name":"DELETE SINGLE GENRE","request":{"method":"DELETE","url":{"raw":"{{baseURL}}/genres/20","host":["{{baseurl}}"],"path":["genres","20"]}}}]},{"name":"ROLES","item":[{"name":"GET ROLES","request":{"method":"GET","url":{"raw":"{{baseURL}}/roles","host":["{{baseurl}}"],"path":["roles"]}}},{"name":"POST ROLE","request":{"method":"POST","url":{"raw":"{{baseURL}}/roles","host":["{{baseurl}}"],"path":["roles"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"name\": \"User\"\n}"}}},{"name":"PATCH SINGLE ROLE","request":{"method":"PATCH","url":{"raw":"{{baseURL}}/roles/3","host":["{{baseurl}}"],"path":["roles","3"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"name\": \"Cashier\"\n}"}}},{"name":"DELETE SINGLE ROLE","request":{"method":"DELETE","url":{"raw":"{{baseURL}}/roles/3","host":["{{baseurl}}"],"path":["roles","3"]}}}]},{"name":"CASTS","item":[{"name":"GET CASTS","request":{"method":"GET","url":{"raw":"{{baseURL}}/casts","query":[{"key":"page","value":"2","disabled":true},{"key":"limit","value":"2","disabled":true},{"key":"search","value":"l","disabled":true},{"key":"sortBy","value":"name","disabled":true},{"key":"sort","value":"ASC","disabled":true}],"variable":[],"host":["{{baseurl}}"],"path":["casts"]}}},{"name":"POST CAST","request":{"method":"POST","url":{"raw":"{{baseURL}}/casts","host":["{{baseurl}}"],"path":["casts"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"name\": \"Sam Worhington\"\n}"}}},{"name":"PATCH SINGLE CAST","request":{"method":"PATCH","url":{"raw":"{{baseURL}}/casts/11","host":["{{baseurl}}"],"path":["casts","11"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"name\": \"Zoe Saldana\"\n}"}}},{"name":"DELETE SINGLE CAST","request":{"method":"DELETE","url":{"raw":"{{baseURL}}/casts/10","host":["{{baseurl}}"],"path":["casts","10"]}}}]},{"name":"STATUS","item":[{"name":"GET STATUS","request":{"method":"GET","url":{"raw":"{{baseURL}}/status","host":["{{baseurl}}"],"path":["status"]}}},{"name":"POST STATUS","request":{"method":"POST","url":{"raw":"{{baseURL}}/status","host":["{{baseurl}}"],"path":["status"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"name\": \"Unavailable\"\n}"}}},{"name":"PATCH SINGLE STATUS","request":{"method":"PATCH","url":{"raw":"{{baseURL}}/status/5","host":["{{baseurl}}"],"path":["status","5"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"name\": \"Achivemen\"\n}"}}},{"name":"DELETE SINGLE STATUS","request":{"method":"DELETE","url":{"raw":"{{baseURL}}/status/5","host":["{{baseurl}}"],"path":["status","5"]}}}]},{"name":"SUBSCRIBERS","item":[{"name":"GET SUBSCRIBERS","request":{"method":"GET","url":{"raw":"{{baseURL}}/subscribers","host":["{{baseurl}}"],"path":["subscribers"]}}},{"name":"POST SUBSCRIBERS","request":{"method":"POST","url":{"raw":"{{baseURL}}/subscribers","host":["{{baseurl}}"],"path":["subscribers"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"email\": \"anisa@gmail.com\"\n}"}}},{"name":"PATCH SINGLE SUBSCRIBERS","request":{"method":"PATCH","url":{"raw":"{{baseURL}}/subscribers/3","host":["{{baseurl}}"],"path":["subscribers","3"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"email\": \"nadianeyla@gmail.com\"\n}"}}},{"name":"DELETE SINGLE SUBSCRIBERS","request":{"method":"DELETE","url":{"raw":"{{baseURL}}/status/3","host":["{{baseurl}}"],"path":["status","3"]}}}]},{"name":"MOVIE CAST","item":[{"name":"GET","request":{"method":"GET","url":{"raw":"{{baseURL}}/moviecast","host":["{{baseurl}}"],"path":["moviecast"]}}},{"name":"POST","request":{"method":"POST","url":{"raw":"{{baseURL}}/moviecast","host":["{{baseurl}}"],"path":["moviecast"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"movieId\": \"2\",\n  \"castId\": \"9\"\n}"}}},{"name":"PATCH","request":{"method":"PATCH","url":{"raw":"{{baseURL}}/moviecast/10","host":["{{baseurl}}"],"path":["moviecast","10"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"movieId\": \"4\",\n  \"castId\": \"9\"\n}"}}},{"name":"DELETE","request":{"method":"DELETE","url":{"raw":"{{baseURL}}/moviecast/10","host":["{{baseurl}}"],"path":["moviecast","10"]}}}]},{"name":"MOVIE GENRE","item":[{"name":"GET","request":{"method":"GET","url":{"raw":"{{baseURL}}/moviegenre","host":["{{baseurl}}"],"path":["moviegenre"]}}},{"name":"POST","request":{"method":"POST","url":{"raw":"{{baseURL}}/moviegenre","host":["{{baseurl}}"],"path":["moviegenre"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"movieId\": \"2\",\n  \"genreId\": \"9\"\n}"}}},{"name":"PATCH","request":{"method":"PATCH","url":{"raw":"{{baseURL}}/moviegenre/5","host":["{{baseurl}}"],"path":["moviegenre","5"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"movieId\": \"4\",\n  \"genreId\": \"3\"\n}"}}},{"name":"DELETE","request":{"method":"DELETE","url":{"raw":"{{baseURL}}/moviegenre/5","host":["{{baseurl}}"],"path":["moviegenre","5"]}}}]},{"name":"MOVIE SCHEDULE TIMES","item":[{"name":"GET","request":{"method":"GET","url":{"raw":"{{baseURL}}/moviescheduletimes","host":["{{baseurl}}"],"path":["moviescheduletimes"]}}},{"name":"POST","request":{"method":"POST","url":{"raw":"{{baseURL}}/moviescheduletimes","host":["{{baseurl}}"],"path":["moviescheduletimes"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"time\": \"02:35:45\",\n  \"movieScheduleId\": \"1\"\n}"}}},{"name":"PATCH","request":{"method":"PATCH","url":{"raw":"{{baseURL}}/moviescheduletimes/2","host":["{{baseurl}}"],"path":["moviescheduletimes","2"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"time\": \"09:40:21\",\n  \"movieScheduleId\": \"1\"\n}"}}},{"name":"DELETE","request":{"method":"DELETE","url":{"raw":"{{baseURL}}/moviescheduletimes/2","host":["{{baseurl}}"],"path":["moviescheduletimes","2"]}}}]},{"name":"PAYMENT METHODS","item":[{"name":"GET","request":{"method":"GET","url":{"raw":"{{baseURL}}/paymentmethods","host":["{{baseurl}}"],"path":["paymentmethods"]}}},{"name":"POST","request":{"method":"POST","url":{"raw":"{{baseURL}}/paymentmethods","host":["{{baseurl}}"],"path":["paymentmethods"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"picture\": \"\",\n  \"name\": \"BCA\"\n}"}}},{"name":"PATCH","request":{"method":"PATCH","url":{"raw":"{{baseURL}}/paymentmethods/2","host":["{{baseurl}}"],"path":["paymentmethods","2"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"picture\": \"bca.jpg\",\n  \"name\": \"BRO\"\n}"}}},{"name":"DELETE","request":{"method":"DELETE","url":{"raw":"{{baseURL}}/paymentmethods/2","host":["{{baseurl}}"],"path":["paymentmethods","2"]}}}]},{"name":"RESERVE SEATS","item":[{"name":"GET","request":{"method":"GET","url":{"raw":"{{baseURL}}/reserveseats","host":["{{baseurl}}"],"path":["reserveseats"]}}},{"name":"POST","request":{"method":"POST","url":{"raw":"{{baseURL}}/reserveseats","host":["{{baseurl}}"],"path":["reserveseats"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"seatNum\": \"D6\",\n  \"transactionId\": \"1\"\n}"}}},{"name":"PATCH","request":{"method":"PATCH","url":{"raw":"{{baseURL}}/reserveseats/2","host":["{{baseurl}}"],"path":["reserveseats","2"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"seatNum\": \"G7\",\n  \"transactionId\": \"1\"\n}"}}},{"name":"DELETE","request":{"method":"DELETE","url":{"raw":"{{baseURL}}/reserveseats/2","host":["{{baseurl}}"],"path":["reserveseats","2"]}}}]},{"name":"RESET PASSWORD","item":[{"name":"GET","request":{"method":"GET","url":{"raw":"{{baseURL}}/resetpassword","host":["{{baseurl}}"],"path":["resetpassword"]}}},{"name":"POST","request":{"method":"POST","url":{"raw":"{{baseURL}}/resetpassword","host":["{{baseurl}}"],"path":["resetpassword"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"email\": \"test@gmail.com\",\n      \"userId\": 1,\n      \"code\": \"TEST\"\n}"}}},{"name":"PATCH","request":{"method":"PATCH","url":{"raw":"{{baseURL}}/resetpassword/2","host":["{{baseurl}}"],"path":["resetpassword","2"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n  \"email\": \"fix@gmail.com\",\n  \"userId\": 1,\n  \"code\": \"FIXING\"\n}"}}},{"name":"DELETE","request":{"method":"DELETE","url":{"raw":"{{baseURL}}/resetpassword/2","host":["{{baseurl}}"],"path":["resetpassword","2"]}}}]},{"name":"CINEMAS","item":[{"name":"GET","request":{"method":"GET","url":{"raw":"{{baseURL}}/cinemas","host":["{{baseurl}}"],"path":["cinemas"]}}},{"name":"GET SINGLE","request":{"method":"GET","url":{"raw":"{{baseURL}}/cinemas/2","host":["{{baseurl}}"],"path":["cinemas","2"]}}},{"name":"POST","request":{"method":"POST","url":{"raw":"{{baseURL}}/cinemas","host":["{{baseurl}}"],"path":["cinemas"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n      \"picture\": \"https://21cineplex.com//theme/v5/assets/img/logo.png\",\n      \"name\": \"CINEMA 21\",\n      \"address\": \"Jalan Ahmad Yani\",\n      \"city\": \"Banjarmasin\"\n}"}}},{"name":"PATCH","request":{"method":"PATCH","url":{"raw":"{{baseURL}}/cinemas/3","host":["{{baseurl}}"],"path":["cinemas","3"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n      \"picture\": \"https://21cineplex.com//theme/v5/assets/img/logo.png\",\n      \"name\": \"CINEMA 21\",\n      \"address\": \"Jl. Akhmad Yani\",\n      \"city\": \"Balikpapan\"\n}"}}},{"name":"DELETE","request":{"method":"DELETE","url":{"raw":"{{baseURL}}/cinemas/4","host":["{{baseurl}}"],"path":["cinemas","4"]}}}]},{"name":"MOVIE SCHEDULES","item":[{"name":"GET","request":{"method":"GET","url":{"raw":"{{baseURL}}/movieschedules","host":["{{baseurl}}"],"path":["movieschedules"]}}},{"name":"GET SINGLE","request":{"method":"GET","url":{"raw":"{{baseURL}}/movieschedules/1","host":["{{baseurl}}"],"path":["movieschedules","1"]}}},{"name":"POST","request":{"method":"POST","url":{"raw":"{{baseURL}}/movieschedules","host":["{{baseurl}}"],"path":["movieschedules"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n      \"movieId\": 2,\n      \"cinemaId\": 2,\n      \"price\": \"40000\",\n      \"startDate\": \"2022-12-05T16:00:00.000Z\",\n      \"endDate\": \"2022-12-07T16:00:00.000Z\"\n}"}}},{"name":"PATCH","request":{"method":"PATCH","url":{"raw":"{{baseURL}}/movieschedules/3","host":["{{baseurl}}"],"path":["movieschedules","3"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n      \"movieId\": 3,\n      \"cinemaId\": 1,\n      \"price\": \"50000\",\n      \"startDate\": \"2022-12-05T16:00:00.000Z\",\n      \"endDate\": \"2022-12-07T16:00:00.000Z\"\n}"}}},{"name":"DELETE","request":{"method":"DELETE","url":{"raw":"{{baseURL}}/movieschedules/4","host":["{{baseurl}}"],"path":["movieschedules","4"]}}}]},{"name":"TRANSACTIONS","item":[{"name":"GET","request":{"method":"GET","url":{"raw":"{{baseURL}}/transactions","host":["{{baseurl}}"],"path":["transactions"]}}},{"name":"GET SINGLE","request":{"method":"GET","url":{"raw":"{{baseURL}}/transactions/1","host":["{{baseurl}}"],"path":["transactions","1"]}}},{"name":"POST","request":{"method":"POST","url":{"raw":"{{baseURL}}/transactions","host":["{{baseurl}}"],"path":["transactions"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n      \"bookingDate\": \"2022-12-06T17:02:00.000Z\",\n      \"movieId\": 3,\n      \"cinemaId\": 2,\n      \"movieScheduleId\": 5,\n      \"fullName\": \"Anissa Nadia\",\n      \"email\": \"nadia@gmail.com\",\n      \"phoneNumber\": \"85156233534\",\n      \"statusId\": 1\n}"}}},{"name":"PATCH","request":{"method":"PATCH","url":{"raw":"{{baseURL}}/transactions/3","host":["{{baseurl}}"],"path":["transactions","3"]},"body":{"mode":"raw","options":{"raw":{"language":"json"}},"raw":"{\n      \"bookingDate\": \"2022-12-20 00:00:00\",\n      \"movieId\": 3,\n      \"cinemaId\": 2,\n      \"movieScheduleId\": 2,\n      \"fullName\": \"Ratna Fitri\",\n      \"email\": \"rfw@gmail.com\",\n      \"phoneNumber\": \"85156233534\",\n      \"statusId\": 2\n}"}}},{"name":"DELETE","request":{"method":"DELETE","url":{"raw":"{{baseURL}}/transactions/4","host":["{{baseurl}}"],"path":["transactions","4"]}}}]}]}
+{
+  "info": {
+    "name": "mexl_cinema",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": ""
+  },
+  "item": [
+    {
+      "name": "USERS",
+      "item": [
+        {
+          "name": "GET USERS",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseURL}}/users", "host": ["{{baseurl}}"], "path": ["users"] }
+          }
+        },
+        {
+          "name": "GET SINGLE USER",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseURL}}/users/6", "host": ["{{baseurl}}"], "path": ["users", "6"] }
+          }
+        },
+        {
+          "name": "POST USER",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseURL}}/users", "host": ["{{baseurl}}"], "path": ["users"] },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n      \"picture\": \"https://avatars.githubusercontent.com/u/19306782?v=4\",\n      \"firstName\": \"asdsad\",\n      \"lastName\": \"asdsad\",\n      \"phoneNumber\": \"82256964453\",\n      \"email\": \"hghgd@gmail.com\",\n      \"password\": \"asdsad\",\n      \"roleId\": \"2\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH SINGLE USER",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseURL}}/users/15",
+              "host": ["{{baseurl}}"],
+              "path": ["users", "15"]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [{ "key": "firstName", "value": "kadas" }]
+            }
+          }
+        },
+        {
+          "name": "DELETE SINGLE USER",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseURL}}/users/14",
+              "host": ["{{baseurl}}"],
+              "path": ["users", "14"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "MOVIES",
+      "item": [
+        {
+          "name": "GET MOVIES",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/movies/nowshowing",
+              "host": ["{{baseurl}}"],
+              "path": ["movies", "nowshowing"]
+            }
+          }
+        },
+        {
+          "name": "PATCH SINGLE MOVIE",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseURL}}/movies/3",
+              "host": ["{{baseurl}}"],
+              "path": ["movies", "3"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"title\": \"The Jack in the Box: Awakening\",\n  \"picture\": \"https://www.themoviedb.org/t/p/w300_and_h450_bestv2/3Ib8vlWTrAKRrTWUrTrZPOMW4jp.jpg\",\n  \"releaseDate\": \"2022-02-24\",\n  \"director\": \"Lawrence Fowler\",\n  \"duration\": \"01:29:00\",\n  \"synopsis\": \"When a vintage Jack-in-the-box is opened by a dying woman, she enters into a deal with the demon within that would see her illness cured in return for helping it claim six innocent victims.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET SINGLE MOVIE",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/movies/2",
+              "host": ["{{baseurl}}"],
+              "path": ["movies", "2"]
+            }
+          }
+        },
+        {
+          "name": "DELETE SINGLE MOVIE",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseURL}}/movies/5",
+              "host": ["{{baseurl}}"],
+              "path": ["movies", "5"]
+            }
+          }
+        },
+        {
+          "name": "POST MOVIE",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseURL}}/movies", "host": ["{{baseurl}}"], "path": ["movies"] },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"title\": \"Game or Thrones\",\n  \"picture\": \"https://www.themoviedb.org/t/p/w300_and_h450_bestv2/jRXYjXNq0Cs2TcJjLkki24MLp7u.jpg\",\n  \"releaseDate\": \"2022-02-24\",\n  \"director\": \"Lawrence Fowler\",\n  \"duration\": \"01:29:00\",\n  \"synopsis\": \"When a vintage Jack-in-the-box is opened by a dying woman, she enters into a deal with the demon within that would see her illness cured in return for helping it claim six innocent victims.\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "GENRES",
+      "item": [
+        {
+          "name": "GET GENRES",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseURL}}/genres", "host": ["{{baseurl}}"], "path": ["genres"] }
+          }
+        },
+        {
+          "name": "POST GENRE",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseURL}}/genres", "host": ["{{baseurl}}"], "path": ["genres"] },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"name\": \"Harem\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH SINGLE GENRE",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseURL}}/genres/20",
+              "host": ["{{baseurl}}"],
+              "path": ["genres", "20"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"name\": \"Ecchi\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE SINGLE GENRE",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseURL}}/genres/20",
+              "host": ["{{baseurl}}"],
+              "path": ["genres", "20"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "ROLES",
+      "item": [
+        {
+          "name": "GET ROLES",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseURL}}/roles", "host": ["{{baseurl}}"], "path": ["roles"] }
+          }
+        },
+        {
+          "name": "POST ROLE",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseURL}}/roles", "host": ["{{baseurl}}"], "path": ["roles"] },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"name\": \"User\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH SINGLE ROLE",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseURL}}/roles/3",
+              "host": ["{{baseurl}}"],
+              "path": ["roles", "3"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"name\": \"Cashier\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE SINGLE ROLE",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseURL}}/roles/3", "host": ["{{baseurl}}"], "path": ["roles", "3"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "CASTS",
+      "item": [
+        {
+          "name": "GET CASTS",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/casts",
+              "query": [
+                { "key": "page", "value": "2", "disabled": true },
+                { "key": "limit", "value": "2", "disabled": true },
+                { "key": "search", "value": "l", "disabled": true },
+                { "key": "sortBy", "value": "name", "disabled": true },
+                { "key": "sort", "value": "ASC", "disabled": true }
+              ],
+              "variable": [],
+              "host": ["{{baseurl}}"],
+              "path": ["casts"]
+            }
+          }
+        },
+        {
+          "name": "POST CAST",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseURL}}/casts", "host": ["{{baseurl}}"], "path": ["casts"] },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"name\": \"Sam Worhington\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH SINGLE CAST",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseURL}}/casts/11",
+              "host": ["{{baseurl}}"],
+              "path": ["casts", "11"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"name\": \"Zoe Saldana\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE SINGLE CAST",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseURL}}/casts/10",
+              "host": ["{{baseurl}}"],
+              "path": ["casts", "10"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "STATUS",
+      "item": [
+        {
+          "name": "GET STATUS",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseURL}}/status", "host": ["{{baseurl}}"], "path": ["status"] }
+          }
+        },
+        {
+          "name": "POST STATUS",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseURL}}/status", "host": ["{{baseurl}}"], "path": ["status"] },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"name\": \"Unavailable\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH SINGLE STATUS",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseURL}}/status/5",
+              "host": ["{{baseurl}}"],
+              "path": ["status", "5"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"name\": \"Achivemen\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE SINGLE STATUS",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseURL}}/status/5",
+              "host": ["{{baseurl}}"],
+              "path": ["status", "5"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "SUBSCRIBERS",
+      "item": [
+        {
+          "name": "GET SUBSCRIBERS",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/subscribers",
+              "host": ["{{baseurl}}"],
+              "path": ["subscribers"]
+            }
+          }
+        },
+        {
+          "name": "POST SUBSCRIBERS",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseURL}}/subscribers",
+              "host": ["{{baseurl}}"],
+              "path": ["subscribers"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"email\": \"anisa@gmail.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH SINGLE SUBSCRIBERS",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseURL}}/subscribers/3",
+              "host": ["{{baseurl}}"],
+              "path": ["subscribers", "3"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"email\": \"nadianeyla@gmail.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE SINGLE SUBSCRIBERS",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseURL}}/status/3",
+              "host": ["{{baseurl}}"],
+              "path": ["status", "3"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "MOVIE CAST",
+      "item": [
+        {
+          "name": "GET",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/moviecast",
+              "host": ["{{baseurl}}"],
+              "path": ["moviecast"]
+            }
+          }
+        },
+        {
+          "name": "POST",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseURL}}/moviecast",
+              "host": ["{{baseurl}}"],
+              "path": ["moviecast"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"movieId\": \"2\",\n  \"castId\": \"9\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseURL}}/moviecast/10",
+              "host": ["{{baseurl}}"],
+              "path": ["moviecast", "10"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"movieId\": \"4\",\n  \"castId\": \"9\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseURL}}/moviecast/10",
+              "host": ["{{baseurl}}"],
+              "path": ["moviecast", "10"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "MOVIE GENRE",
+      "item": [
+        {
+          "name": "GET",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/moviegenre",
+              "host": ["{{baseurl}}"],
+              "path": ["moviegenre"]
+            }
+          }
+        },
+        {
+          "name": "POST",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseURL}}/moviegenre",
+              "host": ["{{baseurl}}"],
+              "path": ["moviegenre"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"movieId\": \"2\",\n  \"genreId\": \"9\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseURL}}/moviegenre/5",
+              "host": ["{{baseurl}}"],
+              "path": ["moviegenre", "5"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"movieId\": \"4\",\n  \"genreId\": \"3\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseURL}}/moviegenre/5",
+              "host": ["{{baseurl}}"],
+              "path": ["moviegenre", "5"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "MOVIE SCHEDULE TIMES",
+      "item": [
+        {
+          "name": "GET",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/moviescheduletimes",
+              "host": ["{{baseurl}}"],
+              "path": ["moviescheduletimes"]
+            }
+          }
+        },
+        {
+          "name": "POST",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseURL}}/moviescheduletimes",
+              "host": ["{{baseurl}}"],
+              "path": ["moviescheduletimes"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"time\": \"02:35:45\",\n  \"movieScheduleId\": \"1\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseURL}}/moviescheduletimes/2",
+              "host": ["{{baseurl}}"],
+              "path": ["moviescheduletimes", "2"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"time\": \"09:40:21\",\n  \"movieScheduleId\": \"1\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseURL}}/moviescheduletimes/2",
+              "host": ["{{baseurl}}"],
+              "path": ["moviescheduletimes", "2"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "PAYMENT METHODS",
+      "item": [
+        {
+          "name": "GET",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/paymentmethods",
+              "host": ["{{baseurl}}"],
+              "path": ["paymentmethods"]
+            }
+          }
+        },
+        {
+          "name": "POST",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseURL}}/paymentmethods",
+              "host": ["{{baseurl}}"],
+              "path": ["paymentmethods"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"picture\": \"\",\n  \"name\": \"BCA\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseURL}}/paymentmethods/2",
+              "host": ["{{baseurl}}"],
+              "path": ["paymentmethods", "2"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"picture\": \"bca.jpg\",\n  \"name\": \"BRO\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseURL}}/paymentmethods/2",
+              "host": ["{{baseurl}}"],
+              "path": ["paymentmethods", "2"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "RESERVE SEATS",
+      "item": [
+        {
+          "name": "GET",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/reserveseats",
+              "host": ["{{baseurl}}"],
+              "path": ["reserveseats"]
+            }
+          }
+        },
+        {
+          "name": "POST",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseURL}}/reserveseats",
+              "host": ["{{baseurl}}"],
+              "path": ["reserveseats"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"seatNum\": \"D6\",\n  \"transactionId\": \"1\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseURL}}/reserveseats/2",
+              "host": ["{{baseurl}}"],
+              "path": ["reserveseats", "2"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"seatNum\": \"G7\",\n  \"transactionId\": \"1\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseURL}}/reserveseats/2",
+              "host": ["{{baseurl}}"],
+              "path": ["reserveseats", "2"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "RESET PASSWORD",
+      "item": [
+        {
+          "name": "GET",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/resetpassword",
+              "host": ["{{baseurl}}"],
+              "path": ["resetpassword"]
+            }
+          }
+        },
+        {
+          "name": "POST",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseURL}}/resetpassword",
+              "host": ["{{baseurl}}"],
+              "path": ["resetpassword"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"email\": \"test@gmail.com\",\n      \"userId\": 1,\n      \"code\": \"TEST\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseURL}}/resetpassword/2",
+              "host": ["{{baseurl}}"],
+              "path": ["resetpassword", "2"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n  \"email\": \"fix@gmail.com\",\n  \"userId\": 1,\n  \"code\": \"FIXING\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseURL}}/resetpassword/2",
+              "host": ["{{baseurl}}"],
+              "path": ["resetpassword", "2"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "CINEMAS",
+      "item": [
+        {
+          "name": "GET",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseURL}}/cinemas", "host": ["{{baseurl}}"], "path": ["cinemas"] }
+          }
+        },
+        {
+          "name": "GET SINGLE",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/cinemas/2",
+              "host": ["{{baseurl}}"],
+              "path": ["cinemas", "2"]
+            }
+          }
+        },
+        {
+          "name": "POST",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseURL}}/cinemas", "host": ["{{baseurl}}"], "path": ["cinemas"] },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n      \"picture\": \"https://21cineplex.com//theme/v5/assets/img/logo.png\",\n      \"name\": \"CINEMA 21\",\n      \"address\": \"Jalan Ahmad Yani\",\n      \"city\": \"Banjarmasin\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseURL}}/cinemas/3",
+              "host": ["{{baseurl}}"],
+              "path": ["cinemas", "3"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n      \"picture\": \"https://21cineplex.com//theme/v5/assets/img/logo.png\",\n      \"name\": \"CINEMA 21\",\n      \"address\": \"Jl. Akhmad Yani\",\n      \"city\": \"Balikpapan\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseURL}}/cinemas/4",
+              "host": ["{{baseurl}}"],
+              "path": ["cinemas", "4"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "MOVIE SCHEDULES",
+      "item": [
+        {
+          "name": "GET",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/movieschedules",
+              "host": ["{{baseurl}}"],
+              "path": ["movieschedules"]
+            }
+          }
+        },
+        {
+          "name": "GET SINGLE",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/movieschedules/1",
+              "host": ["{{baseurl}}"],
+              "path": ["movieschedules", "1"]
+            }
+          }
+        },
+        {
+          "name": "POST",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseURL}}/movieschedules",
+              "host": ["{{baseurl}}"],
+              "path": ["movieschedules"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n      \"movieId\": 2,\n      \"cinemaId\": 2,\n      \"price\": \"40000\",\n      \"startDate\": \"2022-12-05T16:00:00.000Z\",\n      \"endDate\": \"2022-12-07T16:00:00.000Z\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseURL}}/movieschedules/3",
+              "host": ["{{baseurl}}"],
+              "path": ["movieschedules", "3"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n      \"movieId\": 3,\n      \"cinemaId\": 1,\n      \"price\": \"50000\",\n      \"startDate\": \"2022-12-05T16:00:00.000Z\",\n      \"endDate\": \"2022-12-07T16:00:00.000Z\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseURL}}/movieschedules/4",
+              "host": ["{{baseurl}}"],
+              "path": ["movieschedules", "4"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "TRANSACTIONS",
+      "item": [
+        {
+          "name": "GET",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/transactions",
+              "host": ["{{baseurl}}"],
+              "path": ["transactions"]
+            }
+          }
+        },
+        {
+          "name": "GET SINGLE",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseURL}}/transactions/1",
+              "host": ["{{baseurl}}"],
+              "path": ["transactions", "1"]
+            }
+          }
+        },
+        {
+          "name": "POST",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseURL}}/transactions",
+              "host": ["{{baseurl}}"],
+              "path": ["transactions"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n      \"bookingDate\": \"2022-12-06T17:02:00.000Z\",\n      \"movieId\": 3,\n      \"cinemaId\": 2,\n      \"movieScheduleId\": 5,\n      \"fullName\": \"Anissa Nadia\",\n      \"email\": \"nadia@gmail.com\",\n      \"phoneNumber\": \"85156233534\",\n      \"statusId\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseURL}}/transactions/3",
+              "host": ["{{baseurl}}"],
+              "path": ["transactions", "3"]
+            },
+            "body": {
+              "mode": "raw",
+              "options": { "raw": { "language": "json" } },
+              "raw": "{\n      \"bookingDate\": \"2022-12-20 00:00:00\",\n      \"movieId\": 3,\n      \"cinemaId\": 2,\n      \"movieScheduleId\": 2,\n      \"fullName\": \"Ratna Fitri\",\n      \"email\": \"rfw@gmail.com\",\n      \"phoneNumber\": \"85156233534\",\n      \"statusId\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseURL}}/transactions/4",
+              "host": ["{{baseurl}}"],
+              "path": ["transactions", "4"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
