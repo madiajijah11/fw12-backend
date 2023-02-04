@@ -128,14 +128,6 @@ model resetPassword {
   users     users?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "resetPassword_users_null_fk")
 }
 
-model roles {
-  id        Int       @id @default(autoincrement())
-  name      String?   @db.VarChar
-  createdAt DateTime? @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime? @default(now()) @db.Timestamptz(6)
-  users     users[]
-}
-
 model status {
   id        Int       @id @default(autoincrement())
   name      String?   @db.VarChar
@@ -166,18 +158,17 @@ model transactions {
 
 model users {
   id            Int            @id @default(autoincrement())
-  picture       String?        @db.VarChar
-  firstName     String?        @db.VarChar
-  lastName      String?        @db.VarChar
-  phoneNumber   String?        @unique @db.VarChar
-  email         String?        @unique(map: "users_pk") @db.VarChar
-  password      String?        @db.VarChar
-  roleId        Int?           @default(2)
+  picture       String?
+  firstName     String?
+  lastName      String?
+  phoneNumber   String?        @unique
+  email         String?        @unique(map: "users_pk")
+  password      String?
+  isAdmin       String?        @default("false")
   createdAt     DateTime?      @default(now()) @db.Timestamptz(6)
   updatedAt     DateTime?      @default(now()) @db.Timestamptz(6)
   resetPassword resetPassword?
   transactions  transactions[]
-  roles         roles?         @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_roles_null_fk")
 }
 
 model months {

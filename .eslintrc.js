@@ -4,10 +4,11 @@ module.exports = {
     commonjs: true,
     es2021: true
   },
-  extends: 'standard',
+  extends: ['standard', 'prettier'],
+  plugins: ['prettier'],
   overrides: [],
   parserOptions: {
     ecmaVersion: 'latest'
   },
   rules: {}
-}
+};

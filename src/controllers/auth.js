@@ -25,7 +25,7 @@ exports.register = (req, res) => {
   const data = {
     ...req.body,
     password: bcrypt.hashSync(req.body.password, 10),
-    roleId: req.body.roleId || 2
+    admin: req.body.admin || "false"
   }
   getUserByEmail(data.email, (err, { rows }) => {
     if (err) {
